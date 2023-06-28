@@ -40,3 +40,6 @@ vignettes/*.pdf
 
 # Any FASTQ file!
 *.fastq.gz
+
+# DS Store files
+.DS_Store
