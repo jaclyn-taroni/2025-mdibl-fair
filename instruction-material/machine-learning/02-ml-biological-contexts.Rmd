@@ -4,7 +4,7 @@ output:
   html_notebook:
     toc: true
     toc_float: true
-date: 2021
+date: 2023
 ---
 
 _This material has been adapted from [ALSF CCDL training materials](https://github.com/AlexsLemonade/training-modules/tree/master/machine-learning)._
@@ -32,7 +32,7 @@ if (!("remotes" %in% installed.packages())) {
 
 if (!("PLIER" %in% installed.packages())) {
   # Install PLIER from GitHub
-  remotes::install_github("wgmao/PLIER")
+  remotes::install_github("wgmao/PLIER@v0.1.6")
 }
   
 # Load Pathway-Level Information ExtractoR
