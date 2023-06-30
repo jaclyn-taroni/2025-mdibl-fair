@@ -449,7 +449,7 @@ ggplot(lv_plot_df,
        aes(x = molecular_subtype, 
            y = LV_estimate, 
            group = molecular_subtype, 
-           colour = molecular_subtype)) +
+           color = molecular_subtype)) +
   geom_boxplot()
 ```
 
@@ -461,7 +461,7 @@ ggplot(lv_plot_df,
        aes(x = molecular_subtype, 
            y = LV_estimate, 
            group = molecular_subtype, 
-           colour = molecular_subtype)) +
+           color = molecular_subtype)) +
   geom_boxplot(outlier.shape = NA) +
   geom_jitter()
 ```
@@ -474,7 +474,7 @@ ggplot(lv_plot_df,
        aes(x = molecular_subtype, 
            y = LV_estimate, 
            group = molecular_subtype, 
-           colour = molecular_subtype)) +
+           color = molecular_subtype)) +
   geom_boxplot(outlier.shape = NA) +
   geom_jitter(width = 0.2, alpha = 0.5)
 ```
@@ -487,7 +487,7 @@ ggplot(lv_plot_df,
        aes(x = molecular_subtype, 
            y = LV_estimate, 
            group = molecular_subtype, 
-           colour = molecular_subtype)) +
+           color = molecular_subtype)) +
   geom_boxplot(outlier.shape = NA) +
   geom_jitter(width = 0.2, alpha = 0.5) +
   theme_bw()
@@ -501,7 +501,7 @@ ggplot(lv_plot_df,
        aes(x = molecular_subtype, 
            y = LV_estimate, 
            group = molecular_subtype, 
-           colour = molecular_subtype)) +
+           color = molecular_subtype)) +
   geom_boxplot(outlier.shape = NA) +
   geom_jitter(width = 0.2, alpha = 0.5) +
   theme_bw() +
@@ -516,7 +516,7 @@ ggplot(lv_plot_df,
        aes(x = molecular_subtype, 
            y = LV_estimate, 
            group = molecular_subtype, 
-           colour = molecular_subtype)) +
+           color = molecular_subtype)) +
   geom_boxplot(outlier.shape = NA) +
   geom_jitter(width = 0.2, alpha = 0.5) +
   theme_bw() +
@@ -532,7 +532,7 @@ ggplot(lv_plot_df,
        aes(x = molecular_subtype, 
            y = LV_estimate, 
            group = molecular_subtype, 
-           colour = molecular_subtype)) +
+           color = molecular_subtype)) +
   geom_boxplot(outlier.shape = NA) +
   geom_jitter(width = 0.2, alpha = 0.5) +
   theme_bw() +
