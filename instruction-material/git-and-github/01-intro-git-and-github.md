@@ -20,7 +20,7 @@ But it also can be very useful and rewarding for you and your work!
     - [❌ DON'T](#-dont)
 - [The very basics](#the-very-basics)
     - [Creating a repo on GitHub](#creating-a-repo-on-github)
-    - [Editing through merging viia the GitHub web interface](#editing-through-merging-viia-the-github-web-interface)
+    - [Editing through merging via the GitHub web interface](#editing-through-merging-via-the-github-web-interface)
     - [Editing README.md](#editing-readmemd)
     - [Creating and merging a pull request](#creating-and-merging-a-pull-request)
     - [Cloning with GitHub Desktop](#cloning-with-github-desktop)
@@ -114,7 +114,7 @@ When working with Git and GitHub:
   Use informative commit messages too!
 * **Do add documentation** above and beyond comments in your code with Markdown documents.
   What do others, and mostly you 6-months-from-now, need to know about the code to get started using it?
-  For example, I was able to quickly update data for this year's material with new software versions because Past Jaclyn left me instructions here: <https://github.com/jaclyn-taroni/2022-mdibl-fair/tree/main/setup/bulk-rnaseq#set-up-for-bulk-rna-seq-instruction-materials>
+  For example, I was able to quickly update data for this year's material with new software versions because Past Jaclyn left me instructions here: <https://github.com/jaclyn-taroni/2023-mdibl-fair/tree/main/setup/bulk-rnaseq#set-up-for-bulk-rna-seq-instruction-materials>
 
 ### ❌ DON'T
 
@@ -129,7 +129,7 @@ In this section, we'll run through:
 
 * Creating a new repository on GitHub.
 * Editing a file, committing the changes to a new branch, and creating and merging a pull request on the GitHub web interface.
-* Cloning the repository locally to your computer with GitHub Deskop.
+* Cloning the repository locally to your computer with GitHub Desktop.
 * Creating a branch locally with GitHub Desktop.
 * Adding and committing changes to a branch with GitHub Desktop.
 * Viewing your commit history in GitHub Desktop.
@@ -154,11 +154,11 @@ The other options (Add a .gitignore and add a license) are beyond the scope of t
 
 #### Editing through merging via the GitHub web interface
 
-You should be redirected to the root (kind of like a home page) of your brand new repository, which will look something like the screenshot below.
+You should be redirected to the root (like a home page) of your brand new repository, which will look like the screenshot below.
 
 #### Editing README.md
 
-To edit the `README.md` file via the GitHub interface, click the pencil icon in the upper right hand corner as shown with an arrow below.
+To edit the `README.md` file via the GitHub interface, click the pencil icon in the upper right-hand corner as shown with an arrow below.
 
 ![](screenshots/02-new-repo-root-arrow-to-edit.png)
 
@@ -170,7 +170,7 @@ I'm only changing whitespace in the example below.
 
 Scroll down to save your changes.
 Specifically, add an informative message describing the changes you're making to the box below **Commit changes** (this will be your commit message), then select `Create a new branch for this commit and start a pull request.`
-You may want to update the branch name to also be informative; I am using `jaclyn-taroni/more-practice` in this example.
+You may also want to update the branch name to be informative; I am using `jaclyn-taroni/more-practice` in this example.
 
 Hit the `Propose changes` button.
 
@@ -203,7 +203,7 @@ To _merge_ a pull request, hit `Merge pull request` and `Confirm merge`.
 When working collaboratively, your collaborators might comment on your pull request before you merge it.
 That's arguably the main benefit of a pull request – they are not the only way to merge your code into the `main` branch!
 They can still be useful when working alone, in my opinion, for surfacing the steps you took and why.
-Check out [the pull requests I made while updating developing the material for this course](https://github.com/jaclyn-taroni/2022-mdibl-fair/pulls?q=is%3Apr+is%3Aclosed) to see this in action.
+Check out [the pull requests I made while updating developing the material for this course](https://github.com/jaclyn-taroni/2023-mdibl-fair/pulls?q=is%3Apr+is%3Aclosed) to see this in action.
 
 If you navigate back to the root of the repo, you should see your changes in the README now!
 And the latest commit, shown in the red box, should begin with `Merge pull request`.
