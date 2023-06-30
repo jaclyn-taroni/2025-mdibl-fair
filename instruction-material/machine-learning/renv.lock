@@ -1451,6 +1451,20 @@
       ],
       "Hash": "3ee4d9899e4db3e976fc82b98d24a31a"
     },
+    "kernlab": {
+      "Package": "kernlab",
+      "Version": "0.9-32",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Requirements": [
+        "R",
+        "grDevices",
+        "graphics",
+        "methods",
+        "stats"
+      ],
+      "Hash": "d7d6a7cb690ac73eeced99e1ed9d6cdb"
+    },
     "knitr": {
       "Package": "knitr",
       "Version": "1.43",
