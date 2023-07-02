@@ -279,13 +279,13 @@ It will also report a lot of the QC information as a message when it finishes, t
 The last message from `fastp` before it finishes running looks like (don't worry, your time used might be different!):
 
 > ```
-> fastp v0.20.1, time used: 340 seconds
+> fastp v0.23.2, time used: 351 seconds
 > ```
 
 The terminal interface will also look something like the following (where `wrkshp00` and `workshop-00` will be replaced with your user name) to let you know it's ready to accept another command!
 
 > ```
-> [wrkshp00 /data/workshop-00]$ 
+> [wrkshp00 workshop-00]$ 
 > ```
 
 If you run the following to list the contents of the `trimmed/` directory, you should see two FASTQ files that correspond to R1 and R2:
@@ -381,8 +381,8 @@ It should be noted that this is only appropriate for use with paired-end reads, 
 
 With this option enabled, Salmon will attempt to correct for the bias that occurs when using random hexamer priming (preferential sequencing of reads when certain motifs appear at the beginning); many RNA-seq experiments do use random hexamer priming!
 
-We know that this experiment shows evidence of random hexamer priming by looking at FastQC reports ([example](https://jaclyn-taroni.github.io/2022-mdibl-fair/setup/bulk-rnaseq/QC/fastqc_reports/5_ACAGTG_L001_R1_combined_fastqc.html#M4)).
-We don't cover FastQC here, but you can read more about it [in reference material we've prepared for you](https://jaclyn-taroni.github.io/2022-mdibl-fair/instruction-material/bulk-rnaseq/00-reference-material#fastqc).
+We know that this experiment shows evidence of random hexamer priming by looking at FastQC reports ([example](https://jaclyn-taroni.github.io/2023-mdibl-fair/setup/bulk-rnaseq/QC/fastqc_reports/5_ACAGTG_L001_R1_combined_fastqc.html#M4)).
+We don't cover FastQC here, but you can read more about it [in reference material we've prepared for you](https://jaclyn-taroni.github.io/2023-mdibl-fair/instruction-material/bulk-rnaseq/00-reference-material#fastqc).
 
 You can read more about biases that arise from random hexamer priming in [Hansen *et al.* (2010)](https://doi.org/10.1093/nar/gkq224).
 
@@ -457,7 +457,7 @@ Type `q` to quit `less`!
 Of particular interest are the `summary`, `filtering_result`, and `duplication` fields, which can give you an idea of how much preprocessing (e.g., filtering, trimming) occurred and the sequence duplication rate (e.g., PCR duplicates or even short or very highly expressed transcripts; see [_Should I remove PCR duplicates from my RNA-seq data?_ from the UC Davis Genome Center](https://dnatech.genomecenter.ucdavis.edu/faqs/should-i-remove-pcr-duplicates-from-my-rna-seq-data/)), respectively.
 
 fastp also outputs HTML reports. 
-You can see an example HTML fastp report for one of the samples in this experiment here:  <https://jaclyn-taroni.github.io/2022-mdibl-fair/setup/bulk-rnaseq/QC/fastp_reports/5_ACAGTG_L001_fastp.html>
+You can see an example HTML fastp report for one of the samples in this experiment here:  <https://jaclyn-taroni.github.io/2023-mdibl-fair/setup/bulk-rnaseq/QC/fastp_reports/5_ACAGTG_L001_fastp.html>
 
 If the vast majority of your reads were filtered out via this process, that would be cause for concern!
 
