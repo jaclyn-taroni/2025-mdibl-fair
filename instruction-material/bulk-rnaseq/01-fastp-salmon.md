@@ -7,6 +7,7 @@
 
 - [Introduction to the exercise](#introduction-to-the-exercise)
     - [How to use these directions](#how-to-use-these-directions)
+      - [Selecting a sample to work with](#selecting-a-sample-to-work-with)  
       - [Sample identifiers](#sample-identifiers)
       - [Commands](#commands)
       - [Documenting expected output](#documenting-expected-output)
@@ -57,15 +58,20 @@ These characters will cause trouble otherwise.
 
 For example – if my user name on the server was `workshop-00`, I would replace `/data/<YOUR USERNAME>` with `/data/workshop-00`.
 
+#### Selecting a sample to work with
+
+In the interest of time, you will pick a _single sample_ corresponding to a pair of FASTQ files to perform QC, trimming, and quantification; it doesn't matter which sample you choose.
+The sample you select is referred to with `<YOUR SAMPLE>` below.
+
 #### Sample identifiers 
 
 For the purpose of this exercise, we will use _all text_ that comes before `_R1_combined.fastq.gz` and `_R2_combined.fastq.gz` in the raw FASTQ files that are distributed to you will be considered your sample identifier and should be used to replace `<YOUR SAMPLE>`. 
 
-If I had the files `5_ACAGTG_L001_R1_combined.fastq.gz` and  `5_ACAGTG_L001_R2_combined.fastq.gz` in my `raw` directory, I would do the following when following the instructions below: 
+If I elected to work with the files `5_ACAGTG_L001_R1_combined.fastq.gz` and  `5_ACAGTG_L001_R2_combined.fastq.gz` in my `raw` directory, I would do the following when following the instructions below: 
 
 * Replace `raw/<YOUR SAMPLE>_R1_combined.fastq.gz` with `raw/5_ACAGTG_L001_R1_combined.fastq.gz`
-* Replace `salmon/<YOUR SAMPLE>` with `salmon/5_ACAGTG_L001`
 * Replace `'<YOUR SAMPLE> report'` with `'5_ACAGTG_L001 report'`
+* Replace `salmon/<YOUR SAMPLE>` with `salmon/5_ACAGTG_L001`
 
 #### Commands
 
@@ -118,7 +124,7 @@ First, you'll need to navigate to your "personal" data directory for this exerci
 cd /data/<YOUR USER NAME>
 ```
 
-Take a look at your "personal" FASTQ files with:
+Take a look at the FASTQ files you created symlinks for yesterday with:
 
 ```
 ls raw
@@ -126,22 +132,23 @@ ls raw
 
 `ls` lists the contents of a directory.
 
-You should see one file that ends with `_R1_combined.fastq.qz` and one that ends with `_R2_combined.fastq.gz`. 
+You should see files that end with `_R1_combined.fastq.qz` and one that ends with `_R2_combined.fastq.gz`. 
 These are the raw read1 input and read2 (sometimes called left and right) files, respectively, for the sample you will be processing.
 
-As a reminder, _all the text_ that comes before `_R1_combined.fastq.gz` and `_R2_combined.fastq.gz` in your FASTQ files will be used as `<YOUR SAMPLE>` in the commands below!
+As a reminder, _all the text_ that comes before `_R1_combined.fastq.gz` and `_R2_combined.fastq.gz` in the FASTQ files you elect to work with will be used as `<YOUR SAMPLE>` in the commands below!
 
-**Now let's make several directories to hold the output of the programs we'll run below.**
+Yesterday, you created several directories during the UNIX lessons to hold the output of the programs we'll use today.
+
+If you need to create the directories now, you can follow the directions below. 
+
+Because we'll use `-p` in the commands below, which allows us to create parent directories, it will prevent `mkdir` from returning an error if the directory you specify already exists.
+That means there's no harm in using these commands if you successfully created these directories yesterday!
 
 To create the directory that will hold the preprocessed FASTQ files, run the following:
 
 ```
 mkdir -p trimmed
 ```
-
-`mkdir`, as you may have guessed, makes directories!
-The `-p` allows us to create _parent_ directories and will prevent an error if the directory we specify already exists.
-
 
 To create the directory that will hold the fastp reports, run the following:
 
