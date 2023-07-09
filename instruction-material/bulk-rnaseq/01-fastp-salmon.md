@@ -7,6 +7,7 @@
 
 - [Introduction to the exercise](#introduction-to-the-exercise)
     - [How to use these directions](#how-to-use-these-directions)
+      - [Selecting a sample to work with](#selecting-a-sample-to-work-with)  
       - [Sample identifiers](#sample-identifiers)
       - [Commands](#commands)
       - [Documenting expected output](#documenting-expected-output)
@@ -23,7 +24,7 @@
       - [`--json` and `--html`](#--json-and---html)
     - [What to expect when `fastp` is running](#what-to-expect-when-fastp-is-running)
     - [What to expect when `fastp` has finished running](#what-to-expect-when-fastp-has-finished-running)
-- [Quantifcation with Salmon](#quantifcation-with-salmon)
+- [Quantification with Salmon](#quantification-with-salmon)
     - [Salmon arguments and options](#salmon-arguments-and-options)
       - [Transcriptome index: `-i`](#transcriptome-index--i)
       - [`-l`](#-l)
@@ -46,9 +47,6 @@ You will each preprocess and quantify a single paired-end RNA-seq sample with fa
 Your own "personal" FASTQ files can be found on the server in the `/data/<YOUR USER NAME>/raw` directory.
 We will use everyone's Salmon output as input into an R package called `tximport`.
 
-
-**Your objective is to complete the steps in this document prior to the start of our next session at 1pm Eastern tomorrow.** 
-
 _If you run into difficulties and do not complete Salmon processing, that is totally okay!
 We [include a worked example below](#worked-example) which you may find helpful!_
 
@@ -60,15 +58,20 @@ These characters will cause trouble otherwise.
 
 For example – if my user name on the server was `workshop-00`, I would replace `/data/<YOUR USERNAME>` with `/data/workshop-00`.
 
+#### Selecting a sample to work with
+
+In the interest of time, you will pick a _single sample_ corresponding to a pair of FASTQ files to perform QC, trimming, and quantification; it doesn't matter which sample you choose.
+The sample you select is referred to with `<YOUR SAMPLE>` below.
+
 #### Sample identifiers 
 
 For the purpose of this exercise, we will use _all text_ that comes before `_R1_combined.fastq.gz` and `_R2_combined.fastq.gz` in the raw FASTQ files that are distributed to you will be considered your sample identifier and should be used to replace `<YOUR SAMPLE>`. 
 
-If I had the files `5_ACAGTG_L001_R1_combined.fastq.gz` and  `5_ACAGTG_L001_R2_combined.fastq.gz` in my `raw` directory, I would do the following when following the instructions below: 
+If I elected to work with the files `5_ACAGTG_L001_R1_combined.fastq.gz` and  `5_ACAGTG_L001_R2_combined.fastq.gz` in my `raw` directory, I would do the following when following the instructions below: 
 
 * Replace `raw/<YOUR SAMPLE>_R1_combined.fastq.gz` with `raw/5_ACAGTG_L001_R1_combined.fastq.gz`
-* Replace `salmon/<YOUR SAMPLE>` with `salmon/5_ACAGTG_L001`
 * Replace `'<YOUR SAMPLE> report'` with `'5_ACAGTG_L001 report'`
+* Replace `salmon/<YOUR SAMPLE>` with `salmon/5_ACAGTG_L001`
 
 #### Commands
 
@@ -121,7 +124,7 @@ First, you'll need to navigate to your "personal" data directory for this exerci
 cd /data/<YOUR USER NAME>
 ```
 
-Take a look at your "personal" FASTQ files with:
+Take a look at the FASTQ files you created symlinks for yesterday with:
 
 ```
 ls raw
@@ -129,22 +132,23 @@ ls raw
 
 `ls` lists the contents of a directory.
 
-You should see one file that ends with `_R1_combined.fastq.qz` and one that ends with `_R2_combined.fastq.gz`. 
+You should see files that end with `_R1_combined.fastq.qz` and one that ends with `_R2_combined.fastq.gz`. 
 These are the raw read1 input and read2 (sometimes called left and right) files, respectively, for the sample you will be processing.
 
-As a reminder, _all the text_ that comes before `_R1_combined.fastq.gz` and `_R2_combined.fastq.gz` in your FASTQ files will be used as `<YOUR SAMPLE>` in the commands below!
+As a reminder, _all the text_ that comes before `_R1_combined.fastq.gz` and `_R2_combined.fastq.gz` in the FASTQ files you elect to work with will be used as `<YOUR SAMPLE>` in the commands below!
 
-**Now let's make several directories to hold the output of the programs we'll run below.**
+Yesterday, you created several directories during the UNIX lessons to hold the output of the programs we'll use today.
+
+If you need to create the directories now, you can follow the directions below. 
+
+Because we'll use `-p` in the commands below, which allows us to create parent directories, it will prevent `mkdir` from returning an error if the directory you specify already exists.
+That means there's no harm in using these commands if you successfully created these directories yesterday!
 
 To create the directory that will hold the preprocessed FASTQ files, run the following:
 
 ```
 mkdir -p trimmed
 ```
-
-`mkdir`, as you may have guessed, makes directories!
-The `-p` allows us to create _parent_ directories and will prevent an error if the directory we specify already exists.
-
 
 To create the directory that will hold the fastp reports, run the following:
 
@@ -295,7 +299,7 @@ ls trimmed
 ```
 
 
-## Quantifcation with Salmon
+## Quantification with Salmon
 
 _Adapted in part from [this lession](https://hbctraining.github.io/Intro-to-rnaseq-hpc-salmon/lessons/04_quasi_alignment_salmon.html) developed by members of the teaching team at the [Harvard Chan Bioinformatics Core (HBC)](http://bioinformatics.sph.harvard.edu/) and from [Childhood Cancer Data Lab bulk RNA-seq training material](https://github.com/AlexsLemonade/training-modules/tree/9e648b207577c55cc22a24c712a736873523f5a4/RNA-seq)._
 
@@ -358,7 +362,7 @@ The `--threads` argument controls the number of threads that are available to Sa
 This in essence controls how much of the mapping can occur in parallel.
 If you had access to a computer with many cores, you could increase the number of threads to make quantification go faster!
 
-#### [`--validateMappings`](https://salmon.readthedocs.io/en/latest/salmon.html#validatemappings)
+#### `--validateMappings`
 
 Using `--validateMappings` enables mapping validation, where Salmon checks its mappings using traditional alignment.
 This helps prevent "spurious mappings" where a read maps to a target but does not arise from it (see [documentation for flag](https://salmon.readthedocs.io/en/latest/salmon.html#validatemappings) and the [release notes for `v0.10.0`](https://github.com/COMBINE-lab/salmon/releases/tag/v0.10.0) where this was introduced).
@@ -389,7 +393,12 @@ You can read more about biases that arise from random hexamer priming in [Hansen
 
 ### What to expect when `salmon quant` is running
 
-⚠️ `salmon quant` will take awhile to run (~10 min when your instructor was testing)!
+⚠️ `salmon quant` will take awhile to run!
+
+⚠️ **Please skip to the [Examining the Output](#examining-the-output) section to view results that were prepared earlier.**
+
+---
+
 You should expect to see output like the following in the command line when it starts:
 
 >```
@@ -448,7 +457,7 @@ In this section, we'll use a tool called `less` to examine some of the output fr
 **First, let's look at some of the QC information from fastp:**
 
 ```
-less QC/fastp_reports/<YOUR SAMPLE>_fastp.json
+less /data/workshop-00/QC/fastp_reports/<YOUR SAMPLE>_fastp.json
 ```
 
 You can use your up and down arrow keys to scroll through this file.
@@ -464,7 +473,7 @@ If the vast majority of your reads were filtered out via this process, that woul
 **Now, use the following to examine the quantification file from Salmon:**
 
 ```
-less salmon/<YOUR SAMPLE>/quant.sf
+less /data/workshop-00/salmon/<YOUR SAMPLE>/quant.sf
 ```
 
 The columns of this (tab-separated) file contain ([Salmon docs on quantification file output](https://salmon.readthedocs.io/en/latest/file_formats.html#quantification-file)):
@@ -483,7 +492,7 @@ Again, when you're ready to stop scrolling through the `quant.sf` file, type `q`
 **Finally, let's look at some of the metadata output by Salmon with the following command:**
 
 ```
-less salmon/<YOUR SAMPLE>/aux_info/meta_info.json
+less /data/workshop-00/salmon/<YOUR SAMPLE>/aux_info/meta_info.json
 ```
 
 Using your down arrow key, scroll down to a field called `"percent_mapped"` – what does it say for your sample?
@@ -535,15 +544,15 @@ salmon quant \
 ```
 
 ```
-less QC/fastp_reports/5_ACAGTG_L001_fastp.json
+less /data/workshop-00/QC/fastp_reports/5_ACAGTG_L001_fastp.json
 ```
 
 ```
-less salmon/5_ACAGTG_L001/quant.sf
+less /data/workshop-00/salmon/5_ACAGTG_L001/quant.sf
 ```
 
 ```
-less salmon/5_ACAGTG_L001/aux_info/meta_info.json
+less /data/workshop-00/salmon/5_ACAGTG_L001/aux_info/meta_info.json
 ```
 
 </details>
