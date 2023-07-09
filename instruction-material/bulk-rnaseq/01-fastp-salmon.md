@@ -358,7 +358,7 @@ The `--threads` argument controls the number of threads that are available to Sa
 This in essence controls how much of the mapping can occur in parallel.
 If you had access to a computer with many cores, you could increase the number of threads to make quantification go faster!
 
-#### [`--validateMappings`](https://salmon.readthedocs.io/en/latest/salmon.html#validatemappings)
+#### `--validateMappings`
 
 Using `--validateMappings` enables mapping validation, where Salmon checks its mappings using traditional alignment.
 This helps prevent "spurious mappings" where a read maps to a target but does not arise from it (see [documentation for flag](https://salmon.readthedocs.io/en/latest/salmon.html#validatemappings) and the [release notes for `v0.10.0`](https://github.com/COMBINE-lab/salmon/releases/tag/v0.10.0) where this was introduced).
@@ -389,7 +389,12 @@ You can read more about biases that arise from random hexamer priming in [Hansen
 
 ### What to expect when `salmon quant` is running
 
-⚠️ `salmon quant` will take awhile to run (~10 min when your instructor was testing)!
+⚠️ `salmon quant` will take awhile to run!
+
+⚠️ **Please skip to the [Examining the Output](#examining-the-output) section to view results that were prepared earlier.**
+
+---
+
 You should expect to see output like the following in the command line when it starts:
 
 >```
@@ -448,7 +453,7 @@ In this section, we'll use a tool called `less` to examine some of the output fr
 **First, let's look at some of the QC information from fastp:**
 
 ```
-less QC/fastp_reports/<YOUR SAMPLE>_fastp.json
+less /data/workshop-00/QC/fastp_reports/<YOUR SAMPLE>_fastp.json
 ```
 
 You can use your up and down arrow keys to scroll through this file.
@@ -464,7 +469,7 @@ If the vast majority of your reads were filtered out via this process, that woul
 **Now, use the following to examine the quantification file from Salmon:**
 
 ```
-less salmon/<YOUR SAMPLE>/quant.sf
+less /data/workshop-00/salmon/<YOUR SAMPLE>/quant.sf
 ```
 
 The columns of this (tab-separated) file contain ([Salmon docs on quantification file output](https://salmon.readthedocs.io/en/latest/file_formats.html#quantification-file)):
@@ -483,7 +488,7 @@ Again, when you're ready to stop scrolling through the `quant.sf` file, type `q`
 **Finally, let's look at some of the metadata output by Salmon with the following command:**
 
 ```
-less salmon/<YOUR SAMPLE>/aux_info/meta_info.json
+less /data/workshop-00/salmon/<YOUR SAMPLE>/aux_info/meta_info.json
 ```
 
 Using your down arrow key, scroll down to a field called `"percent_mapped"` – what does it say for your sample?
@@ -535,15 +540,15 @@ salmon quant \
 ```
 
 ```
-less QC/fastp_reports/5_ACAGTG_L001_fastp.json
+less /data/workshop-00/QC/fastp_reports/5_ACAGTG_L001_fastp.json
 ```
 
 ```
-less salmon/5_ACAGTG_L001/quant.sf
+less /data/workshop-00/salmon/5_ACAGTG_L001/quant.sf
 ```
 
 ```
-less salmon/5_ACAGTG_L001/aux_info/meta_info.json
+less /data/workshop-00/salmon/5_ACAGTG_L001/aux_info/meta_info.json
 ```
 
 </details>
