@@ -24,8 +24,7 @@ This section explains what the code in `run-tximport.R` is doing and is intended
 
 ## Cooking show magic 🍳
 
-Because the exploratory data analysis and differential gene expression modules downstream rely on the tximport output, we've created a "clean" version on the server that you can download with [`scp`](https://en.wikipedia.org/wiki/Secure_copy_protocol), which stands for secure copy protocol. 
-We prepared this ahead of time because we expect that not all participants may be able to work on the fastp and Salmon exercise synchronously.
+In the interest of time, we've created a "clean" version of the `tximport` output on the server that you can download with [`scp`](https://en.wikipedia.org/wiki/Secure_copy_protocol), which stands for secure copy protocol. 
 
 **In your local terminal** (⚠️ not when you are logged in to the server via `ssh`), run the following command replacing `<YOUR USER NAME>`, `<SERVER DOMAIN>`, and `<SOMEWHERE ON YOUR COMPUTER YOU WANT TO COPY THIS FILE TO>` with appropriate text (don't forget to remove the `<` and `>` when you replace the text!):
 
