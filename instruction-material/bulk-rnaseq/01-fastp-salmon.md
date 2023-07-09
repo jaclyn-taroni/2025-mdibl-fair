@@ -23,7 +23,7 @@
       - [`--json` and `--html`](#--json-and---html)
     - [What to expect when `fastp` is running](#what-to-expect-when-fastp-is-running)
     - [What to expect when `fastp` has finished running](#what-to-expect-when-fastp-has-finished-running)
-- [Quantifcation with Salmon](#quantifcation-with-salmon)
+- [Quantification with Salmon](#quantification-with-salmon)
     - [Salmon arguments and options](#salmon-arguments-and-options)
       - [Transcriptome index: `-i`](#transcriptome-index--i)
       - [`-l`](#-l)
@@ -295,7 +295,7 @@ ls trimmed
 ```
 
 
-## Quantifcation with Salmon
+## Quantification with Salmon
 
 _Adapted in part from [this lession](https://hbctraining.github.io/Intro-to-rnaseq-hpc-salmon/lessons/04_quasi_alignment_salmon.html) developed by members of the teaching team at the [Harvard Chan Bioinformatics Core (HBC)](http://bioinformatics.sph.harvard.edu/) and from [Childhood Cancer Data Lab bulk RNA-seq training material](https://github.com/AlexsLemonade/training-modules/tree/9e648b207577c55cc22a24c712a736873523f5a4/RNA-seq)._
 
