@@ -46,9 +46,6 @@ You will each preprocess and quantify a single paired-end RNA-seq sample with fa
 Your own "personal" FASTQ files can be found on the server in the `/data/<YOUR USER NAME>/raw` directory.
 We will use everyone's Salmon output as input into an R package called `tximport`.
 
-
-**Your objective is to complete the steps in this document prior to the start of our next session at 1pm Eastern tomorrow.** 
-
 _If you run into difficulties and do not complete Salmon processing, that is totally okay!
 We [include a worked example below](#worked-example) which you may find helpful!_
 
