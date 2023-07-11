@@ -1,2 +1,5 @@
 # Ignore the OpenPBTA histologies dataset
 data/**/pbta-*
+
+# Ignore folder for prepping upload
+for_upload/

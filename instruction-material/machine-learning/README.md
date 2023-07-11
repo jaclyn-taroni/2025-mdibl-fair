@@ -66,3 +66,15 @@ And further processed (i.e., filtering, transformation) with:
 ```
 Rscript scripts/process-pbta-data.R
 ``` 
+
+### Creating a zip file for upload
+
+Running the following will create a ZIP file (`for_upload/mdibl-ml.zip`) to be uploaded to LabCentral:
+
+```sh
+bash scripts/package-for-labcentral-upload.sh
+```
+
+The script tests that the R Notebooks can render with the files that are copied over and then freshly copies over the R Notebooks.
+This implicitly clears the chunk output, because output is stored in hidden folders ([ref](https://bookdown.org/yihui/rmarkdown/notebook.html#output-storage)) that are not copied over via this shell script.
+
