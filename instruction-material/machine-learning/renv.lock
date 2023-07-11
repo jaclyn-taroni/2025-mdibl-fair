@@ -513,6 +513,16 @@
       ],
       "Hash": "e8a22846fff485f0be3770c2da758713"
     },
+    "assertthat": {
+      "Package": "assertthat",
+      "Version": "0.2.1",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Requirements": [
+        "tools"
+      ],
+      "Hash": "50c838a310445e954bc13f26f26a6ecf"
+    },
     "backports": {
       "Package": "backports",
       "Version": "1.4.1",
@@ -2523,6 +2533,24 @@
         "rlang"
       ],
       "Hash": "d0ef2856b83dc33ea6e255caf6229ee2"
+    },
+    "vembedr": {
+      "Package": "vembedr",
+      "Version": "0.1.5",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Requirements": [
+        "R",
+        "assertthat",
+        "glue",
+        "htmltools",
+        "httr",
+        "lifecycle",
+        "magrittr",
+        "stringr",
+        "utils"
+      ],
+      "Hash": "a70fc1a38cb92dfb37402d3f920c351a"
     },
     "viridisLite": {
       "Package": "viridisLite",
