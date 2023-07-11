@@ -7,10 +7,14 @@ output:
 date: 2021
 ---
 
-This notebook is designed to be self-guided.
-To guard against potential technical mishaps, we include links to short lecture videos throughout as well as explanatory text.
+*The BRCA classifier has been adapted from [Penn GCB 535](https://github.com/greenelab/GCB535) machine learning material; many of the videos we link to are from this course as well.*
 
-The BRCA classifier has been adapted from [Penn GCB 535](https://github.com/greenelab/GCB535) machine learning material; many of the videos we link to are from this course as well.
+## Objectives
+
+-   Present metrics for evaluating supervised machine learning models
+-   Introduce support vector machines (SVM) and the C parameter
+-   Demonstrate how to set up model evaluations, including training and test sets as well as cross-validation
+-   Introduce the `caret` library for machine learning in R, including functionality for supervised model evaluation and model training & tuning
 
 ## Set up
 
@@ -28,6 +32,11 @@ library(caret)
 if (!("kernlab" %in% installed.packages())) {
   install.packages("kernlab")
 }
+
+if (!("vembedr" %in% installed.packages())) {
+  install.packages("vembedr")
+}
+library("vembedr")
 ```
 
 ## Evaluating model performance: metrics
@@ -50,10 +59,10 @@ head(labels_df)
 
 The columns for this data frame are:
 
-* `sample_id` - A+ column name, very self-explanatory/descriptive
-* `class_label` - the **true** class labels that we know from some external source
-* `predicted_label_model1` - the **predicted** class labels from our _first model_
-* `predicted_label_model2` - the **predicted** class labels from our _second model_
+-   `sample_id` - A+ column name, very self-explanatory/descriptive
+-   `class_label` - the **true** class labels that we know from some external source
+-   `predicted_label_model1` - the **predicted** class labels from our *first model*
+-   `predicted_label_model2` - the **predicted** class labels from our *second model*
 
 Let's see what the values exist for the true class labels in `class_label`
 
@@ -72,7 +81,7 @@ Let's calculate overall accuracy for both of our models.
 First, we should count the number of correctly classified samples for both of our models.
 The number of correctly classified samples will be the number of times the value in the predicted class column for that model is the same as the value `class_label` column.
 
-We can use `apply()` with the `MARGIN` set to `1` (which means apply the function to the _rows_) to apply a custom function that checks for agreement between the labels with the `==` operator.
+We can use `apply()` with the `MARGIN` set to `1` (which means apply the function to the *rows*) to apply a custom function that checks for agreement between the labels with the `==` operator.
 
 ```{r}
 # This will return a logical vector that indicates whether (TRUE) or not (FALSE)
@@ -85,7 +94,7 @@ model1_correct <- apply(labels_df, 1,
 head(model1_correct)
 ```
 
-Because `model1_correct` is a logical vector, we can _count_ how many times something is correctly labeled by using `sum()`; `sum()` will treat `TRUE` values as 1s and `FALSE` values as 0s.
+Because `model1_correct` is a logical vector, we can *count* how many times something is correctly labeled by using `sum()`; `sum()` will treat `TRUE` values as 1s and `FALSE` values as 0s.
 
 Let's take a look at how that works using a logical vector of length 5 that we construct with `c()` to get a better idea of how this works.
 
@@ -126,8 +135,9 @@ Starting with model 1...
 table(labels_df$predicted_label_model1)
 ```
 
-Oh no! That means this model only ever predicts that a sample's label is `case`.
-That's probably not a very helpful model, but it does have decent accuracy. 
+Oh no!
+That means this model only ever predicts that a sample's label is `case`.
+That's probably not a very helpful model, but it does have decent accuracy.
 How can that be?
 
 Let's use `table()` again, this time to look at the true labels.
@@ -136,7 +146,7 @@ Let's use `table()` again, this time to look at the true labels.
 table(labels_df$class_label)
 ```
 
-There are _way more_ samples with the `case` label than the `control` label.
+There are *way more* samples with the `case` label than the `control` label.
 This is a problem that's known as **class imbalance** and when it is present in a dataset, overall accuracy can sometimes give us an overly optimistic view of the performance of the model.
 
 Just by always predicting `case`, model 1 achieves 85% accuracy.
@@ -148,11 +158,11 @@ table(labels_df$class_label,
       labels_df$predicted_label_model2)
 ```
 
-Even though model 2 has lower accuracy (82%), it might actually have better _performance_ when we take into account our goals (distinguishing case vs. control)!
+Even though model 2 has lower accuracy (82%), it might actually have better *performance* when we take into account our goals (distinguishing case vs. control)!
 
 Luckily, there are other statistics that can tell us about model performance which may be more appropriate in this case.
 
-There is a package called [`caret`](https://topepo.github.io/caret/), which has lots of great machine learning functionality, that we can use to calculate other metrics and create what is known as a [confusion matrix](https://en.wikipedia.org/wiki/Confusion_matrix). 
+There is a package called [`caret`](https://topepo.github.io/caret/), which has lots of great machine learning functionality, that we can use to calculate other metrics and create what is known as a [confusion matrix](https://en.wikipedia.org/wiki/Confusion_matrix).
 
 ```{r}
 # confusionMatrix() wants factors
@@ -166,13 +176,12 @@ confusionMatrix(data = factor(labels_df$predicted_label_model1,
 
 We can see this returns many more statistics than accuracy alone (where `case` is treated as the positive class), including:
 
-* `Sensitivity` (also called the True Positive Rate or recall) = true positives / (true positives + false negatives)
-* `Specificity` (also called the True Negative Rate) = true negatives / (false positives + true negatives)
-* `Pos Pred Value` stands for positive predictive value (also called precision) = true positives / (true positives + false positives)
-* `Kappa` (also known as Cohen's kappa) is an indication of how your model is performing relative to a classifier that guesses based on the frequency of each class and is always less than or equal to 1 ([ref](https://thedatascientist.com/performance-measures-cohens-kappa-statistic/)).
+-   `Sensitivity` (also called the True Positive Rate or recall) = true positives / (true positives + false negatives)
+-   `Specificity` (also called the True Negative Rate) = true negatives / (false positives + true negatives)
+-   `Pos Pred Value` stands for positive predictive value (also called precision) = true positives / (true positives + false positives)
+-   `Kappa` (also known as Cohen's kappa) is an indication of how your model is performing relative to a classifier that guesses based on the frequency of each class and is always less than or equal to 1 ([ref](https://thedatascientist.com/performance-measures-cohens-kappa-statistic/)).
 
-(Some of these are a refresher from the earlier exercise!
-Lots of great information in the `confusionMatrix()` docs [here](https://rdrr.io/cran/caret/man/confusionMatrix.html), too.)
+(Lots of great information in the `confusionMatrix()` docs [here](https://rdrr.io/cran/caret/man/confusionMatrix.html), too.)
 
 In this case, model 1 is not doing better than randomly guessing the class based on its frequency.
 
@@ -192,7 +201,8 @@ We can see that kappa is considerably higher for the second model (0.44 vs. 0.00
 Which of these models are better is going to depend on the goal of the classifier!
 It is probably not very helpful to have a classifier that always predicts `case`.
 
-More generally, when setting up an experiment or approach, it's good to figure out what is most important to you: Is it most important to correctly identify positive cases? Are you very concerned about false negatives?
+More generally, when setting up an experiment or approach, it's good to figure out what is most important to you: Is it most important to correctly identify positive cases?
+Are you very concerned about false negatives?
 A full discussion of all these metrics is beyond the scope of this session, but we hope you can appreciate that selecting a metric based on what you are hoping to accomplish is important!
 
 Let's remove these items from our global environment before we go onto the next section.
@@ -201,12 +211,9 @@ Let's remove these items from our global environment before we go onto the next 
 rm(labels_df, model1_correct, model1_correct_count, model2_correct)
 ```
 
-
-
-
 ## Evaluating model performance: training/test split, cross validation, and independent validation sets
 
-_This material has been adapted from [Penn GCB 535](https://github.com/greenelab/GCB535) machine learning material._
+*This material has been adapted from [Penn GCB 535](https://github.com/greenelab/GCB535) machine learning material.*
 
 We will use prediction tumor vs. normal in a breast cancer (BRCA) gene expression data set as an example for some of the machine learning concepts (and how to implement them in R with `caret`) below.
 The first dataset we will be working with is data from the [METABRIC](https://www.mercuriolab.umassmed.edu/metabric) study.
@@ -218,6 +225,7 @@ metabric_exprs_df <- readr::read_tsv(file.path("data",
                                                "METABRIC_dataset.pcl")) %>%
   tibble::column_to_rownames("...1")
 ```
+
 Gene expression data is typically stored with features as rows and samples as columns.
 Most machine learning packages will expect our observations/sames as columns and our features as rows.
 Let's transpose this expression matrix.
@@ -259,32 +267,42 @@ If we built a classifier that predicted Tumor 100% of the time, how would we do 
 
 Something to keep in mind as we go into the next section.
 
-
 ### Support Vector Machines
 
-In the last exercise, you were introduced to tree models.
-Here we'll introduce another kind of supervised machine learning model: support vector machines (SVM).
+Here we'll introduce a type of supervised machine learning model: support vector machines (SVM).
 How these work is relatively intuitive.
 
-**Check out this video from Dr. Casey Greene on the subject: [_Support Vector Machines for GCB 535_](https://www.youtube.com/watch?v=EbVs31qq1Is)**
+**Check out this video from Dr. Casey Greene on Support Vector Machines**
+
+```{r}
+vembedr::embed_url("https://www.youtube.com/watch?v=EbVs31qq1Is")
+```
 
 We'll also quote [Wikipedia](https://en.wikipedia.org/wiki/Support-vector_machine) here for your convenience:
 
-> SVM maps training examples to points in space so as to maximise the width of the gap between the two categories. New examples are then mapped into that same space and predicted to belong to a category based on which side of the gap they fall. 
+> SVM maps training examples to points in space so as to maximise the width of the gap between the two categories.
+> New examples are then mapped into that same space and predicted to belong to a category based on which side of the gap they fall.
 
-**And learn more about the C parameter that can be tuned for SVMs from Casey here: [_The C Parameter for Support Vector Machines - GCB 535_](https://www.youtube.com/watch?v=5oVQBF_p6kY)**
+**And learn more about the C parameter that can be tuned for SVMs from Casey in the following video:**
 
+```{r}
+vembedr::embed_url("https://www.youtube.com/watch?v=5oVQBF_p6kY")
+```
 
 ### Training and test sets
 
 Once we train a supervised machine learning model, we often want to assess how it will perform on unseen data.
-If our model doesn't _generalize_ to unseen data, it's probably not very useful for us.
+If our model doesn't *generalize* to unseen data, it's probably not very useful for us.
 When a model doesn't generalize, folks use the term "overfitting" -- the model is too well fit to the training data.
 That often manifests as very high performance on the training data and a considerable drop in performance on a test set.
 
-**Check out Casey's introduction to assessment here: [_GCB 535 - Introduction to the Assessment of Supervised Machine Learning Methods_](https://www.youtube.com/watch?v=s_qpzxbVViI)**
+**Check out Casey's introduction to assessment here:**
 
-Like we covered in the previous module, we can split our data into a training and test set.
+```{r}
+vembedr::embed_url("https://www.youtube.com/watch?v=s_qpzxbVViI")
+```
+
+We will split our data into a training and test set.
 Our test set will be 20% of our data.
 
 ```{r}
@@ -337,8 +355,8 @@ svm_result$finalModel
 ```
 
 We're using the default setting for C here.
-We can see that we had a training error of `0`. 
-Error is (false positives + false negatives) / total samples. 
+We can see that we had a training error of `0`.
+Error is (false positives + false negatives) / total samples.
 
 Using `predict()` on an object returned by `train()` will allow us to extract predictions.
 
@@ -347,7 +365,7 @@ Using `predict()` on an object returned by `train()` will allow us to extract pr
 head(predict(svm_result, newdata = metabric_train))
 ```
 
-And we can use `predict()` in conjunction with `confusionMatrix()` to look at _training_ performance beyond error.
+And we can use `predict()` in conjunction with `confusionMatrix()` to look at *training* performance beyond error.
 
 ```{r}
 confusionMatrix(data = predict(svm_result, newdata = metabric_train),
@@ -371,7 +389,7 @@ In machine learning, we can often encounter a problem called [data leakage](http
 This is when information from the test set or more generally from outside of the training set "leaks" into the model.
 Data leakage is a problem because it can give you an overly optimistic view of performance.
 
-One way that data leakage can happen is by transforming your dataset _all together_ (termed ["naive data preparation" in this post](https://machinelearningmastery.com/data-preparation-without-data-leakage/)) before we split into training and testing.
+One way that data leakage can happen is by transforming your dataset *all together* (termed ["naive data preparation" in this post](https://machinelearningmastery.com/data-preparation-without-data-leakage/)) before we split into training and testing.
 
 **We** didn't do any transformation in this notebook, but let's take a look at the values in our training and test sets.
 
@@ -387,8 +405,8 @@ And now our test set:
 plot(density(metabric_test))
 ```
 
-We can see that our values are scaled between zero and one. 
-This data has undergone what is known as [min-max normalization or min-max scaling](https://towardsdatascience.com/everything-you-need-to-know-about-min-max-normalization-in-python-b79592732b79) and this happened _before_ we split into training and testing.
+We can see that our values are scaled between zero and one.
+This data has undergone what is known as [min-max normalization or min-max scaling](https://towardsdatascience.com/everything-you-need-to-know-about-min-max-normalization-in-python-b79592732b79) and this happened *before* we split into training and testing.
 
 A better approach probably would have been to split our data, perform the transformation to our training set (e.g., fit the transformation to our training set), apply the transformation to our test set, and then gone about our business of training and evaluation.
 You can read a bit more about how to do this with `caret` [here](https://topepo.github.io/caret/pre-processing.html#the-preprocess-function).
@@ -399,9 +417,19 @@ We can still use these data to illustrate some of these concepts (and how to imp
 
 ### k-fold Cross Validation
 
-**Check out Casey's video on cross-validation: [_GCB 535 - Assessing model performance through cross validation._](https://www.youtube.com/watch?v=rMZYrneij-E)**
+k-fold cross-validation is the practice of dividing a dataset into k-folds, training on k-1 folds and evaluating the model on the final, held-out fold, sometimes called an evaluation set.
 
-You may want also to check out StatQuest video [_Machine Learning Fundamentals: Cross Validation_](https://www.youtube.com/watch?v=fSytzGwwBVw) from Josh Starmer.
+*Figure adapted from [Banerjee et al. 2023.](https://doi.org/10.1038/s41592-023-01886-z)*
+
+![](diagrams/banerjee_nature_methods_fig1b-cv-only.png)
+
+**Check out Casey's video on cross-validation:**
+
+```{r}
+vembedr::embed_url("https://www.youtube.com/watch?v=rMZYrneij-E")
+```
+
+You may want also to check out StatQuest video [*Machine Learning Fundamentals: Cross Validation*](https://www.youtube.com/watch?v=fSytzGwwBVw) from Josh Starmer.
 
 As mentioned in Casey's video, an advantage of cross-validation is that we train and test on all the data to get an idea of how the model with generalize.
 We can set up cross-validation in `caret` with `trainControl()`.
@@ -431,16 +459,21 @@ And now some information about what we did, just by printing `svm_cv_results`.
 ```{r}
 svm_cv_results
 ```
-The `finalModel` in this context will be the model with the largest kappa value ([ref](https://topepo.github.io/caret/model-training-and-tuning.html#choosing-the-final-model)). 
+
+The `finalModel` in this context will be the model with the largest kappa value ([ref](https://topepo.github.io/caret/model-training-and-tuning.html#choosing-the-final-model)).
 We can pass `svm_cv_results` to `predict()` and it will use the final model for those predictions ([ref](https://topepo.github.io/caret/model-training-and-tuning.html#extracting-predictions-and-class-probabilities)).
 
-_Side note: you can also do something called [repeated k-fold cross-validation](https://machinelearningmastery.com/repeated-k-fold-cross-validation-with-python/), which is multiple runs of k-fold cross-validation, by changing a few arguments to `trainControl()`._
-
+*Side note: you can also do something called [repeated k-fold cross-validation](https://machinelearningmastery.com/repeated-k-fold-cross-validation-with-python/), which is multiple runs of k-fold cross-validation, by changing a few arguments to `trainControl()`.*
 
 ### Independent validation set
 
 We've demonstrated how to split into training and testing with `caret` and how to perform 5-fold cross-validation.
 Ideally, if we want to test that our models are generalizable, we'd want to have an independent validation set.
+
+*Figure adapted from [Banerjee et al. 2023.](https://doi.org/10.1038/s41592-023-01886-z)*
+
+![](diagrams/banerjee_nature_methods_fig1b.png)
+
 In this case, we have a BRCA set from TCGA available so let's read it in and get it ready.
 
 ```{r}
@@ -465,7 +498,8 @@ Check if the samples are in the same order in our expression data and the labels
 identical(tcga_meta_df$Sample, rownames(t_tcga_exprs))
 ```
 
-Nope. Okay, let's reorder the expression matrix using the column with sample IDs in the metadata.
+Nope.
+Okay, let's reorder the expression matrix using the column with sample IDs in the metadata.
 
 ```{r}
 t_tcga_exprs <- t_tcga_exprs[tcga_meta_df$Sample, ]
@@ -530,13 +564,7 @@ Still pretty good accuracy, but since we have a class imbalance issue here we mi
 
 Kappa values interpretation as originally laid out in Landis & Koch (1977) (and via [this post](https://towardsdatascience.com/interpretation-of-kappa-values-2acd1ca7b18f)):
 
-> Kappa value interpretation:
-> <0 No agreement
-> 0 — .20 Slight
-> .21 — .40 Fair
-> .41 — .60 Moderate
-> .61 — .80 Substantial
-> .81–1.0 Perfect
+> Kappa value interpretation: \<0 No agreement 0 --- .20 Slight .21 --- .40 Fair .41 --- .60 Moderate .61 --- .80 Substantial .81--1.0 Perfect
 
 Using this scale, we see moderate performance.
 One thing to consider is that tumor-adjacent normal in TCGA might not be the same as a normal sample in METABRIC!
@@ -545,18 +573,23 @@ One thing to consider is that tumor-adjacent normal in TCGA might not be the sam
 
 ### Thoughts on tuning C
 
-It is not uncommon for machine learning models to have some set of parameters we'd like to "tune."
-For SVM, the C parameter is something we might like to select some best value for.
-(Here's the link again for Casey's video on the C parameter: [_The C Parameter for Support Vector Machines - GCB 535_](https://www.youtube.com/watch?v=5oVQBF_p6kY))
+It is not uncommon for machine learning models to have some set of parameters we'd like to "tune." For SVM, the C parameter is something we might like to select some best value for.
+(Here's the link again for Casey's video on the C parameter: [*The C Parameter for Support Vector Machines - GCB 535*](https://www.youtube.com/watch?v=5oVQBF_p6kY))
 
 When we perform parameter selection, we'd like to guard against overfitting and/or, if we're making a comparison between our new method and methods where we don't tune, that comparisons between methods are fair.
 If we were to tune parameters and test on the same set of data, this would be a form of data leakage ([ref](https://weina.me/nested-cross-validation/)).
 
-One popular way to do parameter tuning is to use an approach called nested cross-validation, which you can see explained by Cynthia Rudin in this video [_Nested Cross Validation_](https://www.youtube.com/watch?v=az60jS7MQhU) (uses 10-fold cross-validation) or in a visualization in [this post](https://weina.me/nested-cross-validation/) from Weina Jin, MD.
+One popular way to do parameter tuning is to use an approach called nested cross-validation, which you can see explained by Cynthia Rudin in the following video (uses 10-fold cross-validation):
+
+```{r}
+vembedr::embed_url("https://www.youtube.com/watch?v=az60jS7MQhU")
+```
+
+Or in a visualization in [this post](https://weina.me/nested-cross-validation/) from Weina Jin, MD.
 
 The `caret` author recommends that we split into training and testing datasets and perform tuning on the training set ([ref](https://stats.stackexchange.com/questions/378426/parameter-tuning-with-vs-without-nested-cross-validation)).
 
-The tuning process works like this in `caret`  ([ref](https://topepo.github.io/caret/model-training-and-tuning.html#model-training-and-parameter-tuning)):
+The tuning process works like this in `caret` ([ref](https://topepo.github.io/caret/model-training-and-tuning.html#model-training-and-parameter-tuning)):
 
 ![](https://topepo.github.io/caret/premade/TrainAlgo.png)
 
@@ -582,7 +615,7 @@ svm_tuning_cv_results <- train(x = metabric_train,
 svm_tuning_cv_results
 ```
 
-This suggests that our C parameter does not matter _much_ in this particular case.
+This suggests that our C parameter does not matter *much* in this particular case.
 We can also use `plot()` to examine the relationship between performance and the tuning parameters:
 
 ```{r}
@@ -596,9 +629,9 @@ We could then evaluate using our test dataset.
 Another way to avoid overfitting is to use something called regularization.
 We won't discuss in any detail here, but will instead link to some videos from StatQuest if you're interested in learning more!
 
-* [_Regularization Part 1: Ridge (L2) Regression_](https://www.youtube.com/watch?v=Q81RR3yKn30)
-* [_Regularization Part 2: Lasso (L1) Regression_](https://www.youtube.com/watch?v=NGf0voTMlcs)
-* [_Regularization Part 3: Elastic Net Regression_](https://www.youtube.com/watch?v=1dKRdX9bfIo)
+-   [*Regularization Part 1: Ridge (L2) Regression*](https://www.youtube.com/watch?v=Q81RR3yKn30)
+-   [*Regularization Part 2: Lasso (L1) Regression*](https://www.youtube.com/watch?v=NGf0voTMlcs)
+-   [*Regularization Part 3: Elastic Net Regression*](https://www.youtube.com/watch?v=1dKRdX9bfIo)
 
 ## Session Info
 
