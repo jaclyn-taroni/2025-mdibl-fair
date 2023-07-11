@@ -9,6 +9,15 @@ date: 2023
 
 _This material has been adapted from [ALSF CCDL training materials](https://github.com/AlexsLemonade/training-modules/tree/master/machine-learning)._
 
+## Objectives
+
+* Demonstrate how to use the `tidyverse` for some data wrangling operations
+* Illustrate how to use the `PLIER` method for unsupervised machine learning for human transcriptomics data
+* Introduce the concept of tidy data
+* Briefly introduce customizing `ggplot2` plots (but there will be more on `ggplot2` in a later lesson).
+
+## Background
+
 As we've seen in the course so far, we can explore data with unsupervised machine learning approaches like clustering or PCA.
 Often, these methods can work with any generic dataset. 
 In this notebook, we'll introduce a machine learning technique that is specifically for gene expression data.
