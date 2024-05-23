@@ -1,13 +1,16 @@
 # Adapted from: https://github.com/AlexsLemonade/training-modules/blob/03f0d55697a5a5d849d0968a5b72beabc3591709/.github/workflows/build-docker.yml
 name: Build Docker Image and Push to Dockerhub
 
-# Every time something is merged to master or a tag is pushed, we build and push
-# the Docker image
-# For pull requests, we only build if the Dockerfile, renv.lock, or requirements.txt is modified
+# Only build if the Dockerfile, renv.lock, or requirements.txt is modified
+# Only push upon merge to main
 on:
   push:
     branches:
       - main
+    paths:
+        - Dockerfile
+        - renv.lock
+        - requirements.txt
   pull_request:
     branches:
       - main
