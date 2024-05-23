@@ -1,0 +1,37 @@
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.5.0
+    hooks:
+      - name: General file size limit
+        id: check-added-large-files
+        args: [--maxkb=200]
+        # Allow specific files types to be larger with later test
+        exclude: |
+          (?x)(
+              \.html$
+          )
+      - name: Large file size limit
+        id: check-added-large-files
+        args: [--maxkb=20000]
+      - id: detect-aws-credentials
+        args: [--allow-missing-credentials]
+      - id: detect-private-key
+      - id: forbid-submodules
+      - id: check-case-conflict
+      - id: check-merge-conflict
+  - repo: https://github.com/gitleaks/gitleaks
+    rev: v8.18.1
+    hooks:
+      - id: gitleaks
+  - repo: https://github.com/lorenzwalthert/precommit
+    rev: v0.4.2
+    hooks:
+      - id: style-files
+        args: [--style_pkg=styler, --style_fun=tidyverse_style]
+  - repo: local
+    hooks:
+      - id: forbid-environments
+        name: Check for included environments
+        entry: Environment directories for conda, virtualenv, or renv should not be included in commits
+        language: fail
+        files: "(conda-meta|pyvenv.cfg|renv/library)"
