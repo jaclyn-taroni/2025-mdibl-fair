@@ -18,6 +18,7 @@ on:
       - Dockerfile
       - renv.lock
       - requirements.txt
+  workflow_dispatch:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -43,6 +44,9 @@ jobs:
         with:
           username: ${{ env.DOCKER_USER }}
           password: ${{ env.DOCKER_PASSWORD }}
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
 
       # set up Docker build
       - name: Set up Docker Buildx
