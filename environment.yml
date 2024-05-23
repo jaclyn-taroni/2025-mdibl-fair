@@ -1,9 +1,0 @@
-name: 2024-mdibl-base
-channels:
-  - conda-forge
-  - bioconda
-  - defaults
-dependencies:
-  - python=3.11
-  - conda-lock>=2.5
-  - pre-commit>=3.6
