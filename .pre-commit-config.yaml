@@ -8,8 +8,7 @@ repos:
         # Allow specific files types to be larger with later test
         exclude: |
           (?x)(
-              \.html$|
-              conda-lock\.yml$
+              \.html$
           )
       - name: Large file size limit
         id: check-added-large-files
