@@ -22,7 +22,11 @@ docker run \
 We use `renv` to manage R packages for this material.
 The `renv.lock` file is used during the Docker build process.
 
-#### Initial set up
+<details>
+
+<summary>Requirements for initial `renv` setup</summary>
+
+#### Initial set-up
 
 To set up the `renv` lockfile, we needed to install `renv`, `remotes`, and `PLIER`.
 (`PLIER` could not be installed automatically via `renv::init()`.)
@@ -46,6 +50,8 @@ install.packages("digest", repos="http://cran.us.r-project.org")
 ```
 
 --->
+
+<details>
 
 #### Development with `renv`
 
