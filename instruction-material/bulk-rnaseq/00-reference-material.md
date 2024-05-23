@@ -27,8 +27,8 @@ We provide it for course participants who are particularly interested in QC and 
 
 ### FastQC
 
-FastQC is a popular tool for QC of FASTQ files. 
-FastQC runs a series of quality checks on sequencing data and provides an HTML report. 
+FastQC is a popular tool for QC of FASTQ files.
+FastQC runs a series of quality checks on sequencing data and provides an HTML report.
 As the authors point out in the [docs](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/Help/2%20Basic%20Operations/2.2%20Evaluating%20Results.html):
 
 > It is important to stress that although the analysis results appear to give a pass/fail result, these evaluations must be taken in the context of what you expect from your library.
@@ -45,7 +45,7 @@ We recommend checking out the [Michigan State University Research Technology Sup
 #### View FastQC reports for samples from instruction
 
 We have generated FastQC reports for all samples we preprocess & quantify in class.
-They are tracked in this repository here: <https://github.com/jaclyn-taroni/2023-mdibl-fair/setup/bulk-rnaseq/QC/fastqc_reports> You can view an HTML version of an individual FASTQ file by adding the filename to the end of this URL in your browser <https://jaclyn-taroni.github.io/2023-mdibl-fair/setup/bulk-rnaseq/QC/fastqc_reports> For example, you'd navigate to the following URL for the `1_ATCACG_L001_R1_combined_fastqc.html` report: <https://jaclyn-taroni.github.io/2023-mdibl-fair/setup/bulk-rnaseq/QC/fastqc_reports/1_ATCACG_L001_R1_combined_fastqc.html>
+They are tracked in this repository here: <https://github.com/jaclyn-taroni/2024-mdibl-fair/setup/bulk-rnaseq/QC/fastqc_reports> You can view an HTML version of an individual FASTQ file by adding the filename to the end of this URL in your browser <https://jaclyn-taroni.github.io/2024-mdibl-fair/setup/bulk-rnaseq/QC/fastqc_reports> For example, you'd navigate to the following URL for the `1_ATCACG_L001_R1_combined_fastqc.html` report: <https://jaclyn-taroni.github.io/2024-mdibl-fair/setup/bulk-rnaseq/QC/fastqc_reports/1_ATCACG_L001_R1_combined_fastqc.html>
 
 
 ### MultiQC
@@ -62,14 +62,14 @@ In addition, MultiQC is not limited to RNA-seq data; the website has example rep
 #### View a MultiQC report for samples from instruction
 
 We generated a MultiQC report from the FastQC, fastp, and Salmon reports for the 12 samples we looked at during instruction.
-You can view it [here](https://jaclyn-taroni.github.io/2023-mdibl-fair/setup/bulk-rnaseq/QC/multiqc_report.html).
+You can view it [here](https://jaclyn-taroni.github.io/2024-mdibl-fair/setup/bulk-rnaseq/QC/multiqc_report.html).
 
 ### tximeta
 
 `tximeta` is a Bioconductor package that extends the functionality of `tximport`.
 We'll quote the abstract of [the `tximeta` vignette](https://www.bioconductor.org/packages/devel/bioc/vignettes/tximeta/inst/doc/tximeta.html) here:
 
-> Tximeta performs numerous annotation and metadata gathering tasks on behalf of users during the import of transcript quantifications from Salmon or alevin into R/Bioconductor. Metadata and transcript ranges are added automatically, facilitating genomic analyses and assisting in computational reproducibility. 
+> Tximeta performs numerous annotation and metadata gathering tasks on behalf of users during the import of transcript quantifications from Salmon or alevin into R/Bioconductor. Metadata and transcript ranges are added automatically, facilitating genomic analyses and assisting in computational reproducibility.
 
 Currently, there is [a limited number of supported organisms that work "out of the box."](https://www.bioconductor.org/packages/devel/bioc/vignettes/tximeta/inst/doc/tximeta.html#Pre-computed_checksums)
 

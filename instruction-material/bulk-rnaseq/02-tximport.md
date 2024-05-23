@@ -1,6 +1,6 @@
 # tximport
 
-_You can read more about how to use these instructions, including the `<YOUR USER NAME>` notation, in [this section of the fastp and Salmon instructions.](https://github.com/jaclyn-taroni/2023-mdibl-fair/blob/main/instruction-material/bulk-rnaseq/01-fastp-salmon.md#how-to-use-these-directions)_
+_You can read more about how to use these instructions, including the `<YOUR USER NAME>` notation, in [this section of the fastp and Salmon instructions.](https://github.com/jaclyn-taroni/2024-mdibl-fair/blob/main/instruction-material/bulk-rnaseq/01-fastp-salmon.md#how-to-use-these-directions)_
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
@@ -24,7 +24,7 @@ This section explains what the code in `run-tximport.R` is doing and is intended
 
 ## Cooking show magic 🍳
 
-In the interest of time, we've created a "clean" version of the `tximport` output on the server that you can download with [`scp`](https://en.wikipedia.org/wiki/Secure_copy_protocol), which stands for secure copy protocol. 
+In the interest of time, we've created a "clean" version of the `tximport` output on the server that you can download with [`scp`](https://en.wikipedia.org/wiki/Secure_copy_protocol), which stands for secure copy protocol.
 
 **In your local terminal** (⚠️ not when you are logged in to the server via `ssh`), run the following command replacing `<YOUR USER NAME>`, `<SERVER DOMAIN>`, and `<SOMEWHERE ON YOUR COMPUTER YOU WANT TO COPY THIS FILE TO>` with appropriate text (don't forget to remove the `<` and `>` when you replace the text!):
 
@@ -32,11 +32,11 @@ In the interest of time, we've created a "clean" version of the `tximport` outpu
 scp <YOUR USER NAME>@<SERVER DOMAIN>:/data/txi/goodale_data_tximport.RDS <SOMEWHERE ON YOUR COMPUTER YOU WANT TO COPY THIS FILE TO>
 ```
 
-You will be prompted for your password, which you should type in and then hit enter. 
+You will be prompted for your password, which you should type in and then hit enter.
 
 We'll read this data into RStudio at the end of this module so we can inspect it together and prepare for upcoming modules.
 
-_Just in case this doesn't work, there is another copy of this data available for download [here](https://github.com/jaclyn-taroni/2023-mdibl-fair/raw/main/setup/bulk-rnaseq/tximport/goodale_data_tximport.RDS)._
+_Just in case this doesn't work, there is another copy of this data available for download [here](https://github.com/jaclyn-taroni/2024-mdibl-fair/raw/main/setup/bulk-rnaseq/tximport/goodale_data_tximport.RDS)._
 
 
 ## Running tximport
@@ -50,7 +50,7 @@ For more information about `tximport`, see [this excellent vignette](https://bio
 
 ### Using `run-tximport.R`
 
-To run `tximport`, we need the `quant.sf` files for all the samples in an experiment and a file that maps between Ensembl transcript ids and Ensembl gene ids, which we've prepared ahead of time (see how [here](https://github.com/jaclyn-taroni/2023-mdibl-fair/blob/main/setup/bulk-rnaseq/scripts/prepare-tx2gene.R)) and put on the server.
+To run `tximport`, we need the `quant.sf` files for all the samples in an experiment and a file that maps between Ensembl transcript ids and Ensembl gene ids, which we've prepared ahead of time (see how [here](https://github.com/jaclyn-taroni/2024-mdibl-fair/blob/main/setup/bulk-rnaseq/scripts/prepare-tx2gene.R)) and put on the server.
 
 **First, navigate back to the directory of `/data` that contains your own "personal" RNA-seq sample:**
 
@@ -66,7 +66,7 @@ Specifically, `run-tximport.R` accepts two arguments:
 * `--output_directory` which will be the absolute path of the directory on the server to save your output.
 * `--output_filename` which will be the name of the `.RDS` file itself.
 
-You can also use `--help` to see the help messages for these options like so: 
+You can also use `--help` to see the help messages for these options like so:
 
 ```
 Rscript /data/scripts/run-tximport.R --help
@@ -85,7 +85,7 @@ Rscript /data/scripts/run-tximport.R \
 <details>
 <summary> <b><i>Expand this section for a walk through of what the different sections of the <code>run-tximport.R</code> script are accomplishing</b></i> 🚀 </summary>
 
-Let's walk through what the different sections of the `run-tximport.R` script are accomplishing (you can view this script on GitHub [here](https://github.com/jaclyn-taroni/2023-mdibl-fair/tree/main/instruction-material/bulk-rnaseq/scripts-for-server/run-tximport.R)).
+Let's walk through what the different sections of the `run-tximport.R` script are accomplishing (you can view this script on GitHub [here](https://github.com/jaclyn-taroni/2024-mdibl-fair/tree/main/instruction-material/bulk-rnaseq/scripts-for-server/run-tximport.R)).
 
 ⚠️ _Do not copy and paste this R code into the command line_ ⚠️
 
@@ -143,7 +143,7 @@ if (is.null(opt$output_directory)) {
 By placing this right after the command line options are parsed, we _fail early_ instead of waiting until we need to do something like write to file (which will required the output directory is specified!).
 If we didn't fail early, we might waste time computing an object that we wouldn't be able to save as a file.
 
-#### Files and directories 
+#### Files and directories
 
 This code will create the directory, including parent folders (`recursive = TRUE`), specified by `--output_directory`.
 Steps like this prevent the scripts from failing to write the output file in case someone forgot to create the directory ahead of time.
@@ -173,7 +173,7 @@ salmon_files <- list.files(path = "/data",
                            pattern = "quant.sf",
                            full.names = TRUE,
                            recursive = TRUE)
-                           
+
 ```
 
 Then, just in case there are any _other_ `quant.sf` files on the server in `/data`, we'll filter to only the relevant files by detecting the pattern `workshop-*` in the file paths (`*` is a wildcard).
@@ -190,7 +190,7 @@ In the instructions for Salmon, everyone was asked to save their Salmon output i
 The `quant.sf` will be in the `<SAMPLE IDENTIFIER>` directory, so the fifth element when we split by forward slashes (`/`) should be the sample identifier.
 
 ```r
-# The sample identifier *should* always be the directory that contains the 
+# The sample identifier *should* always be the directory that contains the
 # quant.sf file
 split_salmon_paths <- strsplit(salmon_files, .Platform$file.sep)
 sample_identifiers <- unlist(lapply(split_salmon_paths, function (x) x[[5]]))
@@ -207,7 +207,7 @@ In addition to the `quant.sf` files, `tximport()` requires that you provide it w
 We prepped that ahead of time and saved it as `/data/index/Homo_sapiens/Homo_sapiens_Ensembl_v103_tx2gene.tsv` on the server.
 
 ```r
-# Transcript to gene mapping (tx2gene) required for tximport step 
+# Transcript to gene mapping (tx2gene) required for tximport step
 tx2gene_file <- file.path("/data", "index", "Homo_sapiens",
                           "Homo_sapiens_Ensembl_v103_tx2gene.tsv")
 ```
@@ -228,8 +228,8 @@ If we were to look at the first few rows of `tx2gene_df` (using `head()`), here'
 >```r
 > head(tx2gene_df)
 ># A tibble: 6 x 2
->  tx_id           gene_id        
->  <chr>           <chr>          
+>  tx_id           gene_id
+>  <chr>           <chr>
 > 1 ENST00000387314 ENSG00000210049
 > 2 ENST00000389680 ENSG00000211459
 > 3 ENST00000387342 ENSG00000210077
@@ -242,20 +242,20 @@ Now we pass all of the paths to the quantification files and the transcript-to-g
 We use `countsFromAbundance = "no"` (the default) to import the estimated counts from Salmon.
 
 Above, you may have noticed that `tx2gene_df` uses identifiers that don't include [Ensembl version information](https://useast.ensembl.org/Help/Faq?id=488).
-Version numbers follow a period (`.`) at the end of the identifier. 
+Version numbers follow a period (`.`) at the end of the identifier.
 For example, the second version of a human Ensembl transcript ID follows this pattern: `ENSTXXXXXXXXXX.2`.
 The `quant.sf` files _do_ have version numbers, so we need to set `ignoreTxVersion = TRUE` for this to work!
 
 ```r
 # tximport step
-txi <- tximport(salmon_files, 
-                type = "salmon", 
+txi <- tximport(salmon_files,
+                type = "salmon",
                 tx2gene = tx2gene_df,
                 countsFromAbundance = "no",
                 ignoreTxVersion = TRUE)
 ```
 
-Finally, we write to an RDS file with `saveRDS()`. 
+Finally, we write to an RDS file with `saveRDS()`.
 Recall that `txi_file` is created by "pasting" together the directory specified with `--output_directory` and the filename specified with `--output_filename`.
 
 ```r

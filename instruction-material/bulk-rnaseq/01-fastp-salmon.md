@@ -7,7 +7,7 @@
 
 - [Introduction to the exercise](#introduction-to-the-exercise)
     - [How to use these directions](#how-to-use-these-directions)
-      - [Selecting a sample to work with](#selecting-a-sample-to-work-with)  
+      - [Selecting a sample to work with](#selecting-a-sample-to-work-with)
       - [Sample identifiers](#sample-identifiers)
       - [Commands](#commands)
       - [Documenting expected output](#documenting-expected-output)
@@ -63,11 +63,11 @@ For example – if my user name on the server was `workshop-00`, I would replace
 In the interest of time, you will pick a _single sample_ corresponding to a pair of FASTQ files to perform QC, trimming, and quantification; it doesn't matter which sample you choose.
 The sample you select is referred to with `<YOUR SAMPLE>` below.
 
-#### Sample identifiers 
+#### Sample identifiers
 
-For the purpose of this exercise, we will use _all text_ that comes before `_R1_combined.fastq.gz` and `_R2_combined.fastq.gz` in the raw FASTQ files that are distributed to you will be considered your sample identifier and should be used to replace `<YOUR SAMPLE>`. 
+For the purpose of this exercise, we will use _all text_ that comes before `_R1_combined.fastq.gz` and `_R2_combined.fastq.gz` in the raw FASTQ files that are distributed to you will be considered your sample identifier and should be used to replace `<YOUR SAMPLE>`.
 
-If I elected to work with the files `5_ACAGTG_L001_R1_combined.fastq.gz` and  `5_ACAGTG_L001_R2_combined.fastq.gz` in my `raw` directory, I would do the following when following the instructions below: 
+If I elected to work with the files `5_ACAGTG_L001_R1_combined.fastq.gz` and  `5_ACAGTG_L001_R2_combined.fastq.gz` in my `raw` directory, I would do the following when following the instructions below:
 
 * Replace `raw/<YOUR SAMPLE>_R1_combined.fastq.gz` with `raw/5_ACAGTG_L001_R1_combined.fastq.gz`
 * Replace `'<YOUR SAMPLE> report'` with `'5_ACAGTG_L001 report'`
@@ -84,7 +84,7 @@ All commands you need to enter into the command line on the server will be in a 
 
 After you type (or paste) the command, you will most likely need to **hit ENTER to run it**.
 
-Backslashes `\` (without any spaces after them!) allow you to continue a command onto the next line. 
+Backslashes `\` (without any spaces after them!) allow you to continue a command onto the next line.
 This can really help make commands easier to read as a human, so we use them below.
 
 Importantly, that means **everything in a code block is intended to be pasted into the command line at the same time even if it's made up of multiple lines.**
@@ -132,14 +132,14 @@ ls raw
 
 `ls` lists the contents of a directory.
 
-You should see files that end with `_R1_combined.fastq.qz` and one that ends with `_R2_combined.fastq.gz`. 
+You should see files that end with `_R1_combined.fastq.qz` and one that ends with `_R2_combined.fastq.gz`.
 These are the raw read1 input and read2 (sometimes called left and right) files, respectively, for the sample you will be processing.
 
 As a reminder, _all the text_ that comes before `_R1_combined.fastq.gz` and `_R2_combined.fastq.gz` in the FASTQ files you elect to work with will be used as `<YOUR SAMPLE>` in the commands below!
 
 Yesterday, you created several directories during the UNIX lessons to hold the output of the programs we'll use today.
 
-If you need to create the directories now, you can follow the directions below. 
+If you need to create the directories now, you can follow the directions below.
 
 Because we'll use `-p` in the commands below, which allows us to create parent directories, it will prevent `mkdir` from returning an error if the directory you specify already exists.
 That means there's no harm in using these commands if you successfully created these directories yesterday!
@@ -175,7 +175,7 @@ You should see the following:
 > ```
 
 
-## Preprocessing with fastp 
+## Preprocessing with fastp
 
 _Adapted from [Childhood Cancer Data Lab bulk RNA-seq training material](https://github.com/AlexsLemonade/training-modules/tree/9e648b207577c55cc22a24c712a736873523f5a4/RNA-seq)._
 
@@ -210,7 +210,7 @@ These arguments specify the read1 input and read2 (sometimes called left and rig
 
 These arguments specify the read1 output and read2 output, respectively.
 Note that the output is being placed in the `trimmed/` directory you created earlier, so the processed FASTQ files will be kept separate from from the original files.
-It is generally good practice to treat your "raw" data and its directories as fixed and separate from any processing and analysis that you do, to prevent accidentally modification of those original files. 
+It is generally good practice to treat your "raw" data and its directories as fixed and separate from any processing and analysis that you do, to prevent accidentally modification of those original files.
 And in the event that you accidentally do modify the originals, you know exactly which files and directories to reset.
 
 #### `--qualified_quality_phred`
@@ -219,7 +219,7 @@ And in the event that you accidentally do modify the originals, you know exactly
 Q20 (a Phred score of 20) represents a 1 in 100 chance that the base call is incorrect and is often used as the cutoff for good quality calls.
 Because of how the Phred score is calculated, the error rate increases quite rapidly as you head towards zero after Q20 (see [this post on Phred scores from the GATK Team](https://gatk.broadinstitute.org/hc/en-us/articles/360035531872-Phred-scaled-quality-scores)).
 
-Here we're using `--qualified_quality_phred 15` to stick with the default setting, which means scores >= 15 are considered "qualified." 
+Here we're using `--qualified_quality_phred 15` to stick with the default setting, which means scores >= 15 are considered "qualified."
 If more than 40% of bases (we could specify a higher or lower threshold with `-u`) in a read have a Phred score below the qualified score, the read will be filtered out.
 Bases can also be uncalled (e.g., `N`); fastp will filter out reads/pairs with 5 or more uncalled reads (we can adjust this threshold with `-n`).
 
@@ -289,7 +289,7 @@ The last message from `fastp` before it finishes running looks like (don't worry
 The terminal interface will also look something like the following (where `wrkshp00` and `workshop-00` will be replaced with your user name) to let you know it's ready to accept another command!
 
 > ```
-> [wrkshp00 workshop-00]$ 
+> [wrkshp00 workshop-00]$
 > ```
 
 If you run the following to list the contents of the `trimmed/` directory, you should see two FASTQ files that correspond to R1 and R2:
@@ -323,7 +323,7 @@ salmon quant \
 
 Salmon performs "quasi-mapping," which means it avoids traditional base-to-base alignment and instead estimates where reads best map to the transcriptome by identifying where informative sequences within the read map ([Srivastava *et al.* 2016](https://doi.org/10.1093/bioinformatics/btw277); [HBC Training](https://hbctraining.github.io/Intro-to-rnaseq-hpc-salmon/lessons/04_quasi_alignment_salmon.html)).
 
-Salmon will also generate transcript abundance estimates that are corrected for sample-specific biases or factors ([Patro *et al.* 2017](https://doi.org/10.1038/nmeth.4197)) and in a way that allows for multi-mapping (e.g., reads that map well to multiple transcripts are allocated to multiple transcripts in a way that maximizes a global likelihood, rather than thrown out; see [this Salmon issue](https://github.com/COMBINE-lab/salmon/issues/107)). 
+Salmon will also generate transcript abundance estimates that are corrected for sample-specific biases or factors ([Patro *et al.* 2017](https://doi.org/10.1038/nmeth.4197)) and in a way that allows for multi-mapping (e.g., reads that map well to multiple transcripts are allocated to multiple transcripts in a way that maximizes a global likelihood, rather than thrown out; see [this Salmon issue](https://github.com/COMBINE-lab/salmon/issues/107)).
 
 For a more in-depth discussion of quasi-mapping and quantification, see [this material](https://hbctraining.github.io/Intro-to-rnaseq-hpc-salmon/lessons/04_quasi_alignment_salmon.html#quasi-mapping-and-quantification) from the teaching team at the [Harvard Chan Bioinformatics Core (HBC)](http://bioinformatics.sph.harvard.edu/).
 You may also want to check out [this talk from Carl Kingsford](https://www.youtube.com/watch?v=TMLIxwDP7sk), senior author of the Salmon paper ([Patro *et al.* 2017](https://doi.org/10.1038/nmeth.4197)).
@@ -385,8 +385,8 @@ It should be noted that this is only appropriate for use with paired-end reads, 
 
 With this option enabled, Salmon will attempt to correct for the bias that occurs when using random hexamer priming (preferential sequencing of reads when certain motifs appear at the beginning); many RNA-seq experiments do use random hexamer priming!
 
-We know that this experiment shows evidence of random hexamer priming by looking at FastQC reports ([example](https://jaclyn-taroni.github.io/2023-mdibl-fair/setup/bulk-rnaseq/QC/fastqc_reports/5_ACAGTG_L001_R1_combined_fastqc.html#M4)).
-We don't cover FastQC here, but you can read more about it [in reference material we've prepared for you](https://jaclyn-taroni.github.io/2023-mdibl-fair/instruction-material/bulk-rnaseq/00-reference-material#fastqc).
+We know that this experiment shows evidence of random hexamer priming by looking at FastQC reports ([example](https://jaclyn-taroni.github.io/2024-mdibl-fair/setup/bulk-rnaseq/QC/fastqc_reports/5_ACAGTG_L001_R1_combined_fastqc.html#M4)).
+We don't cover FastQC here, but you can read more about it [in reference material we've prepared for you](https://jaclyn-taroni.github.io/2024-mdibl-fair/instruction-material/bulk-rnaseq/00-reference-material#fastqc).
 
 You can read more about biases that arise from random hexamer priming in [Hansen *et al.* (2010)](https://doi.org/10.1093/nar/gkq224).
 
@@ -403,8 +403,8 @@ You should expect to see output like the following in the command line when it s
 
 >```
 >### salmon (selective-alignment-based) v1.5.1
->### [ program ] => salmon 
->### [ command ] => quant 
+>### [ program ] => salmon
+>### [ command ] => quant
 >### [ index ] => { /data/index/Homo_sapiens/salmon_index }
 >### [ libType ] => { A }
 >### [ mates1 ] => { trimmed/<YOUR SAMPLE>_R1_combined.fastq.gz }
@@ -423,7 +423,7 @@ You should expect to see output like the following in the command line when it s
 The last message you should see before `salmon quant` finishes running will look something like:
 
 >```
->[<DATE> <TIME>] [jointLog] [info] writing output 
+>[<DATE> <TIME>] [jointLog] [info] writing output
 >```
 
 If you run the following, you should see a directory named with your sample's identifier.
@@ -465,8 +465,8 @@ Type `q` to quit `less`!
 
 Of particular interest are the `summary`, `filtering_result`, and `duplication` fields, which can give you an idea of how much preprocessing (e.g., filtering, trimming) occurred and the sequence duplication rate (e.g., PCR duplicates or even short or very highly expressed transcripts; see [_Should I remove PCR duplicates from my RNA-seq data?_ from the UC Davis Genome Center](https://dnatech.genomecenter.ucdavis.edu/faqs/should-i-remove-pcr-duplicates-from-my-rna-seq-data/)), respectively.
 
-fastp also outputs HTML reports. 
-You can see an example HTML fastp report for one of the samples in this experiment here:  <https://jaclyn-taroni.github.io/2023-mdibl-fair/setup/bulk-rnaseq/QC/fastp_reports/5_ACAGTG_L001_fastp.html>
+fastp also outputs HTML reports.
+You can see an example HTML fastp report for one of the samples in this experiment here:  <https://jaclyn-taroni.github.io/2024-mdibl-fair/setup/bulk-rnaseq/QC/fastp_reports/5_ACAGTG_L001_fastp.html>
 
 If the vast majority of your reads were filtered out via this process, that would be cause for concern!
 
@@ -482,7 +482,7 @@ The columns of this (tab-separated) file contain ([Salmon docs on quantification
 * Length of target transcript
 * The effective length represents the various factors that effect the length of transcript (i.e., degradation, technical limitations of the sequencing platform) ([HBC Training](https://hbctraining.github.io/Intro-to-rnaseq-hpc-salmon/lessons/04_quasi_alignment_salmon.html))
 * TPM, or transcripts per million, are the abundance estimates output by Salmon computed using the effective length ([HBC Training](https://hbctraining.github.io/Intro-to-rnaseq-hpc-salmon/lessons/04_quasi_alignment_salmon.html)).
-TPM attempts to normalize for sequencing depth and length. 
+TPM attempts to normalize for sequencing depth and length.
 Check out [_RPKM, FPKM, and TPM, clearly explained_ from StatsQuest](https://www.rna-seqblog.com/rpkm-fpkm-and-tpm-clearly-explained/) and, more generally, [this table of common normalization methods for RNA-seq data](https://hbctraining.github.io/DGE_workshop_salmon/lessons/02_DGE_count_normalization.html#common-normalization-methods) from HBC training to learn more.
 * Estimated number of reads that map to each transcript that was quantified.
 
@@ -530,7 +530,7 @@ fastp \
  --report_title '5_ACAGTG_L001 report'
 ```
 
-``` 
+```
 salmon quant \
   -i /data/index/Homo_sapiens/salmon_index \
   -l A \
