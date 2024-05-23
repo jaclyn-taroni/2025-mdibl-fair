@@ -1,0 +1,56 @@
+# Adapted from: https://github.com/AlexsLemonade/training-modules/blob/03f0d55697a5a5d849d0968a5b72beabc3591709/.github/workflows/build-docker.yml
+name: Build Docker Image and Push to Dockerhub
+
+# Every time something is merged to master or a tag is pushed, we build and push
+# the Docker image
+# For pull requests, we only build if the Dockerfile, renv.lock, or requirements.txt is modified
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+    paths:
+      - Dockerfile
+      - renv.lock
+      - requirements.txt
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      - name: Load 1Password secrets
+        uses: 1password/load-secrets-action@v2
+        with:
+          export-env: true
+        env:
+          OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_GHA_TOKEN }}
+          DOCKER_USER: ${{ secrets.OP_DOCKER_USERNAME }}
+          DOCKER_PASSWORD: ${{ secrets.OP_DOCKER_PASSWORD }}
+
+      # Login to Dockerhub
+      - name: Login to DockerHub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ env.DOCKER_USER }}
+          password: ${{ env.DOCKER_PASSWORD }}
+
+      # set up Docker build
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      # Build Docker image, push only on push events
+      - name: Build Docker image
+        uses: docker/build-push-action@v5
+        with:
+          push: ${{ github.event_name == 'push' }}
+          tags: jaclyn-taroni/2024-mdibl-fair:latest
+          platforms: linux/amd64,linux/arm64
+          cache-from: type=registry,ref=jaclyn-taroni/2024-mdibl-fair:buildcache
+          cache-to: type=registry,ref=jaclyn-taroni/2024-mdibl-fair:buildcache,mode=max
