@@ -9,6 +9,21 @@ They are adapted from [Alex's Lemonade Stand Foundation](https://www.alexslemona
 
 ### Docker
 
+To obtain the Docker image for this material, use the following command:
+
+```sh
+docker pull jtaroni/2024-mdibl-fair:latest
+```
+
+### Docker Build with GitHub Actions
+
+The GitHub Actions workflow `build-docker.yml` builds upon pull request whenever relevant files
+When pushing to `main`, the image is built and pushed to `jtaroni/2024-mdibl-fair:latest`.
+
+### Developing with Docker
+
+You can access the RStudio Server instance using the following command, replacing `{PASSWORD}` – including the curly brackets – with a password of your choosing:
+
 ```sh
 docker run \
   --mount type=bind,target=/home/rstudio/2024-mdibl-fair,source=$PWD \
@@ -16,6 +31,8 @@ docker run \
   -p 8787:8787 \
   jtaroni/2024-mdibl-fair:latest
 ```
+
+You can then navigate to `localhost:8787` in your browser and log in with username `rstudio` and the password you just set via `docker run`.
 
 ### Managing dependencies with`renv`
 
