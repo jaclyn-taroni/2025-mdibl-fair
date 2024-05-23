@@ -52,5 +52,5 @@ jobs:
           push: ${{ github.event_name == 'push' }}
           tags: jaclyn-taroni/2024-mdibl-fair:latest
           platforms: linux/amd64,linux/arm64
-          cache-from: type=registry,ref=jaclyn-taroni/2024-mdibl-fair:buildcache
-          cache-to: type=registry,ref=jaclyn-taroni/2024-mdibl-fair:buildcache,mode=max
+          cache-from: type=registry,ref=jtaroni/2024-mdibl-fair:buildcache
+          cache-to: type=registry,ref=jtaroni/2024-mdibl-fair:buildcache,mode=max
