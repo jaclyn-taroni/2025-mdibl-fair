@@ -7,7 +7,56 @@ They are adapted from [Alex's Lemonade Stand Foundation](https://www.alexslemona
 
 ## How environments are managed
 
+### Docker
 
+```sh
+docker run \
+  --mount type=bind,target=/home/rstudio/2024-mdibl-fair,source=$PWD \
+  -e PASSWORD={PASSWORD} \
+  -p 8787:8787 \
+  jtaroni/2024-mdibl-fair:latest
+```
+
+### Managing dependencies with`renv`
+
+We use `renv` to manage R packages for this material.
+The `renv.lock` file is used during the Docker build process.
+
+#### Initial set up
+
+To set up the `renv` lockfile, we needed to install `renv`, `remotes`, and `PLIER`.
+(`PLIER` could not be installed automatically via `renv::init()`.)
+
+```r
+install.packages(c("renv", "remotes"))
+remotes::install_github("wgmao/PLIER@v0.1.6")
+```
+
+Then we could initialize the project with the following:
+
+```r
+renv::init()
+```
+<!--
+
+`digest` also needed to be installed separately with the following:
+
+```r
+install.packages("digest", repos="http://cran.us.r-project.org")
+```
+
+--->
+
+#### Development with `renv`
+
+Develop using the `2024-mdibl-fair.Rproj` Rproject and restore the state of the project from the lockfile with:
+
+```r
+renv::restore()
+```
+
+Sometimes all R packages are not captured with `renv::snapshot()` if they are not explicitly loaded in notebooks.
+To ensure a dependency is captured in the lockfile, add `library(<package>)` to `components/dependencies.R`.
 
 ## Pre-commit
 
