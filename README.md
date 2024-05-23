@@ -51,7 +51,7 @@ install.packages("digest", repos="http://cran.us.r-project.org")
 
 --->
 
-<details>
+</details>
 
 #### Development with `renv`
 
