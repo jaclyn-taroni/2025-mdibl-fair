@@ -51,6 +51,6 @@ jobs:
         with:
           push: ${{ github.event_name == 'push' }}
           tags: jtaroni/2024-mdibl-fair:latest
-          platforms: linux/amd64,linux/arm64
+          platforms: linux/amd64
           cache-from: type=registry,ref=jtaroni/2024-mdibl-fair:buildcache
           cache-to: type=registry,ref=jtaroni/2024-mdibl-fair:buildcache,mode=max
