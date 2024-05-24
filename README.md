@@ -12,8 +12,15 @@ They are adapted from [Alex's Lemonade Stand Foundation](https://www.alexslemona
 To obtain the Docker image for this material, use the following command:
 
 ```sh
-docker pull jtaroni/2024-mdibl-fair:latest
+docker pull jtaroni/2024-mdibl-fair:{platform tag}
 ```
+
+Where the available platform tags are:
+
+- `amd-64`
+- `arm-64`
+
+To distinguish between available architectures.
 
 ### Docker Build with GitHub Actions
 
@@ -29,7 +36,7 @@ docker run \
   --mount type=bind,target=/home/rstudio/2024-mdibl-fair,source=$PWD \
   -e PASSWORD={PASSWORD} \
   -p 8787:8787 \
-  jtaroni/2024-mdibl-fair:latest
+  jtaroni/2024-mdibl-fair:{platform tag}
 ```
 
 You can then navigate to `localhost:8787` in your browser and log in with username `rstudio` and the password you just set via `docker run`.

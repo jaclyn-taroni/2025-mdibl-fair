@@ -1,5 +1,5 @@
 # Adapted from: https://github.com/AlexsLemonade/training-modules/blob/03f0d55697a5a5d849d0968a5b72beabc3591709/.github/workflows/build-docker.yml
-name: Build Docker Image and Push to Dockerhub
+name: Build Docker Image and Push to Dockerhub - ARM
 
 # Only build if the workflow, Dockerfile, renv.lock, or requirements.txt is modified
 on:
@@ -46,6 +46,10 @@ jobs:
           username: ${{ env.DOCKER_USER }}
           password: ${{ env.DOCKER_PASSWORD }}
 
+      # set up QEMU
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
       # set up Docker build
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
@@ -55,7 +59,7 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           push: ${{ github.event_name == 'push' || github.event_name == 'workflow_dispatch' }}
-          tags: jtaroni/2024-mdibl-fair:amd-64
-          platforms: linux/amd64
-          cache-from: type=registry,ref=jtaroni/2024-mdibl-fair:amd-64
+          tags: jtaroni/2024-mdibl-fair:arm-64
+          platforms: linux/arm64
+          cache-from: type=registry,ref=jtaroni/2024-mdibl-fair:arm-64
           cache-to: type=inline
