@@ -14,3 +14,4 @@ library("ragg") # required by tidyverse
 library("rematch2") # required by googlesheets4
 library("rstudioapi") # required by reprex, tidyverse
 library("xml2")
+library("ensembldb") # required for AnnotationHub steps
