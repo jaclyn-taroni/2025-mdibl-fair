@@ -24,8 +24,8 @@ To distinguish between available architectures.
 
 ### Docker Build with GitHub Actions
 
-The GitHub Actions workflow `build-docker.yml` builds upon pull request whenever relevant files
-When pushing to `main`, the image is built and pushed to `jtaroni/2024-mdibl-fair:latest`.
+The GitHub Actions workflows `build-docker.yml` and `build-docker-arm.yml` build upon pull request whenever relevant files are modified.
+When relevant files are modified and pushed to `main`, the images are built and pushed to `jtaroni/2024-mdibl-fair:amd-64` and `jtaroni/2024-mdibl-fair:arm-64`, respectively.
 
 ### Developing with Docker
 
