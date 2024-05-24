@@ -17,7 +17,7 @@ rule multiqc:
     output:
         "QC/multiqc_report.html"
     shell:
-        "multiqc --filename {output} {input}"
+        "multiqc --filename multiqc_report.html --outdir QC --force {input}"
 
 rule fastqc:
     input:
