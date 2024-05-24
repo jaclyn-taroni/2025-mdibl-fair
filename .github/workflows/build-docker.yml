@@ -52,11 +52,11 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      # Build Docker image, push only on push events
+      # Build Docker image, push only on push and workflow dispatch events
       - name: Build Docker image
         uses: docker/build-push-action@v5
         with:
-          push: ${{ github.event_name == 'push' }}
+          push: ${{ github.event_name == 'push' || github.event_name == 'workflow_dispatch' }}
           tags: jtaroni/2024-mdibl-fair:latest
           platforms: linux/amd64
           cache-from: type=registry,ref=jtaroni/2024-mdibl-fair:latest
