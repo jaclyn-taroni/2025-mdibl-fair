@@ -1,0 +1,32 @@
+name: Check Spelling
+on:
+  pull_request:
+    branches:
+     - main
+
+jobs:
+  spell-check:
+    runs-on: ubuntu-latest
+    name: Spell check files
+    steps:
+
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Spell check action
+        uses: alexslemonade/spellcheck@v0.3.1
+        id: spell
+        with:
+          dictionary: components/dictionary.txt
+
+      - name: Upload spell check errors
+        uses: actions/upload-artifact@v4
+        with:
+          name: spell_check_errors
+          path: spell_check_errors.tsv
+
+      - name: Fail if there are spelling errors
+        if: steps.spell.outputs.error_count > 0
+        run: |
+          echo "There were ${{ steps.spell.outputs.error_count }} errors"
+          exit 1
