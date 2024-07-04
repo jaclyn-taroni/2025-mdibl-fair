@@ -29,7 +29,7 @@ jobs:
         uses: docker/metadata-action@v5
         with:
           images: ghcr.io/jaclyn-taroni/2024-mdibl
-          tags: type=raw,value="${{ inputs.platform }}"
+          tags: type=raw,value=${{ inputs.platform }}
 
       # Build Docker image and push
       - name: Build Docker image
