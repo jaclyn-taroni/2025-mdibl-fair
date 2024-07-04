@@ -301,7 +301,7 @@ ls trimmed
 
 ## Quantification with Salmon
 
-_Adapted in part from [this lession](https://hbctraining.github.io/Intro-to-rnaseq-hpc-salmon/lessons/04_quasi_alignment_salmon.html) developed by members of the teaching team at the [Harvard Chan Bioinformatics Core (HBC)](http://bioinformatics.sph.harvard.edu/) and from [Childhood Cancer Data Lab bulk RNA-seq training material](https://github.com/AlexsLemonade/training-modules/tree/9e648b207577c55cc22a24c712a736873523f5a4/RNA-seq)._
+_Adapted in part from [this lesson](https://hbctraining.github.io/Intro-to-rnaseq-hpc-salmon/lessons/04_quasi_alignment_salmon.html) developed by members of the teaching team at the [Harvard Chan Bioinformatics Core (HBC)](http://bioinformatics.sph.harvard.edu/) and from [Childhood Cancer Data Lab bulk RNA-seq training material](https://github.com/AlexsLemonade/training-modules/tree/9e648b207577c55cc22a24c712a736873523f5a4/RNA-seq)._
 
 We'll use [Salmon](https://combine-lab.github.io/salmon/) for quantifying transcript expression ([documentation](http://salmon.readthedocs.io/en/latest/)).
 Salmon ([Patro *et al.* 2017](https://doi.org/10.1038/nmeth.4197)) is fast and requires very little memory!
