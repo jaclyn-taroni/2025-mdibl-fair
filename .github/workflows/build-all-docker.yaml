@@ -1,0 +1,35 @@
+name: Build All Docker Platforms
+
+# Only build if the workflow, Dockerfile, renv.lock, or requirements.txt is modified
+on:
+  push:
+    branches:
+      - main
+    paths:
+        - Dockerfile
+        - renv.lock
+        - requirements.txt
+        - .github/workflows/build-*.yaml
+  pull_request:
+    branches:
+      - main
+    paths:
+        - Dockerfile
+        - renv.lock
+        - requirements.txt
+        - .github/workflows/build-*.yaml
+  workflow_dispatch:
+
+jobs:
+  build-docker-images:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: true
+      matrix:
+        platform:
+          - amd64
+          - arm64
+    uses: ./.github/workflows/build-push-docker.yml
+    with:
+      platform: ${{ matrix.platform }}
+      push-ecr: ${{ github.event_name == 'push' || github.event_name == 'workflow_dispatch' }}
