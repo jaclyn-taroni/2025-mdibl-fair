@@ -38,7 +38,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ghcr.io/jaclyn-taroni/2024-mdibl
+          images: ghcr.io/jaclyn-taroni/2024-mdibl-fair
           tags: type=raw,value=${{ inputs.platform }}
 
       # Build Docker image and push
