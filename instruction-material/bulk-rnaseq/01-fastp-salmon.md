@@ -483,7 +483,7 @@ The columns of this (tab-separated) file contain ([Salmon docs on quantification
 * The effective length represents the various factors that effect the length of transcript (i.e., degradation, technical limitations of the sequencing platform) ([HBC Training](https://hbctraining.github.io/Intro-to-rnaseq-hpc-salmon/lessons/04_quasi_alignment_salmon.html))
 * TPM, or transcripts per million, are the abundance estimates output by Salmon computed using the effective length ([HBC Training](https://hbctraining.github.io/Intro-to-rnaseq-hpc-salmon/lessons/04_quasi_alignment_salmon.html)).
 TPM attempts to normalize for sequencing depth and length.
-Check out [_RPKM, FPKM, and TPM, clearly explained_ from StatsQuest](https://www.rna-seqblog.com/rpkm-fpkm-and-tpm-clearly-explained/) and, more generally, [this table of common normalization methods for RNA-seq data](https://hbctraining.github.io/DGE_workshop_salmon/lessons/02_DGE_count_normalization.html#common-normalization-methods) from HBC training to learn more.
+Check out [_RPKM, FPKM, and TPM, clearly explained_ from StatQuest](https://www.rna-seqblog.com/rpkm-fpkm-and-tpm-clearly-explained/) and, more generally, [this table of common normalization methods for RNA-seq data](https://hbctraining.github.io/DGE_workshop_salmon/lessons/02_DGE_count_normalization.html#common-normalization-methods) from HBC training to learn more.
 * Estimated number of reads that map to each transcript that was quantified.
 
 Again, when you're ready to stop scrolling through the `quant.sf` file, type `q`!
