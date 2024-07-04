@@ -38,5 +38,5 @@ jobs:
           push: ${{ inputs.push-ecr }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          platforms: ${{ inputs.platform }}
+          platforms: "linux/${{ inputs.platform }}"
           cache-from: type=gha
