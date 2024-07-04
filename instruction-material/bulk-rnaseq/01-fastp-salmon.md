@@ -249,7 +249,7 @@ Note that this minimum read size is consistent with what we would expect from th
 This enables auto-detection of adapter sequences in paired-end reads, since we are not specifying the adapter sequences ourselves.
 Adapter sequencers are observed in the 3' end of RNA-seq reads when the cDNA insert (molecule to be sequenced) is shorter than the number of bases sequenced ([ref](https://www.ecseq.com/support/ngs/trimming-adapter-sequences-is-it-necessary) <- definitely check this out if you're looking for a more extensive explanation!).
 
-Because they're synthentic, adapter sequences won't map to the transcriptome.
+Because they're synthetic, adapter sequences won't map to the transcriptome.
 It's worth acknowledging that whether or not this step is _necessary_ is subject to debate and may be harmful to gene expression estimates if it results in very short reads (see `--length_required` above).
 
 #### `--report_title`
