@@ -26,7 +26,7 @@ jobs:
       packages: write
       contents: read
     strategy:
-      fail-fast: true
+      fail-fast: false
       matrix:
         platform:
           - amd64
