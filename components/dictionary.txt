@@ -18,6 +18,7 @@ enforceability
 Ensembl
 et
 Ewels
+ExtractoR
 fastp
 fastq
 FASTQ
