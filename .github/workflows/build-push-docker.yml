@@ -18,6 +18,9 @@ jobs:
     # The type of runner that the job will run on
     name: Build and push Docker image
     runs-on: ubuntu-latest
+    permissions:
+      packages: write
+      contents: read
 
     steps:
       # set up Docker build
