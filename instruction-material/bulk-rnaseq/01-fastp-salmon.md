@@ -337,7 +337,7 @@ The transcriptome includes all known transcripts/splice isoforms for all genes.
 Importantly, this means we can't use Salmon to detect novel genes, isoforms, or anything that's not present in the transcriptome used to build the index!
 By extension, if you are attempting to quantify transcripts from an organism that doesn't have a particularly well-characterized reference transcriptome, Salmon may not be the tool for you.
 
-The index evalutes the sequences for all possible unique sequences of length _k_ (this is called a k-mer; here _k_ is set to 31, which is appropriate for the length reads we're working with today.)
+The index evaluates the sequences for all possible unique sequences of length _k_ (this is called a k-mer; here _k_ is set to 31, which is appropriate for the length reads we're working with today.)
 Salmon uses the reference index to determine position and orientation for where fragments best map prior to quantification ([Srivastava *et al.* 2016](https://doi.org/10.1093/bioinformatics/btw277); [HBC Training](https://hbctraining.github.io/Intro-to-rnaseq-hpc-salmon/lessons/04_quasi_alignment_salmon.html)). k-mers in reads that are not in the index are not counted.
 
 Building an index can take a while (but you only have to do it once per organism/genome build combination!), so we've acquired [the one we'll use today](http://refgenomes.databio.org/v3/assets/splash/9a02d64909100f146272f8e16563178e9e93c218b1126ff9/salmon_index?tag=default) from a resource called [`refgenie`](http://refgenie.databio.org/en/latest/).
