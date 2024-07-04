@@ -249,7 +249,7 @@ Note that this minimum read size is consistent with what we would expect from th
 This enables auto-detection of adapter sequences in paired-end reads, since we are not specifying the adapter sequences ourselves.
 Adapter sequencers are observed in the 3' end of RNA-seq reads when the cDNA insert (molecule to be sequenced) is shorter than the number of bases sequenced ([ref](https://www.ecseq.com/support/ngs/trimming-adapter-sequences-is-it-necessary) <- definitely check this out if you're looking for a more extensive explanation!).
 
-Because they're synthentic, adapter sequences won't map to the transcriptome.
+Because they're synthetic, adapter sequences won't map to the transcriptome.
 It's worth acknowledging that whether or not this step is _necessary_ is subject to debate and may be harmful to gene expression estimates if it results in very short reads (see `--length_required` above).
 
 #### `--report_title`
@@ -301,7 +301,7 @@ ls trimmed
 
 ## Quantification with Salmon
 
-_Adapted in part from [this lession](https://hbctraining.github.io/Intro-to-rnaseq-hpc-salmon/lessons/04_quasi_alignment_salmon.html) developed by members of the teaching team at the [Harvard Chan Bioinformatics Core (HBC)](http://bioinformatics.sph.harvard.edu/) and from [Childhood Cancer Data Lab bulk RNA-seq training material](https://github.com/AlexsLemonade/training-modules/tree/9e648b207577c55cc22a24c712a736873523f5a4/RNA-seq)._
+_Adapted in part from [this lesson](https://hbctraining.github.io/Intro-to-rnaseq-hpc-salmon/lessons/04_quasi_alignment_salmon.html) developed by members of the teaching team at the [Harvard Chan Bioinformatics Core (HBC)](http://bioinformatics.sph.harvard.edu/) and from [Childhood Cancer Data Lab bulk RNA-seq training material](https://github.com/AlexsLemonade/training-modules/tree/9e648b207577c55cc22a24c712a736873523f5a4/RNA-seq)._
 
 We'll use [Salmon](https://combine-lab.github.io/salmon/) for quantifying transcript expression ([documentation](http://salmon.readthedocs.io/en/latest/)).
 Salmon ([Patro *et al.* 2017](https://doi.org/10.1038/nmeth.4197)) is fast and requires very little memory!
@@ -337,7 +337,7 @@ The transcriptome includes all known transcripts/splice isoforms for all genes.
 Importantly, this means we can't use Salmon to detect novel genes, isoforms, or anything that's not present in the transcriptome used to build the index!
 By extension, if you are attempting to quantify transcripts from an organism that doesn't have a particularly well-characterized reference transcriptome, Salmon may not be the tool for you.
 
-The index evalutes the sequences for all possible unique sequences of length _k_ (this is called a k-mer; here _k_ is set to 31, which is appropriate for the length reads we're working with today.)
+The index evaluates the sequences for all possible unique sequences of length _k_ (this is called a k-mer; here _k_ is set to 31, which is appropriate for the length reads we're working with today.)
 Salmon uses the reference index to determine position and orientation for where fragments best map prior to quantification ([Srivastava *et al.* 2016](https://doi.org/10.1093/bioinformatics/btw277); [HBC Training](https://hbctraining.github.io/Intro-to-rnaseq-hpc-salmon/lessons/04_quasi_alignment_salmon.html)). k-mers in reads that are not in the index are not counted.
 
 Building an index can take a while (but you only have to do it once per organism/genome build combination!), so we've acquired [the one we'll use today](http://refgenomes.databio.org/v3/assets/splash/9a02d64909100f146272f8e16563178e9e93c218b1126ff9/salmon_index?tag=default) from a resource called [`refgenie`](http://refgenie.databio.org/en/latest/).
@@ -449,7 +449,7 @@ If you don't see `quant.sf`, but you do see some of the other files or folders, 
 
 ## Examining the output
 
-_Adapted in part from [this lession](https://hbctraining.github.io/Intro-to-rnaseq-hpc-salmon/lessons/04_quasi_alignment_salmon.html) developed by members of the teaching team at the [Harvard Chan Bioinformatics Core (HBC)](http://bioinformatics.sph.harvard.edu/)._
+_Adapted in part from [this lesson](https://hbctraining.github.io/Intro-to-rnaseq-hpc-salmon/lessons/04_quasi_alignment_salmon.html) developed by members of the teaching team at the [Harvard Chan Bioinformatics Core (HBC)](http://bioinformatics.sph.harvard.edu/)._
 
 In this section, we'll use a tool called `less` to examine some of the output from fastp and Salmon via the command line.
 [`less`](https://en.wikipedia.org/wiki/Less_(Unix)) can be used to view (but not edit!) the context of a text file from the command line.
@@ -483,7 +483,7 @@ The columns of this (tab-separated) file contain ([Salmon docs on quantification
 * The effective length represents the various factors that effect the length of transcript (i.e., degradation, technical limitations of the sequencing platform) ([HBC Training](https://hbctraining.github.io/Intro-to-rnaseq-hpc-salmon/lessons/04_quasi_alignment_salmon.html))
 * TPM, or transcripts per million, are the abundance estimates output by Salmon computed using the effective length ([HBC Training](https://hbctraining.github.io/Intro-to-rnaseq-hpc-salmon/lessons/04_quasi_alignment_salmon.html)).
 TPM attempts to normalize for sequencing depth and length.
-Check out [_RPKM, FPKM, and TPM, clearly explained_ from StatsQuest](https://www.rna-seqblog.com/rpkm-fpkm-and-tpm-clearly-explained/) and, more generally, [this table of common normalization methods for RNA-seq data](https://hbctraining.github.io/DGE_workshop_salmon/lessons/02_DGE_count_normalization.html#common-normalization-methods) from HBC training to learn more.
+Check out [_RPKM, FPKM, and TPM, clearly explained_ from StatQuest](https://www.rna-seqblog.com/rpkm-fpkm-and-tpm-clearly-explained/) and, more generally, [this table of common normalization methods for RNA-seq data](https://hbctraining.github.io/DGE_workshop_salmon/lessons/02_DGE_count_normalization.html#common-normalization-methods) from HBC training to learn more.
 * Estimated number of reads that map to each transcript that was quantified.
 
 Again, when you're ready to stop scrolling through the `quant.sf` file, type `q`!

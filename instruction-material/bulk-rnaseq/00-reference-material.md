@@ -3,7 +3,7 @@
 _Adapted in part from [Childhood Cancer Data Lab bulk RNA-seq training material](https://github.com/AlexsLemonade/training-modules/blob/9e648b207577c55cc22a24c712a736873523f5a4/RNA-seq)._
 
 This is material we will not cover during the instruction due to time constraints.
-We provide it for course participants who are particularly interested in QC and quanitfication of bulk RNA-seq data.
+We provide it for course participants who are particularly interested in QC and quantification of bulk RNA-seq data.
 
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
@@ -98,6 +98,6 @@ Or you can obtain indices for select organisms from refgenie; [here's a full gen
 
 * [Harvard Chan Bioinformatics Core (HBC). _Introduction to RNA-Seq using high-performance computing_](https://hbctraining.github.io/Intro-to-rnaseq-hpc-salmon-flipped/schedule/links-to-lessons.html)
 * [University of Michigan Bioinformatics Core. _Experimental Design, Library Preparation, and Sequencing._](https://umich-brcf-bioinf.github.io/rnaseq_demystified_workshop/site/Module3a_Design_Prep_Seq)
-* [StatsQuest with Josh Starmer. _High Throughput Sequencing_ YouTube playlist.](https://www.youtube.com/playlist?list=PLblh5JKOoLUJo2Q6xK4tZElbIvAACEykp)
+* [StatQuest with Josh Starmer. _High Throughput Sequencing_ YouTube playlist.](https://www.youtube.com/playlist?list=PLblh5JKOoLUJo2Q6xK4tZElbIvAACEykp)
 * [Cresko lab of the University of Oregon. _RNA-seqlopedia._](https://rnaseq.uoregon.edu)
 
