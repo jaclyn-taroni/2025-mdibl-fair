@@ -30,6 +30,10 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      # QEMU emulation required for ARM
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
       # set up Docker build
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
