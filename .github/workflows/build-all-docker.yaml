@@ -22,7 +22,6 @@ on:
 
 jobs:
   build-docker-images:
-    runs-on: ubuntu-latest
     strategy:
       fail-fast: true
       matrix:
