@@ -12,7 +12,7 @@ They are adapted from [Alex's Lemonade Stand Foundation](https://www.alexslemona
 To obtain the Docker image for this material, use the following command:
 
 ```sh
-docker pull jtaroni/2024-mdibl-fair:{platform tag}
+docker pull ghcr.io/jaclyn-taroni/2024-mdibl-fair:{platform tag}
 ```
 
 Where the available platform tags are:
@@ -24,8 +24,8 @@ To distinguish between available architectures.
 
 ### Docker Build with GitHub Actions
 
-The GitHub Actions workflows `build-docker.yml` and `build-docker-arm.yml` build upon pull request whenever relevant files are modified.
-When relevant files are modified and pushed to `main`, the images are built and pushed to `jtaroni/2024-mdibl-fair:amd-64` and `jtaroni/2024-mdibl-fair:arm-64`, respectively.
+The GitHub Actions workflow `build-all-docker.yaml` builds upon pull request whenever relevant files are modified.
+When relevant files are modified and pushed to `main`, the images are built and pushed to GitHub Container Registry.
 
 ### Developing with Docker
 
@@ -36,7 +36,7 @@ docker run \
   --mount type=bind,target=/home/rstudio/2024-mdibl-fair,source=$PWD \
   -e PASSWORD={PASSWORD} \
   -p 8787:8787 \
-  jtaroni/2024-mdibl-fair:{platform tag}
+  ghcr.io/jaclyn-taroni/2024-mdibl-fair:{platform tag}
 ```
 
 You can then navigate to `localhost:8787` in your browser and log in with username `rstudio` and the password you just set via `docker run`.
