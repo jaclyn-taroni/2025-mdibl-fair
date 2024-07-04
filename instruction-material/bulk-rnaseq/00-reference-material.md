@@ -3,7 +3,7 @@
 _Adapted in part from [Childhood Cancer Data Lab bulk RNA-seq training material](https://github.com/AlexsLemonade/training-modules/blob/9e648b207577c55cc22a24c712a736873523f5a4/RNA-seq)._
 
 This is material we will not cover during the instruction due to time constraints.
-We provide it for course participants who are particularly interested in QC and quanitfication of bulk RNA-seq data.
+We provide it for course participants who are particularly interested in QC and quantification of bulk RNA-seq data.
 
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
