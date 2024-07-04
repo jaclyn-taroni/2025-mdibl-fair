@@ -449,7 +449,7 @@ If you don't see `quant.sf`, but you do see some of the other files or folders, 
 
 ## Examining the output
 
-_Adapted in part from [this lession](https://hbctraining.github.io/Intro-to-rnaseq-hpc-salmon/lessons/04_quasi_alignment_salmon.html) developed by members of the teaching team at the [Harvard Chan Bioinformatics Core (HBC)](http://bioinformatics.sph.harvard.edu/)._
+_Adapted in part from [this lesson](https://hbctraining.github.io/Intro-to-rnaseq-hpc-salmon/lessons/04_quasi_alignment_salmon.html) developed by members of the teaching team at the [Harvard Chan Bioinformatics Core (HBC)](http://bioinformatics.sph.harvard.edu/)._
 
 In this section, we'll use a tool called `less` to examine some of the output from fastp and Salmon via the command line.
 [`less`](https://en.wikipedia.org/wiki/Less_(Unix)) can be used to view (but not edit!) the context of a text file from the command line.
