@@ -9,10 +9,12 @@ library(rprojroot)
 
 # Directories
 root_dir <- find_root(has_dir(".git"))
-ml_data_dir <- file.path(root_dir,
-                         "instruction-material",
-                         "machine-learning",
-                         "data")
+ml_data_dir <- file.path(
+  root_dir,
+  "setup",
+  "machine-learning",
+  "data"
+)
 metadata_dir <- file.path(ml_data_dir, "metadata")
 expression_dir <- file.path(ml_data_dir, "expression")
 
@@ -24,19 +26,26 @@ stranded_counts_file <- file.path(
 )
 
 # Output files
-filtered_histologies_file <- file.path(metadata_dir,
-                                       "pbta-histologies-stranded-rnaseq.tsv")
-medulloblastoma_output_file <- file.path(expression_dir,
-                                         "pbta-vst-medulloblastoma.tsv.gz")
+filtered_histologies_file <- file.path(
+  metadata_dir,
+  "pbta-histologies-stranded-rnaseq.tsv"
+)
+medulloblastoma_output_file <- file.path(
+  expression_dir,
+  "pbta-vst-medulloblastoma.tsv.gz"
+)
 
 #### Read in data --------------------------------------------------------------
 
 histologies_df <- readr::read_tsv(histologies_file,
-                                  guess_max = 10000) |>
+  guess_max = 10000
+) |>
   # We'll only be looking at the stranded RNA-seq dataset, so filter out
   # all other samples (e.g., WGS)
-  dplyr::filter(experimental_strategy == "RNA-Seq",
-                RNA_library == "stranded") |>
+  dplyr::filter(
+    experimental_strategy == "RNA-Seq",
+    RNA_library == "stranded"
+  ) |>
   # Remove columns that are all NA (typically pertain only to the DNA data)
   purrr::discard(~ all(is.na(.)))
 
@@ -73,9 +82,11 @@ if (!identical(colnames(stranded_count_mat), histologies_df$Kids_First_Biospecim
 
 ## Variance stabilizing transformation
 # We'll set this to be blind to the experimental design
-ddset <- DESeqDataSetFromMatrix(countData = stranded_count_mat,
-                                colData = histologies_df,
-                                design = ~ 1)
+ddset <- DESeqDataSetFromMatrix(
+  countData = stranded_count_mat,
+  colData = histologies_df,
+  design = ~1
+)
 
 # Remove genes with low total counts
 genes_to_keep <- rowSums(counts(ddset)) >= 10
@@ -92,4 +103,3 @@ vst_df <- data.frame(assay(vst_data)) |>
 
 # Write to TSV!
 readr::write_tsv(vst_df, file = medulloblastoma_output_file)
-
