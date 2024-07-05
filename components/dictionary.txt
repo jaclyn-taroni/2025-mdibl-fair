@@ -89,6 +89,8 @@ Srivastava
 Starmer
 StatQuest
 Stolarczyk
+subtype
+subtypes
 symlinks
 synched
 TCGA
