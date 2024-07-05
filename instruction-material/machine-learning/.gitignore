@@ -9,3 +9,6 @@ for_upload/
 
 # Ignore folder for getting the package files together
 components/
+
+# Ignore folder with plots -- created during instruction
+plots/
