@@ -19,21 +19,11 @@ cp -r ../diagrams $prep_dir
 ## Copy over data
 mkdir -p ${prep_dir}/data
 
-# Copy over the expression data, but remove the data that's directly from
-# the OpenPBTA download
+# Copy over the expression data
 cp -r ../data/expression/ $prep_dir/data
-counts_file=${prep_dir}/pbta-gene-counts-rsem-expected_count.stranded.rds
-if [[ -f "$counts_file" ]]; then
-    rm $counts_file
-fi
 
-# Copy over the metadata, but remove the metadata that's directly from the
-# OpenPBTA download
+# Copy over the metadata
 cp -r ../data/metadata/ $prep_dir/data
-histologies_file=${prep_dir}/data/metadata/pbta-histologies.tsv
-if [[ -f  "$histologies_file" ]]; then
-  rm $histologies_file
-fi
 
 # Copy over results
 cp -r ../results/ $prep_dir
