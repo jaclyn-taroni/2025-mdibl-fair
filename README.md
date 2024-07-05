@@ -9,7 +9,7 @@ They are adapted from [Alex's Lemonade Stand Foundation](https://www.alexslemona
 
 ### Docker
 
-To obtain the Docker image for this material, use the following command:
+To obtain [the Docker image](https://github.com/jaclyn-taroni/2024-mdibl-fair/pkgs/container/2024-mdibl-fair) for this material, use the following command:
 
 ```sh
 docker pull ghcr.io/jaclyn-taroni/2024-mdibl-fair:{platform tag}

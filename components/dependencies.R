@@ -15,3 +15,4 @@ library("rematch2") # required by googlesheets4
 library("rstudioapi") # required by reprex, tidyverse
 library("xml2")
 library("ensembldb") # required for AnnotationHub steps
+library("precommit") # required for precommit hooks to work as intended

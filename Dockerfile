@@ -1,6 +1,8 @@
 # Build salmon from source in a separate image
 FROM ubuntu:22.04 AS build
 
+ENV MDIBL_DOCKER TRUE
+
 # Build dependencies
 RUN apt-get update -qq
 RUN DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \

@@ -1,3 +1,5 @@
+#!/usr/bin/env Rscript
+
 # Adapted from: https://github.com/AlexsLemonade/training-modules/blob/4132971bb861d5e677e851c7c833c123b3d91673/machine-learning/setup/01-transform-rnaseq.Rmd
 
 #### Libraries -----------------------------------------------------------------
@@ -9,10 +11,12 @@ library(rprojroot)
 
 # Directories
 root_dir <- find_root(has_dir(".git"))
-ml_data_dir <- file.path(root_dir,
-                         "instruction-material",
-                         "machine-learning",
-                         "data")
+ml_data_dir <- file.path(
+  root_dir,
+  "setup",
+  "machine-learning",
+  "data"
+)
 metadata_dir <- file.path(ml_data_dir, "metadata")
 expression_dir <- file.path(ml_data_dir, "expression")
 
@@ -23,30 +27,55 @@ stranded_counts_file <- file.path(
   "pbta-gene-counts-rsem-expected_count.stranded.rds"
 )
 
-# Output files
-filtered_histologies_file <- file.path(metadata_dir,
-                                       "pbta-histologies-stranded-rnaseq.tsv")
-medulloblastoma_output_file <- file.path(expression_dir,
-                                         "pbta-vst-medulloblastoma.tsv.gz")
+# Output directories and files
+
+# Output metadata directory and file
+output_metadata_dir <- file.path(
+  root_dir,
+  "instruction-material",
+  "machine-learning",
+  "data",
+  "metadata"
+)
+filtered_histologies_file <- file.path(
+  output_metadata_dir,
+  "pbta-histologies-medulloblastoma-rnaseq.tsv"
+)
+medulloblastoma_output_file <- file.path(
+  expression_dir,
+  "pbta-vst-medulloblastoma.tsv.gz"
+)
 
 #### Read in data --------------------------------------------------------------
 
 histologies_df <- readr::read_tsv(histologies_file,
-                                  guess_max = 10000) |>
+  guess_max = 10000
+) |>
   # We'll only be looking at the stranded RNA-seq dataset, so filter out
   # all other samples (e.g., WGS)
-  dplyr::filter(experimental_strategy == "RNA-Seq",
-                RNA_library == "stranded") |>
+  dplyr::filter(
+    experimental_strategy == "RNA-Seq",
+    RNA_library == "stranded"
+  ) |>
   # Remove columns that are all NA (typically pertain only to the DNA data)
   purrr::discard(~ all(is.na(.)))
 
-# Grab medulloblastoma sample identifiers
-medulloblastoma_bsids <- histologies_df |>
+# Filter to only the medulloblastoma samples to save this filtered version
+# of the metadata for plotting during instruction
+medulloblastoma_histologies_df <- histologies_df |>
   dplyr::filter(short_histology == "Medulloblastoma") |>
+  dplyr::select(
+    Kids_First_Biospecimen_ID,
+    short_histology,
+    molecular_subtype
+  )
+
+# Grab medulloblastoma sample identifiers
+medulloblastoma_bsids <- medulloblastoma_histologies_df |>
   dplyr::pull(Kids_First_Biospecimen_ID)
 
 # Write cleaned metadata file to the output dir
-readr::write_tsv(histologies_df, filtered_histologies_file)
+readr::write_tsv(medulloblastoma_histologies_df, filtered_histologies_file)
 
 # Technically a data.frame, not a matrix
 stranded_count_mat <- readr::read_rds(stranded_counts_file)
@@ -73,9 +102,11 @@ if (!identical(colnames(stranded_count_mat), histologies_df$Kids_First_Biospecim
 
 ## Variance stabilizing transformation
 # We'll set this to be blind to the experimental design
-ddset <- DESeqDataSetFromMatrix(countData = stranded_count_mat,
-                                colData = histologies_df,
-                                design = ~ 1)
+ddset <- DESeqDataSetFromMatrix(
+  countData = stranded_count_mat,
+  colData = histologies_df,
+  design = ~1
+)
 
 # Remove genes with low total counts
 genes_to_keep <- rowSums(counts(ddset)) >= 10
@@ -92,4 +123,3 @@ vst_df <- data.frame(assay(vst_data)) |>
 
 # Write to TSV!
 readr::write_tsv(vst_df, file = medulloblastoma_output_file)
-

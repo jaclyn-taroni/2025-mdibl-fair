@@ -1,5 +1,8 @@
 # Ignore the OpenPBTA histologies dataset
 data/**/pbta-*
 
+# Ignore the PLIER model generated in setup
+results/plier/medulloblastoma_plier_model.rds
+
 # Ignore folder for prepping upload
 for_upload/

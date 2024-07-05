@@ -4,14 +4,13 @@ output:
   html_notebook:
     toc: true
     toc_float: true
-date: 2023
+date: 2024
 ---
 
 _This material has been adapted from [ALSF CCDL training materials](https://github.com/AlexsLemonade/training-modules/tree/master/machine-learning)._
 
 ## Objectives
 
-* Demonstrate how to use the `tidyverse` for some data wrangling operations
 * Illustrate how to use the `PLIER` method for unsupervised machine learning for human transcriptomics data
 * Introduce the concept of tidy data
 * Briefly introduce customizing `ggplot2` plots (but there will be more on `ggplot2` in a later lesson).
@@ -28,7 +27,7 @@ We'll be using medulloblastoma data only.
 ## Set Up
 
 ```{r}
-# Bit o' data wranglin'
+# Bit o' data wranglin' expected
 library(tidyverse)
 ```
 
@@ -43,147 +42,12 @@ if (!("PLIER" %in% installed.packages())) {
   # Install PLIER from GitHub
   remotes::install_github("wgmao/PLIER@v0.1.6")
 }
-  
+
 # Load Pathway-Level Information ExtractoR
 library(PLIER)
 ```
 
-```{r set_seed}
-# We will need this for our dimension reduction to be reproducible and there is
-# some sampling that goes into collapsing our RNA-seq matrix
-seed <- 1234
-set.seed(seed)
-```
-
 ## Read in and set up data
-
-### RNA-seq data
-
-```{r}
-# Read in transformed RNA-seq data
-rnaseq_df <- read_tsv(file.path("data", 
-                                "expression", 
-                                "pbta-vst-medulloblastoma.tsv.gz"))
-```
-Let's take a look at what's in the `rnaseq_df`.
-
-```{r}
-head(rnaseq_df)
-```
-
-The `gene_id` column concatenates two different gene identifiers: Ensembl gene IDs and gene symbols.
-PLIER, which we will use later in this notebook, requires gene symbols as rownames, so we will need to take some steps to prepare this data for use with PLIER.
-
-First, we need to separate the gene symbols from the Ensembl gene identifiers.
-Luckily, there's a tidyverse function that can separate one column into multiple columns called `tidyr::separate()`.
-
-```{r separate_gene_ids}
-symbol_rnaseq_df <- rnaseq_df %>%
-  tidyr::separate(gene_id,  # Take the gene_id column
-                  # Create two new columns called ensembl_id and gene_symbol
-                  into = c("ensembl_id", "gene_symbol"),
-                  # The values for these two columns are separated by _
-                  sep = "_",
-                  # Some gene symbols themselves contain _, so when that happens
-                  # merge everything after the first _ into the gene_symbol
-                  # column
-                  extra = "merge")
-
-
-# We no longer need the data frame we read in, so we'll remove it to save some
-# memory
-rm(rnaseq_df)
-```
-
-Alright, what does our new data frame look like?
-
-```{r head_symbol_df, live = TRUE}
-head(symbol_rnaseq_df)
-```
-
-We won't need the column with the Ensembl identifiers anymore, so let's remove it.
-
-```{r remove_ensg, live = TRUE}
-symbol_rnaseq_df <- symbol_rnaseq_df %>%
-  select(-ensembl_id)
-```
-
-### Collapsing duplicate gene symbols
-
-```{r any_duplicated}
-any(duplicated(symbol_rnaseq_df$gene_symbol))
-```
-
-How many duplicated gene symbols are there?
-
-```{r how_many_duplicated}
-sum(duplicated(symbol_rnaseq_df$gene_symbol))
-```
-
-Relative to the total number of genes, there are not too many genes that are duplicated.
-
-```{r add_row_means}
-# mean transformed value across the entire cohort
-symbol_rnaseq_df$mean_value <- rowMeans(symbol_rnaseq_df[, -1])
-```
-
-We'll use a few gene symbols that we've arbitrarily selected to follow along with these processing steps!
-
-```{r duplicated_examples}
-# Genes we will use to illustrate what happens during the collapsing duplicate
-# process
-duplicated_symbols <- c("DGCR5", "RABGEF1")
-
-# Let's take a look at the mean values prior to any filtering
-symbol_rnaseq_df %>% 
-  filter(gene_symbol %in% duplicated_symbols) %>%
-  select(gene_symbol, mean_value) %>%
-  arrange(gene_symbol)
-```
-
-For a given duplicated gene symbol, we want to select the row with the highest average expression value.
-
-```{r collapsed_rnaseq}
-collapsed_rnaseq_df <- symbol_rnaseq_df %>%
-  # For each set of rows that correspond to the same gene symbol
-  group_by(gene_symbol) %>%
-  # Select the single row with the highest value in the mean_value column
-  top_n(1, mean_value) %>%
-  # In the case of ties, where the mean values are the same, randomly pick one
-  # row
-  sample_n(1)
-```
-
-Check again to see if any duplicated gene symbols remain in the new collapsed data frame.
-
-```{r any_duplicated_now, live = TRUE}
-any(duplicated(collapsed_rnaseq_df$gene_symbol))
-```
-
-Which row for our gene symbols of interest was retained in the collapsed data frame?
-
-```{r which_retained}
-collapsed_rnaseq_df %>% 
-  filter(gene_symbol %in% duplicated_symbols) %>%
-  select(gene_symbol, mean_value) %>%
-  arrange(gene_symbol)
-```
-
-Make a matrix.
-
-```{r get_medulloblastoma_mat, live = TRUE}
-medulloblastoma_rnaseq_mat <- collapsed_rnaseq_df %>%
-  select(-mean_value) %>%
-  tibble::column_to_rownames("gene_symbol") %>%
-  as.matrix()
-```
-
-And a bit of cleanup.
-
-```{r remove_old_df}
-rm(collapsed_rnaseq_df, symbol_rnaseq_df)
-```
-
 
 ## Pathway-Level Information ExtractoR (PLIER)
 
@@ -212,51 +76,25 @@ Here's an overview of the PLIER method from [Mao _et al._ (2019)](https://doi.or
 > **Fig. 1 | PLIER overview.** 
 PLIER is a matrix factorization approach that decomposes gene expression data into a product of a small number of LVs and their corresponding gene associations or loadings, while constraining the loadings to align with the most relevant automatically selected subset of prior knowledge. **a**, Given two inputs, the gene expression matrix _Y_ and the prior knowledge (represented as binary gene set membership in matrix _C_), the method returns the LVs (_B_), their loadings (_Z_), and an additional sparse matrix (_U_) that specifies which (if any) prior-information gene sets and pathways are used for each LV. The light gray area of _U_ indicates the large number of zero elements of the matrix. We apply our method to a whole-blood human gene expression dataset. **b**, The positive entries of the resulting _U_ matrix are visualized as a heat map, facilitating the identification of the correspondence between specific LVs and prior biological knowledge. As the absolute scale of the _U_ matrix is arbitrary, each column is normalized to a maximum of 1. **c**, We validate the LVs mapped to specific leukocyte cell types by comparing PLIER estimated relative cell-type proportions with direct measurements by mass cytometry. Dashed lines represent 0.05, 0.01, and 0.001 significance levels for Spearman rank correlation (one-tailed test). NK cell, natural killer cell.
 
-### Pathway data
+### Read in and explore the model
 
-The `PLIER` package comes with different gene sets we can use as input during training.
-The gene sets themselves are not really any different than other gene sets we might use for pathway analysis, but the data that comes in the package is in a format that is already compatible for use with PLIER.
+We've prepared the model ahead of time to save time during the course.
+You can see what steps we took to complete model training [here](https://github.com/jaclyn-taroni/2024-mdibl-fair/tree/main/setup/machine-learning/scripts/02-train-plier-model.R) and, more generally, how we setup the module [here](https://github.com/jaclyn-taroni/2024-mdibl-fair/tree/main/setup/machine-learning/).
 
-```{r plier_data}
-data("bloodCellMarkersIRISDMAP")
-data("canonicalPathways")
-data("svmMarkers")
+```{r}
+# The file containing the PLIER::PLIER() output is saved in the results
+# directory
+plier_file <- file.path(
+  "results",
+  "plier",
+  "medulloblastoma_plier_model.rds"
+)
 
-# Combine the pathway data from PLIER
-all_pathways <- PLIER::combinePaths(bloodCellMarkersIRISDMAP, 
-                                    canonicalPathways,
-                                    svmMarkers)
+# Read in the RDS file that contains the PLIER::PLIER() output
+plier_results <- read_rds(plier_file)
 ```
 
-### Row normalize
-
-`PLIER` comes with a built-in function to row normalize the expression data.
-This is z-scoring the expression values for each gene.
-
-```{r row_normalize, live = TRUE}
-# Row normalize -- z-scoring the genes
-medulloblastoma_zscore <- PLIER::rowNorm(medulloblastoma_rnaseq_mat)
-```
-
-### Run PLIER
-
-```{r common_genes}
-# Identify genes that are common to the pathway data and the zscore mat
-common_genes <- PLIER::commonRows(all_pathways, medulloblastoma_zscore)
-```
-
-Now for the main PLIER function.
-This will take a bit to run.
-
-```{r run_plier}
-plier_results <- PLIER::PLIER(data = medulloblastoma_zscore[common_genes, ],
-                              priorMat = all_pathways[common_genes, ],
-                              rseed = seed)
-```
-
-### Explore the model
-
-What does the output of `PLIER::PLIER()` look like?
+What does the output of model training look like?
 
 ```{r view_plier, live = TRUE, eval = FALSE}
 View(plier_results)
@@ -267,13 +105,14 @@ The _U_ matrix tells us about how the latent variables learned by the model rela
 
 ```{r plot_u}
 PLIER::plotU(plier_results,
-             fontsize_row = 6)
+  fontsize_row = 6
+)
 ```
 
 `summary()` of a `PLIER` results object returns the FDR and AUC values for input pathway to latent variable relationships.
 
 ```{r lv_summary}
-plier_results$summary %>% 
+plier_results$summary %>%
   filter(FDR < 0.05) %>%
   arrange(FDR)
 ```
@@ -300,9 +139,12 @@ We can use _Z_ to tell us which genes contribute to individual LVs by accessing 
 We'll use 20 below, but you can change the number to suit your purposes!
 
 ```{r lv_loadings}
-head(sort(plier_results$Z[, 20], 
-          decreasing = TRUE), 
-     n = 25)
+head(
+  sort(plier_results$Z[, 20],
+    decreasing = TRUE
+  ),
+  n = 25
+)
 ```
 
 ## Biological exploration with PLIER
@@ -328,9 +170,11 @@ Let's look at a toy example.
 
 ```{r create_toy_wide}
 set.seed(12345)
-toy_df <- data.frame( 
-  cbind(c("GENEA", "GENEB", "GENEC"),
-        matrix(rnorm(30), ncol = 10))
+toy_df <- data.frame(
+  cbind(
+    c("GENEA", "GENEB", "GENEC"),
+    matrix(rnorm(30), ncol = 10)
+  )
 )
 colnames(toy_df) <- c("Gene", paste0("Sample", 1:10))
 ```
@@ -345,15 +189,16 @@ Let's get it into "long" format.
 
 ```{r make_toy_long}
 toy_long_df <- tidyr::pivot_longer(toy_df,
-                                   # The data is in every column except the one 
-                                   # named "Gene"
-                                   cols = -Gene, 
-                                   # What will we call the column of the old df 
-                                   # column names?
-                                   names_to = "Sample",
-                                   # What will we call the column of values 
-                                   # from the old df?
-                                   values_to = "Expression")
+  # The data is in every column except the one
+  # named "Gene"
+  cols = -Gene,
+  # What will we call the column of the old df
+  # column names?
+  names_to = "Sample",
+  # What will we call the column of values
+  # from the old df?
+  values_to = "Expression"
+)
 
 toy_long_df
 ```
@@ -405,9 +250,10 @@ We'll use `tidyr::pivot_longer` to do this just like in the toy example above.
 
 ```{r pivot_longer_b, live = TRUE}
 sig_b_df <- tidyr::pivot_longer(sig_b_wide,
-                                cols = starts_with("BS_"),
-                                names_to = "Kids_First_Biospecimen_ID",
-                                values_to = "LV_estimate")
+  cols = starts_with("BS_"),
+  names_to = "Kids_First_Biospecimen_ID",
+  values_to = "LV_estimate"
+)
 head(sig_b_df)
 ```
 
@@ -420,20 +266,28 @@ We'll need to read it in first!
 
 ```{r add_metadata_b}
 # Read in metadata
-histologies_df <- read_tsv(file.path("data", 
-                                     "metadata", 
-                                     "pbta-histologies-stranded-rnaseq.tsv"))
+histologies_df <- read_tsv(
+  file.path(
+    "data",
+    "metadata",
+    "pbta-histologies-medulloblastoma-rnaseq.tsv"
+  )
+)
 
-# Create a data frame that only has the biospecimen identifiers and the 
+# Create a data frame that only has the biospecimen identifiers and the
 # molecular subtype labels
 subtype_df <- histologies_df %>%
-  select(Kids_First_Biospecimen_ID,
-         molecular_subtype)
+  select(
+    Kids_First_Biospecimen_ID,
+    molecular_subtype
+  )
 
 # Add the subtype labels to the LV estimates
-sig_b_df <- inner_join(x = sig_b_df, 
-                       y = subtype_df,
-                       by = "Kids_First_Biospecimen_ID")
+sig_b_df <- inner_join(
+  x = sig_b_df,
+  y = subtype_df,
+  by = "Kids_First_Biospecimen_ID"
+)
 ```
 ## Plotting
 
@@ -445,7 +299,7 @@ We'll plot LV20; this is the latent variable that we looked at the loadings for 
 lv_to_plot <- rownames(plier_results$B)[20]
 # For plotting, subset only to the rows corresponding to this latent variable
 lv_plot_df <- sig_b_df %>%
-  filter(LV == lv_to_plot) 
+  filter(LV == lv_to_plot)
 ```
 
 ### Boxplot and customization
@@ -454,11 +308,15 @@ Let's start by making a simple boxplot.
 
 ```{r lv_boxplot, live = TRUE}
 # Make a boxplot where samples are grouped by molecular subtype
-ggplot(lv_plot_df,
-       aes(x = molecular_subtype, 
-           y = LV_estimate, 
-           group = molecular_subtype, 
-           color = molecular_subtype)) +
+ggplot(
+  lv_plot_df,
+  aes(
+    x = molecular_subtype,
+    y = LV_estimate,
+    group = molecular_subtype,
+    color = molecular_subtype
+  )
+) +
   geom_boxplot()
 ```
 
@@ -466,11 +324,15 @@ It can often be helpful to visualize individual samples.
 
 ```{r lv_jitter, live = TRUE}
 # Add individual points with geom_jitter()
-ggplot(lv_plot_df,
-       aes(x = molecular_subtype, 
-           y = LV_estimate, 
-           group = molecular_subtype, 
-           color = molecular_subtype)) +
+ggplot(
+  lv_plot_df,
+  aes(
+    x = molecular_subtype,
+    y = LV_estimate,
+    group = molecular_subtype,
+    color = molecular_subtype
+  )
+) +
   geom_boxplot(outlier.shape = NA) +
   geom_jitter()
 ```
@@ -479,11 +341,15 @@ We're able to globally adjust the aesthetics of the jitter points.
 
 ```{r improve_jitter, live = TRUE}
 # Improve the aesthetics of the points
-ggplot(lv_plot_df,
-       aes(x = molecular_subtype, 
-           y = LV_estimate, 
-           group = molecular_subtype, 
-           color = molecular_subtype)) +
+ggplot(
+  lv_plot_df,
+  aes(
+    x = molecular_subtype,
+    y = LV_estimate,
+    group = molecular_subtype,
+    color = molecular_subtype
+  )
+) +
   geom_boxplot(outlier.shape = NA) +
   geom_jitter(width = 0.2, alpha = 0.5)
 ```
@@ -492,11 +358,15 @@ Add a built-in `ggplot2` theme.
 
 ```{r theme_bw, live = TRUE}
 # Use @jaclyn-taroni's favorite theme :)
-ggplot(lv_plot_df,
-       aes(x = molecular_subtype, 
-           y = LV_estimate, 
-           group = molecular_subtype, 
-           color = molecular_subtype)) +
+ggplot(
+  lv_plot_df,
+  aes(
+    x = molecular_subtype,
+    y = LV_estimate,
+    group = molecular_subtype,
+    color = molecular_subtype
+  )
+) +
   geom_boxplot(outlier.shape = NA) +
   geom_jitter(width = 0.2, alpha = 0.5) +
   theme_bw()
@@ -506,11 +376,15 @@ Use the same color palette we used in the UMAP plot earlier in the module.
 
 ```{r okabe_ito, live = TRUE}
 # Add "Okabe-Ito" color scheme
-ggplot(lv_plot_df,
-       aes(x = molecular_subtype, 
-           y = LV_estimate, 
-           group = molecular_subtype, 
-           color = molecular_subtype)) +
+ggplot(
+  lv_plot_df,
+  aes(
+    x = molecular_subtype,
+    y = LV_estimate,
+    group = molecular_subtype,
+    color = molecular_subtype
+  )
+) +
   geom_boxplot(outlier.shape = NA) +
   geom_jitter(width = 0.2, alpha = 0.5) +
   theme_bw() +
@@ -521,11 +395,15 @@ Add a title to the plot.
 
 ```{r add_title, live = TRUE}
 # Use labs() to add a title
-ggplot(lv_plot_df,
-       aes(x = molecular_subtype, 
-           y = LV_estimate, 
-           group = molecular_subtype, 
-           color = molecular_subtype)) +
+ggplot(
+  lv_plot_df,
+  aes(
+    x = molecular_subtype,
+    y = LV_estimate,
+    group = molecular_subtype,
+    color = molecular_subtype
+  )
+) +
   geom_boxplot(outlier.shape = NA) +
   geom_jitter(width = 0.2, alpha = 0.5) +
   theme_bw() +
@@ -537,19 +415,25 @@ Center the title and make it bigger and in bold.
 
 ```{r center_title, live = TRUE}
 # Use theme() to improve the way the title looks
-ggplot(lv_plot_df,
-       aes(x = molecular_subtype, 
-           y = LV_estimate, 
-           group = molecular_subtype, 
-           color = molecular_subtype)) +
+ggplot(
+  lv_plot_df,
+  aes(
+    x = molecular_subtype,
+    y = LV_estimate,
+    group = molecular_subtype,
+    color = molecular_subtype
+  )
+) +
   geom_boxplot(outlier.shape = NA) +
   geom_jitter(width = 0.2, alpha = 0.5) +
   theme_bw() +
   scale_color_manual(values = unname(palette.colors(palette = "Okabe-Ito"))) +
   labs(title = lv_to_plot) +
-  theme(plot.title = element_text(size = 15,
-                                  face = "bold",
-                                  hjust = 0.5))
+  theme(plot.title = element_text(
+    size = 15,
+    face = "bold",
+    hjust = 0.5
+  ))
 ```
 
 Use the next chunks to further customize your plot.
@@ -560,7 +444,6 @@ We might suggest starting with [the x- and y-axis labels](https://ggplot2.tidyve
 ```
 
 ```{r adventure_time}
-
 ```
 
 ## Session Info

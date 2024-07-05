@@ -15,8 +15,8 @@ bucket_url=https://s3.amazonaws.com/d3b-openaccess-us-east-1-prd-pbta/data
 
 # PBTA histologies
 cd ../data/metadata
-wget ${bucket_url}/${RELEASE}/pbta-histologies.tsv
+wget -c ${bucket_url}/${RELEASE}/pbta-histologies.tsv
 
 # Relevant RNA-seq data
 cd ../expression
-wget ${bucket_url}/${RELEASE}/pbta-gene-counts-rsem-expected_count.stranded.rds
+wget -c ${bucket_url}/${RELEASE}/pbta-gene-counts-rsem-expected_count.stranded.rds
