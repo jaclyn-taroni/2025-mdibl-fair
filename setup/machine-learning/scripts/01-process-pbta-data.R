@@ -58,7 +58,11 @@ histologies_df <- readr::read_tsv(histologies_file,
     RNA_library == "stranded"
   ) |>
   # Remove columns that are all NA (typically pertain only to the DNA data)
-  purrr::discard(~ all(is.na(.))) |>
+  purrr::discard(~ all(is.na(.)))
+
+# Filter to only the medulloblastoma samples to save this filtered version
+# of the metadata for plotting during instruction
+medulloblastoma_histologies_df <- histologies_df |>
   dplyr::filter(short_histology == "Medulloblastoma") |>
   dplyr::select(
     Kids_First_Biospecimen_ID,
@@ -67,11 +71,11 @@ histologies_df <- readr::read_tsv(histologies_file,
   )
 
 # Grab medulloblastoma sample identifiers
-medulloblastoma_bsids <- histologies_df |>
+medulloblastoma_bsids <- medulloblastoma_histologies_df |>
   dplyr::pull(Kids_First_Biospecimen_ID)
 
 # Write cleaned metadata file to the output dir
-readr::write_tsv(histologies_df, filtered_histologies_file)
+readr::write_tsv(medulloblastoma_histologies_df, filtered_histologies_file)
 
 # Technically a data.frame, not a matrix
 stranded_count_mat <- readr::read_rds(stranded_counts_file)
