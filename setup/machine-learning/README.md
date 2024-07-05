@@ -11,8 +11,8 @@ bash run-all.sh
 Which does the following:
 
 1. Downloads PBTA data
-2. Subsets the PBTA data to the medulloblastoma data and performs transformation
-3. Runs PLIER
+2. Performs transformation of PBTA data and outputs subsets of the data used for PLIER training and instruction material (i.e., medulloblastoma samples)
+3. Runs PLIER on medulloblastoma samples
 
 The model that is output is available in the following location:
 
