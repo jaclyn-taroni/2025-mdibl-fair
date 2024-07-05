@@ -6,3 +6,6 @@ results/plier/medulloblastoma_plier_model.rds
 
 # Ignore folder for prepping upload
 for_upload/
+
+# Ignore folder for getting the package files together
+components/
