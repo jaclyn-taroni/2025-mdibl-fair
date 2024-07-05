@@ -16,19 +16,9 @@ The breast cancer datasets used in `01-ml-experimental-design.Rmd` are downloade
 bash scripts/download-brca-data.sh
 ```
 
-#### PBTA
+#### PBTA and PLIER
 
-The medulloblastoma data from the Pediatric Brain Tumor Atlas can be downloaded with:
-
-```
-bash scripts/download-pbta-data.sh
-```
-
-And further processed (i.e., filtering, transformation) with:
-
-```
-Rscript scripts/process-pbta-data.R
-``` 
+See [the setup directory for this material](../../setup/machine-learning/).
 
 ### Creating a zip file for upload
 
@@ -40,4 +30,3 @@ bash scripts/package-for-labcentral-upload.sh
 
 The script tests that the R Notebooks can render with the files that are copied over and then freshly copies over the R Notebooks.
 This implicitly clears the chunk output, because output is stored in hidden folders ([ref](https://bookdown.org/yihui/rmarkdown/notebook.html#output-storage)) that are not copied over via this shell script.
-
