@@ -30,3 +30,14 @@ bash scripts/package-for-labcentral-upload.sh
 
 The script tests that the R Notebooks can render with the files that are copied over and then freshly copies over the R Notebooks.
 This implicitly clears the chunk output, because output is stored in hidden folders ([ref](https://bookdown.org/yihui/rmarkdown/notebook.html#output-storage)) that are not copied over via this shell script.
+
+### Getting a list of R packages required for the module
+
+You can run the following to get a list of R packages used in this module:
+
+```
+Rscript --vanilla scripts/list-required-r-packages.R
+```
+
+This is accomplished via `renv`.
+In `components` (which is ignored by Git), you can find a table of dependencies and the `renv.lock` file if needed.
