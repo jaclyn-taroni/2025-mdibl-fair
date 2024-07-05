@@ -10,7 +10,7 @@ cd "$(dirname "${BASH_SOURCE[0]}")"
 bash scripts/00-download-pbta-data.sh
 
 # Process the PBTA data
-# Rscript --vanilla scripts/01-process-pbta-data.R
+Rscript --vanilla scripts/01-process-pbta-data.R
 
 # Run PLIER
 Rscript --vanilla scripts/02-train-plier-model.R
