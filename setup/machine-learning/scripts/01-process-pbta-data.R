@@ -27,10 +27,19 @@ stranded_counts_file <- file.path(
   "pbta-gene-counts-rsem-expected_count.stranded.rds"
 )
 
-# Output files
+# Output directories and files
+
+# Output metadata directory and file
+output_metadata_dir <- file.path(
+  root_dir,
+  "instruction-material",
+  "machine-learning",
+  "data",
+  "metadata"
+)
 filtered_histologies_file <- file.path(
-  metadata_dir,
-  "pbta-histologies-stranded-rnaseq.tsv"
+  output_metadata_dir,
+  "pbta-histologies-medulloblastoma-rnaseq.tsv"
 )
 medulloblastoma_output_file <- file.path(
   expression_dir,
@@ -49,11 +58,16 @@ histologies_df <- readr::read_tsv(histologies_file,
     RNA_library == "stranded"
   ) |>
   # Remove columns that are all NA (typically pertain only to the DNA data)
-  purrr::discard(~ all(is.na(.)))
+  purrr::discard(~ all(is.na(.))) |>
+  dplyr::filter(short_histology == "Medulloblastoma") |>
+  dplyr::select(
+    Kids_First_Biospecimen_ID,
+    short_histology,
+    molecular_subtype
+  )
 
 # Grab medulloblastoma sample identifiers
 medulloblastoma_bsids <- histologies_df |>
-  dplyr::filter(short_histology == "Medulloblastoma") |>
   dplyr::pull(Kids_First_Biospecimen_ID)
 
 # Write cleaned metadata file to the output dir
