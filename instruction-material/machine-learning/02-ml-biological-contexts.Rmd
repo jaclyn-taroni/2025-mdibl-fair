@@ -12,6 +12,7 @@ _This material has been adapted from [ALSF CCDL training materials](https://gith
 ## Objectives
 
 * Illustrate how to use the `PLIER` method for unsupervised machine learning for human transcriptomics data
+* Demonstrate how to create a heatmap with the `ComplexHeatmap` package
 * Introduce the concept of tidy data
 * Briefly introduce customizing `ggplot2` plots (but there will be more on `ggplot2` in a later lesson).
 
@@ -29,6 +30,9 @@ We'll be using medulloblastoma data only.
 ```{r}
 # Bit o' data wranglin' expected
 library(tidyverse)
+
+# Heatmap
+library(ComplexHeatmap)
 ```
 
 Make sure `PLIER` is installed.
@@ -149,6 +153,163 @@ head(
 
 ## Biological exploration with PLIER
 
+### LVs associated with pathways
+
+For biological discovery, we are often most interested in the latent variables that have some kind of association with an input gene set or pathway.
+We can use the FDR values in the summary data frame to filter to only the latent variables with a significant association (and their associated gene sets).
+
+```{r filter_fdr, live = TRUE}
+# Filter to LV-pathway relationships with FDR < 0.05
+sig_summary_df <- plier_results$summary %>%
+  dplyr::filter(FDR < 0.05)
+sig_summary_df
+```
+
+```{r sig_index}
+# We only want a single instance of each LV index
+sig_index <- as.integer(unique(sig_summary_df$`LV index`))
+```
+
+```{r sig_b_wide, live = TRUE}
+# Get the LV by sample matrix from the PLIER results and subset it to only those
+# LVs with an FDR < 0.05 (at least one pathway)
+b_matrix <- plier_results$B
+sig_b_matrix <- b_matrix[sig_index, ]
+```
+
+#### Heatmap 
+
+Let's make a heatmap of the latent variable values for the variables that are significantly associated with an input pathway.
+
+We can make one pretty easily using the `ComplexHeatmap` package.
+
+```{r}
+Heatmap(sig_b_matrix)
+```
+
+I'm not sure that's so useful on its own, so let's make some improvements!
+
+Medulloblastoma has molecular subtypes, and we have molecular subtype labels for these samples.
+We can use this information to annotate our heatmap, but first, we need to read it in!
+
+```{r}
+# Read in metadata
+histologies_df <- read_tsv(
+  file.path(
+    "data",
+    "metadata",
+    "pbta-histologies-medulloblastoma-rnaseq.tsv"
+  )
+)
+
+# Create a data frame that only has the biospecimen identifiers and the
+# molecular subtype labels
+subtype_df <- histologies_df %>%
+  select(
+    Kids_First_Biospecimen_ID,
+    molecular_subtype
+  )
+```
+Heatmap annotations require the sample identifiers to be the rownames, so let's set that up.
+
+```{r}
+annotation_df <- subtype_df |>
+  tibble::column_to_rownames("Kids_First_Biospecimen_ID") |>
+  as.data.frame()
+```
+
+Now we're ready to make a heatmap annotation using a palette that is color vision deficiency friendly.
+
+```{r}
+# Get a vector of hex codes for the Okabe-Ito palette
+okabe_ito_palette <- unname(palette.colors(palette = "Okabe-Ito"))
+
+# Create a sample HeatmapAnnotation
+sample_annotation <- HeatmapAnnotation(
+  # Sample to molecular subtype mapping
+  df = annotation_df,
+  # Colors for the annotation
+  col = list(molecular_subtype = c(
+    "MB, Group3" = okabe_ito_palette[1],
+    "MB, Group4" = okabe_ito_palette[2],
+    "MB, SHH" = okabe_ito_palette[3],
+    "MB, To be classified" = okabe_ito_palette[4],
+    "MB, WNT" = okabe_ito_palette[5]
+  )),
+  # Make the label for the annotation look a bit nicer than the column name
+  # would
+  annotation_label = "Molecular Subtype"
+)
+```
+
+Check that the order of samples is the same in the annotation and the matrix being annotated.
+
+```{r}
+identical(rownames(annotation_df), colnames(sig_b_matrix))
+```
+
+Now we can make a heatmap object with some adjustments explained in the inline comments.
+We'll plot it in the next chunk where we adjust the legend position.
+
+```{r}
+heatmap_object <- Heatmap(sig_b_matrix,
+  # Add molecular subtype annotation
+  top_annotation = sample_annotation,
+  # The sample names were hard to read
+  show_column_names = FALSE,
+  # Make the row names a bit smaller
+  row_names_gp = gpar(fontsize = 6),
+  # Let's add some space between the cells
+  rect_gp = gpar(col = "white", lwd = 0.25),
+  # Make the heatmap legend horizontal instead of
+  # Vertical
+  heatmap_legend_param = list(direction = "horizontal")
+)
+```
+
+To adjust the legend positions, we can use `heatmap_legend_side` and `annotation_legend_side` with `draw()`.
+
+```{r}
+draw(heatmap_object,
+  # Put heatmap legend below the heatmap
+  heatmap_legend_side = "bottom",
+  # Put the annotation legend below the heatmap
+  annotation_legend_side = "bottom"
+)
+```
+
+Let's save this heatmap as a PNG.
+
+It can be helpful to keep all the plots organized in the same folder, so let's set that up first.
+
+```{r}
+# Call the folder plots
+plots_dir <- file.path("plots")
+# Create it if it doesn't exist yet
+dir.create(plots_dir, showWarnings = FALSE, recursive = TRUE)
+```
+
+Now, save as a PNG in the `plots` directory.
+
+```{r}
+heatmap_file <- file.path(
+  plots_dir,
+  "medulloblastoma_significant_lvs_heatmap.png"
+)
+
+# Plotting device
+png(heatmap_file, width = 8, height = 5, units = "in", res = 300)
+# Draw the heatmap and legends again
+draw(heatmap_object,
+  # Put heatmap legend below the heatmap
+  heatmap_legend_side = "bottom",
+  # Put the annotation legend below the heatmap
+  annotation_legend_side = "bottom"
+)
+# Shut down device
+dev.off()
+```
+
 ### First, a note on tidy data
 
 In order to use `ggplot2`, we'll need the data in "long" or "tidy" format. 
@@ -209,39 +370,15 @@ Let's remove these toy examples from the workspace.
 rm(toy_df, toy_long_df)
 ```
 
-### LVs associated with pathways
+### Tidy latent variables
 
-For biological discovery, we are often most interested in the latent variables that have some kind of association with an input gene set or pathway.
-We can use the FDR values in the summary data frame to filter to only the latent variables with a significant association (and their associated gene sets).
-
-```{r filter_fdr, live = TRUE}
-# Filter to LV-pathway relationships with FDR < 0.05
-sig_summary_df <- plier_results$summary %>%
-  dplyr::filter(FDR < 0.05)
-sig_summary_df
-```
-
-```{r sig_index}
-# We only want a single instance of each LV index
-sig_index <- as.integer(unique(sig_summary_df$`LV index`))
-```
-
-```{r sig_b_wide, live = TRUE}
-# Get the LV by sample matrix from the PLIER results and subset it to only those
-# LVs with an FDR < 0.05 (at least one pathway)
-b_matrix <- plier_results$B
-sig_b_matrix <- b_matrix[sig_index, ]
-
-# Create a data frame and add a column with LV identifiers
-sig_b_wide <- data.frame(sig_b_matrix) %>%
-  tibble::rownames_to_column(var = "LV")
-```
-
-#### Tidy
-
-Let's look at what format this is in currently.
+Let's look at what format the LV values are in currently.
 
 ```{r wide_peek}
+# First, create a data frame of and add a column with LV identifiers
+sig_b_wide <- data.frame(sig_b_matrix) %>%
+  tibble::rownames_to_column(var = "LV")
+
 sig_b_wide
 ```
 
@@ -262,26 +399,8 @@ Right now the `LV` column has values that contain two pieces of information: the
 *Remember, just because a LV is named for a single pathway, that doesn't mean that that is the only input pathway that is significantly associated with that latent variable - always check `summary`!*
 
 Now let's add relevant metadata to the data frame so we can use that for plotting.
-We'll need to read it in first!
 
 ```{r add_metadata_b}
-# Read in metadata
-histologies_df <- read_tsv(
-  file.path(
-    "data",
-    "metadata",
-    "pbta-histologies-medulloblastoma-rnaseq.tsv"
-  )
-)
-
-# Create a data frame that only has the biospecimen identifiers and the
-# molecular subtype labels
-subtype_df <- histologies_df %>%
-  select(
-    Kids_First_Biospecimen_ID,
-    molecular_subtype
-  )
-
 # Add the subtype labels to the LV estimates
 sig_b_df <- inner_join(
   x = sig_b_df,
@@ -292,6 +411,7 @@ sig_b_df <- inner_join(
 ## Plotting
 
 We'll plot LV20; this is the latent variable that we looked at the loadings for in an earlier chunk.
+You can try using a different LV if you would like!
 
 ```{r lv_to_plot}
 # PLIER names certain latent variables based on their association with input
@@ -372,7 +492,7 @@ ggplot(
   theme_bw()
 ```
 
-Use the same color palette we used in the UMAP plot earlier in the module.
+Use a different color palette.
 
 ```{r okabe_ito, live = TRUE}
 # Add "Okabe-Ito" color scheme
@@ -443,8 +563,22 @@ We might suggest starting with [the x- and y-axis labels](https://ggplot2.tidyve
 ?labs
 ```
 
+Try a new customization!
+
 ```{r adventure_time}
 ```
+
+Save the last plot to a PNG file.
+`ggplot2` has a function named `ggsave()` that we can use to do that.
+
+```{r}
+boxplot_file <- file.path(
+  plots_dir,
+  "medulloblastoma_plier_lv20_boxplot.png"
+)
+ggsave(boxplot_file, plot = last_plot())
+```
+
 
 ## Session Info
 
