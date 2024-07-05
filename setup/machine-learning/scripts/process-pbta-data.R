@@ -1,3 +1,5 @@
+#!/usr/bin/env Rscript
+
 # Adapted from: https://github.com/AlexsLemonade/training-modules/blob/4132971bb861d5e677e851c7c833c123b3d91673/machine-learning/setup/01-transform-rnaseq.Rmd
 
 #### Libraries -----------------------------------------------------------------
