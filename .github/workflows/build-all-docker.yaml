@@ -1,5 +1,9 @@
 name: Build All Docker Platforms
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 # Only build if the workflow, Dockerfile, renv.lock, or requirements.txt is modified
 on:
   push:
