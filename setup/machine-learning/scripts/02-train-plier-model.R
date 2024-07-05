@@ -9,6 +9,9 @@
 #### Libraries and misc setup --------------------------------------------------
 
 library(PLIER)
+library(dplyr)
+library(readr)
+library(rprojroot)
 
 # Seed set up
 seed <- 1234
