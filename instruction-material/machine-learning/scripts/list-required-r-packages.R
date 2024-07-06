@@ -89,7 +89,8 @@ packages_df <- dplyr::bind_rows(
 # Copy over the renv lockfile for safe keeping
 file.copy(
   file.path(ml_instruction_dir, "renv.lock"),
-  file.path(components_dir, "renv.lock")
+  file.path(components_dir, "renv.lock"),
+  overwrite = TRUE
 )
 
 # Write out package table
