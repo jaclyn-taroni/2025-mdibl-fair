@@ -283,7 +283,7 @@ It will also report a lot of the QC information as a message when it finishes, t
 The last message from `fastp` before it finishes running looks like (don't worry, your time used might be different!):
 
 > ```
-> fastp v0.23.2, time used: 351 seconds
+> fastp v0.23.4, time used: 351 seconds
 > ```
 
 The terminal interface will also look something like the following (where `wrkshp00` and `workshop-00` will be replaced with your user name) to let you know it's ready to accept another command!
