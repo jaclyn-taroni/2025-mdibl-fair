@@ -160,13 +160,13 @@ ls raw
 You should see files that end with `_R1_combined.fastq.qz` and one that ends with `_R2_combined.fastq.gz`.
 These are the raw read1 input and read2 (sometimes called left and right) files, respectively, for the sample you will be processing.
 
+As a reminder, _all the text_ that comes before `_R1_combined.fastq.gz` and `_R2_combined.fastq.gz` in the FASTQ files you elect to work with will be used as `<YOUR SAMPLE>` in the commands below!
+
 If we use the `-l` option with `ls`, we can find out where the files are linked from:
 
 ```
 ls -l raw
 ```
-
-As a reminder, _all the text_ that comes before `_R1_combined.fastq.gz` and `_R2_combined.fastq.gz` in the FASTQ files you elect to work with will be used as `<YOUR SAMPLE>` in the commands below!
 
 To create the directory that will hold the preprocessed FASTQ files (output of `fastp`), run the following:
 
