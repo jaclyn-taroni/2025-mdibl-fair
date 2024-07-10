@@ -124,39 +124,63 @@ First, you'll need to navigate to your "personal" data directory for this exerci
 cd /data/<YOUR USER NAME>
 ```
 
-Take a look at the FASTQ files you created symlinks for yesterday with:
+We are going to make a directory called `raw`.
+
+We can use a command `mkdir` to do so.
+Because we'll use `-p` in the commands below, which allows us to create parent directories, it will prevent `mkdir` from returning an error if the directory you specify already exists.
+
+Make the `raw` directory using the following command:
+
+```
+mkdir -p raw
+```
+
+And list the contents using `ls`, which lists the contents of a directory.
 
 ```
 ls raw
 ```
 
-`ls` lists the contents of a directory.
+There shouldn't be any files there yet!
+
+We are going to [_symbolically link_](https://en.wikipedia.org/wiki/Symbolic_link) some FASTQ files stored elsewhere on the server to your `raw` directory.
+By creating a link, instead of copying the file, we can save storage space.
+In this example, the link will behave the same as if we copied over the files to our `raw` directory.
+
+```
+ln -s /data/workshop-00/SalmonData/*.fastq.gz raw
+```
+
+And run `ls` again to see the contents of `raw`:
+
+```
+ls raw
+```
 
 You should see files that end with `_R1_combined.fastq.qz` and one that ends with `_R2_combined.fastq.gz`.
 These are the raw read1 input and read2 (sometimes called left and right) files, respectively, for the sample you will be processing.
 
+If we use the `-l` option with `ls`, we can find out where the files are linked from:
+
+```
+ls -l raw
+```
+
 As a reminder, _all the text_ that comes before `_R1_combined.fastq.gz` and `_R2_combined.fastq.gz` in the FASTQ files you elect to work with will be used as `<YOUR SAMPLE>` in the commands below!
 
-Earlier in the course, you created several directories during the UNIX lessons to hold the output of the programs we'll use today.
-
-If you need to create the directories now, you can follow the directions below.
-
-Because we'll use `-p` in the commands below, which allows us to create parent directories, it will prevent `mkdir` from returning an error if the directory you specify already exists.
-That means there's no harm in using these commands if you successfully created these directories yesterday!
-
-To create the directory that will hold the preprocessed FASTQ files, run the following:
+To create the directory that will hold the preprocessed FASTQ files (output of `fastp`), run the following:
 
 ```
 mkdir -p trimmed
 ```
 
-To create the directory that will hold the fastp reports, run the following:
+To create the directory that will hold the `fastp` reports, run the following:
 
 ```
 mkdir -p QC/fastp_reports
 ```
 
-To make the directory that will hold the Salmon output, run the following:
+To create the directory that will hold the Salmon output, run the following:
 
 ```
 mkdir -p salmon
@@ -515,6 +539,8 @@ They are specific to the example user name and samples.
 
 ```
 cd /data/workshop-00
+mkdir -p raw
+ln -s /data/workshop-00/SalmonData/*.fastq.gz raw
 mkdir -p trimmed
 mkdir -p QC/fastp_reports
 mkdir -p salmon
