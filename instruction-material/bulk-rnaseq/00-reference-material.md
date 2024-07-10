@@ -40,17 +40,17 @@ FastQC also runs on a single FASTQ file at a time.
 If you have a paired-end RNA-seq sample, the duplication rates reported by FastQC will likely be an overestimation, as fastp (which we run during instruction) considers duplication rates using paired-end duplication analysis ([Chen *et al.* 2018](https://doi.org/10.1093/bioinformatics/bty560)).
 
 If you haven't looked at many FastQC reports, some of the modules can be a little tricky to interpret.
-We recommend checking out the [Michigan State University Research Technology Support Facility's “FastQC Tutorial & FAQ”](https://rtsf.natsci.msu.edu/genomics/tech-notes/fastqc-tutorial-and-faq/).
+We recommend checking out the [Michigan State University Research Technology Support Facility's “FastQC Tutorial & FAQ”](https://rtsf.natsci.msu.edu/genomics/technical-documents/fastqc-tutorial-and-faq.aspx).
 
 #### View FastQC reports for samples from instruction
 
 We have generated FastQC reports for all samples we preprocess & quantify in class.
-They are tracked in this repository here: <https://github.com/jaclyn-taroni/2024-mdibl-fair/setup/bulk-rnaseq/QC/fastqc_reports> You can view an HTML version of an individual FASTQ file by adding the filename to the end of this URL in your browser <https://jaclyn-taroni.github.io/2024-mdibl-fair/fastqc_reports> For example, you'd navigate to the following URL for the `1_ATCACG_L001_R1_combined_fastqc.html` report: <https://jaclyn-taroni.github.io/2024-mdibl-fair/fastqc_reports/1_ATCACG_L001_R1_combined_fastqc.html>
+They are tracked in this repository here: <https://github.com/jaclyn-taroni/2024-mdibl-fair/tree/main/setup/bulk-rnaseq/QC/fastqc_reports> You can view an HTML version of an individual FASTQ file by adding the filename to the end of this URL in your browser <https://jaclyn-taroni.github.io/2024-mdibl-fair/fastqc_reports> For example, you'd navigate to the following URL for the `1_ATCACG_L001_R1_combined_fastqc.html` report: <https://jaclyn-taroni.github.io/2024-mdibl-fair/fastqc_reports/1_ATCACG_L001_R1_combined_fastqc.html>
 
 
 ### MultiQC
 
-[MultiQC](https://multiqc.info/) is a tool that aggregates output from many tools (over 111 are currently supported; see the list [here](https://multiqc.info/docs/#multiqc-modules)) into a single HTML report ([Ewels *et al.* 2016](http://dx.doi.org/10.1093/bioinformatics/btw354)).
+[MultiQC](https://multiqc.info/) is a tool that aggregates output from many tools (over 140 are currently supported; see the list [here](https://multiqc.info/modules/)) into a single HTML report ([Ewels *et al.* 2016](http://dx.doi.org/10.1093/bioinformatics/btw354)).
 It can be used to combine information, such as FastQC and fastp reports, for multiple RNA-seq samples in a project.
 This can be helpful to get an overall picture of the samples in your experiment.
 For example, fastp reports statistics before and after it processes samples.
@@ -62,7 +62,7 @@ In addition, MultiQC is not limited to RNA-seq data; the website has example rep
 #### View a MultiQC report for samples from instruction
 
 We generated a MultiQC report from the FastQC, fastp, and Salmon reports for the 12 samples we looked at during instruction.
-You can view it [here](https://jaclyn-taroni.github.io/2024-mdibl-fair/setup/bulk-rnaseq/QC/multiqc_report.html).
+You can view it [here](https://jaclyn-taroni.github.io/2024-mdibl-fair/multiqc_report.html).
 
 ### tximeta
 
@@ -71,7 +71,7 @@ We'll quote the abstract of [the `tximeta` vignette](https://www.bioconductor.or
 
 > Tximeta performs numerous annotation and metadata gathering tasks on behalf of users during the import of transcript quantifications from Salmon or alevin into R/Bioconductor. Metadata and transcript ranges are added automatically, facilitating genomic analyses and assisting in computational reproducibility.
 
-Currently, there is [a limited number of supported organisms that work "out of the box."](https://www.bioconductor.org/packages/devel/bioc/vignettes/tximeta/inst/doc/tximeta.html#Pre-computed_checksums)
+Currently, there is [a limited number of supported organisms that work "out of the box."](https://www.bioconductor.org/packages/devel/bioc/vignettes/tximeta/inst/doc/tximeta.html#Pre-computed_digests)
 
 ### refgenie
 
