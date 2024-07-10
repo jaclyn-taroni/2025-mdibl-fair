@@ -454,6 +454,8 @@ _Adapted in part from [this lesson](https://hbctraining.github.io/Intro-to-rnase
 In this section, we'll use a tool called `less` to examine some of the output from fastp and Salmon via the command line.
 [`less`](https://en.wikipedia.org/wiki/Less_(Unix)) can be used to view (but not edit!) the context of a text file from the command line.
 
+If Salmon has not finished running yet, you can open a new Terminal and SSH session to follow the steps in this section.
+
 **First, let's look at some of the QC information from fastp:**
 
 ```
