@@ -137,7 +137,7 @@ These are the raw read1 input and read2 (sometimes called left and right) files,
 
 As a reminder, _all the text_ that comes before `_R1_combined.fastq.gz` and `_R2_combined.fastq.gz` in the FASTQ files you elect to work with will be used as `<YOUR SAMPLE>` in the commands below!
 
-Yesterday, you created several directories during the UNIX lessons to hold the output of the programs we'll use today.
+Earlier in the course, you created several directories during the UNIX lessons to hold the output of the programs we'll use today.
 
 If you need to create the directories now, you can follow the directions below.
 
