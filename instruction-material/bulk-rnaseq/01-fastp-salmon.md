@@ -113,7 +113,7 @@ We're using it to report the output you can expect to see in the terminal in res
 
 Because you will need to alter the text in some of the code blocks below (e.g., replace `<YOUR USERNAME>` and `<YOUR SAMPLE>`), **you may find it helpful to use a text editor to copy the commands below, edit them to reflect your sample and filenames, and then copy and paste the updated command into the command line.**
 
-You can use TextEdit on a Mac, Notepad on Windows, and [Sublime](https://www.sublimetext.com/) or [Atom](https://atom.io/) can be downloaded and used on multiple platforms.
+You can use TextEdit on a Mac, Notepad on Windows, and [Sublime](https://www.sublimetext.com/) or [Visual Studio Code](https://code.visualstudio.com/) can be downloaded and used on multiple platforms.
 
 
 ## Setting up
