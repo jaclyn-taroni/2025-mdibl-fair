@@ -34,6 +34,8 @@ Rscript -e "rmarkdown::render('01-ml-experimental-design.Rmd', clean = TRUE)"
 Rscript -e "rmarkdown::render('02-ml-biological-contexts.Rmd', clean = TRUE)"
 # Clean up *.nb.html files
 rm *.nb.html
+# Remove plots directory that was created when checking rendering
+rm -r plots
 # Fresh copy of notebooks
 cp ../*.Rmd .
 
