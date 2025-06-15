@@ -1,10 +1,10 @@
 ---
 title: "Machine learning for biological contexts"
-output: 
+output:
   html_notebook:
     toc: true
     toc_float: true
-date: 2024
+date: 2025
 ---
 
 _This material has been adapted from [ALSF CCDL training materials](https://github.com/AlexsLemonade/training-modules/tree/master/machine-learning)._
@@ -19,10 +19,10 @@ _This material has been adapted from [ALSF CCDL training materials](https://gith
 ## Background
 
 As we've seen in the course so far, we can explore data with unsupervised machine learning approaches like clustering or PCA.
-Often, these methods can work with any generic dataset. 
+Often, these methods can work with any generic dataset.
 In this notebook, we'll introduce a machine learning technique that is specifically for gene expression data.
 
-The dataset we're using comes from the [OpenPBTA project](https://github.com/AlexsLemonade/OpenPBTA-analysis). 
+The dataset we're using comes from the [OpenPBTA project](https://github.com/AlexsLemonade/OpenPBTA-analysis).
 We'll be using medulloblastoma data only.
 
 ## Set Up
@@ -59,14 +59,14 @@ In this notebook, we'll use a method called Pathway-Level Information Extractor 
 
 We like PLIER for a few reasons:
 
-* It is a matrix factorization approach. 
+* It is a matrix factorization approach.
   That means we can get a low-dimensional representation of our data.
   Specifically, PLIER learns correlated patterns of expression in our data or latent variables (LVs).
   Here, a latent variable is an "eigengene-like" combination of genes' expression.
   (It's called _latent_ because it's not directly measured, but instead inferred from the individual gene measurements.)
 * It includes penalties such that _some_ of the LVs will align with gene sets that we give it, so it's excellent for biological discovery.
 * The authors demonstrated that it performs favorably with regard to estimating proportion of immune cells in a sample as compared to other methods.
-* Because not _all_ LVs align with the gene sets we input, some of them capture unwanted technical variation. 
+* Because not _all_ LVs align with the gene sets we input, some of them capture unwanted technical variation.
   In our experience with the method, it does this quite well.
 
 PLIER is similar to other pathway analysis methods that you may be familiar with in that it uses prior knowledge in the form of gene sets.
@@ -77,13 +77,13 @@ Here's an overview of the PLIER method from [Mao _et al._ (2019)](https://doi.or
 
 ![](diagrams/mao_nature_methods_fig1.png)
 
-> **Fig. 1 | PLIER overview.** 
+> **Fig. 1 | PLIER overview.**
 PLIER is a matrix factorization approach that decomposes gene expression data into a product of a small number of LVs and their corresponding gene associations or loadings, while constraining the loadings to align with the most relevant automatically selected subset of prior knowledge. **a**, Given two inputs, the gene expression matrix _Y_ and the prior knowledge (represented as binary gene set membership in matrix _C_), the method returns the LVs (_B_), their loadings (_Z_), and an additional sparse matrix (_U_) that specifies which (if any) prior-information gene sets and pathways are used for each LV. The light gray area of _U_ indicates the large number of zero elements of the matrix. We apply our method to a whole-blood human gene expression dataset. **b**, The positive entries of the resulting _U_ matrix are visualized as a heat map, facilitating the identification of the correspondence between specific LVs and prior biological knowledge. As the absolute scale of the _U_ matrix is arbitrary, each column is normalized to a maximum of 1. **c**, We validate the LVs mapped to specific leukocyte cell types by comparing PLIER estimated relative cell-type proportions with direct measurements by mass cytometry. Dashed lines represent 0.05, 0.01, and 0.001 significance levels for Spearman rank correlation (one-tailed test). NK cell, natural killer cell.
 
 ### Read in and explore the model
 
 We've prepared the model ahead of time to save time during the course.
-You can see what steps we took to complete model training [here](https://github.com/jaclyn-taroni/2024-mdibl-fair/tree/main/setup/machine-learning/scripts/02-train-plier-model.R) and, more generally, how we setup the module [here](https://github.com/jaclyn-taroni/2024-mdibl-fair/tree/main/setup/machine-learning/).
+You can see what steps we took to complete model training [here](https://github.com/jaclyn-taroni/2025-mdibl-fair/tree/main/setup/machine-learning/scripts/02-train-plier-model.R) and, more generally, how we setup the module [here](https://github.com/jaclyn-taroni/2025-mdibl-fair/tree/main/setup/machine-learning/).
 
 ```{r}
 # The file containing the PLIER::PLIER() output is saved in the results
@@ -177,7 +177,7 @@ b_matrix <- plier_results$B
 sig_b_matrix <- b_matrix[sig_index, ]
 ```
 
-#### Heatmap 
+#### Heatmap
 
 Let's make a heatmap of the latent variable values for the variables that are significantly associated with an input pathway.
 
@@ -312,7 +312,7 @@ dev.off()
 
 ### First, a note on tidy data
 
-In order to use `ggplot2`, we'll need the data in "long" or "tidy" format. 
+In order to use `ggplot2`, we'll need the data in "long" or "tidy" format.
 `PLIER` outputs what we want to plot in what we call "wide" format.
 
 Read more about tidy data [here](https://cran.r-project.org/web/packages/tidyr/vignettes/tidy-data.html).

@@ -35,14 +35,14 @@ RUN cd salmon-${SALMON_VERSION}/build && \
     make && make install
 
 # Build fastp
-ARG FASTP_VERSION=0.23.4
+ARG FASTP_VERSION=1.0.0
 RUN curl -LO https://github.com/OpenGene/fastp/archive/refs/tags/v${FASTP_VERSION}.tar.gz
 RUN tar xzf v${FASTP_VERSION}.tar.gz
 RUN cd fastp-${FASTP_VERSION} && \
     make && make install
 
 # Main image with Biocconductor and other tools
-FROM bioconductor/bioconductor_docker:3.19 AS final
+FROM bioconductor/bioconductor_docker:3.21 AS final
 
 WORKDIR /rocker-build/
 

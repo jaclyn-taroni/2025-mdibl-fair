@@ -4,10 +4,7 @@ name: Build Docker Image and Push to Dockerhub
 on:
   workflow_call:
     inputs:
-      platform:
-        required: true
-        type: string
-      push-ecr:
+      push-ghcr:
         required: true
         type: boolean
 
@@ -30,10 +27,6 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      # QEMU emulation required for ARM
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
-
       # set up Docker build
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
@@ -42,15 +35,15 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ghcr.io/jaclyn-taroni/2024-mdibl-fair
-          tags: type=raw,value=${{ inputs.platform }}
+          images: ghcr.io/jaclyn-taroni/2025-mdibl-fair
+          tags: type=raw,value=latest
 
       # Build Docker image and push
       - name: Build Docker image
         uses: docker/build-push-action@v5
         with:
-          push: ${{ inputs.push-ecr }}
+          push: ${{ inputs.push-ghcr }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          platforms: "linux/${{ inputs.platform }}"
+          platforms: "linux/amd64"
           cache-from: type=gha
