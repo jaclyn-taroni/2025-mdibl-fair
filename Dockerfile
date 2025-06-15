@@ -1,85 +1,59 @@
-# Build salmon from source in a separate image
-FROM ubuntu:22.04 AS build
+# Adapted from: https://openscpca.readthedocs.io/en/latest/ensuring-repro/docker/docker-images/
+# Image with Biocconductor and other tools
+FROM ghcr.io/bioconductor/bioconductor_docker:RELEASE_3_21
 
-ENV MDIBL_DOCKER TRUE
+# So we can skip using renv in Docker
+ENV MDIBL_DOCKER=TRUE
 
-# Build dependencies
-RUN apt-get update -qq
-RUN DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
-    ca-certificates \
-    cmake \
-    curl \
-    g++ \
-    gcc \
-    libboost-all-dev \
-    libbz2-dev \
-    libcurl4-openssl-dev \
-    libdeflate-dev \
-    libisal-dev \
-    liblzma-dev \
-    make \
-    pkg-config \
-    unzip \
-    zlib1g-dev \
-    && apt-get clean
+# set environment variables to install conda
+ENV PATH="/opt/conda/bin:${PATH}"
 
-WORKDIR /usr/local/src
+# set a name for the conda environment
+ARG ENV_NAME=2025-mdibl-fair
 
-# Build salmon
-ARG SALMON_VERSION=1.10.1
-RUN curl -LO https://github.com/COMBINE-lab/salmon/archive/refs/tags/v${SALMON_VERSION}.tar.gz
-RUN tar xzf v${SALMON_VERSION}.tar.gz
-RUN mkdir salmon-${SALMON_VERSION}/build
-RUN cd salmon-${SALMON_VERSION}/build && \
-    cmake -DCMAKE_INSTALL_PREFIX=/usr/local/salmon .. && \
-    make && make install
+# Install conda via miniforge
+# adapted from https://github.com/conda-forge/miniforge-images/blob/master/ubuntu/Dockerfile
+RUN curl -L "https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-$(uname)-$(uname -m).sh" -o /tmp/miniforge.sh \
+  && bash /tmp/miniforge.sh -b -p /opt/conda \
+  && rm -f /tmp/miniforge.sh \
+  && conda clean --tarballs --index-cache --packages --yes \
+  && find /opt/conda -follow -type f -name '*.a' -delete \
+  && find /opt/conda -follow -type f -name '*.pyc' -delete \
+  && conda clean --force-pkgs-dirs --all --yes
 
-# Build fastp
-ARG FASTP_VERSION=1.0.0
-RUN curl -LO https://github.com/OpenGene/fastp/archive/refs/tags/v${FASTP_VERSION}.tar.gz
-RUN tar xzf v${FASTP_VERSION}.tar.gz
-RUN cd fastp-${FASTP_VERSION} && \
-    make && make install
+# Activate conda environments in bash
+RUN ln -s /opt/conda/etc/profile.d/conda.sh /etc/profile.d/conda.sh \
+  && echo ". /opt/conda/etc/profile.d/conda.sh" >> /etc/skel/.bashrc \
+  && echo ". /opt/conda/etc/profile.d/conda.sh" >> ~/.bashrc
 
-# Main image with Biocconductor and other tools
-FROM ghcr.io/bioconductor/bioconductor_docker:RELEASE_3_21 AS final
 
-WORKDIR /rocker-build/
+# Install conda-lock
+RUN conda install --channel=conda-forge --name=base conda-lock \
+  && conda clean --all --yes
 
-# Additional dependencies
-RUN apt-get update -qq
-RUN DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
-    glibc-source \
-    groff \
-    less \
-    libisal2 \
-    pipx \
-    && apt-get clean
+# Install renv
+RUN Rscript -e "install.packages('renv')"
 
-# FastQC
-RUN DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
-    fastqc \
-    && apt-get clean
-
-# Python packages
-COPY requirements.txt requirements.txt
-RUN pipx ensurepath
-RUN pipx install cookiecutter
-RUN pipx runpip cookiecutter install -r requirements.txt
-
-# Use renv for R packages
-WORKDIR /usr/local/renv
+# Disable the renv cache to install packages directly into the R library
 ENV RENV_CONFIG_CACHE_ENABLED=FALSE
-COPY renv.lock renv.lock
-RUN R -e "install.packages('renv')"
-RUN R -e "renv::restore()" \
-    rm -rf ~/.cache/R/renv && \
-    rm -rf /tmp/downloaded_packages && \
-    rm -rf /tmp/Rtmp*
 
-# copy salmon and fastp binaries from the build image
-COPY --from=build /usr/local/salmon/ /usr/local/
-COPY --from=build /usr/local/bin/fastp /usr/local/bin/fastp
+# Copy conda lock file to image
+COPY conda-lock.yml conda-lock.yml
+
+# restore from conda-lock.yml file and clean up to reduce image size
+RUN conda-lock install -n ${ENV_NAME} conda-lock.yml \
+  && conda clean --all --yes
+
+# Copy the renv.lock file from the host environment to the image
+COPY renv.lock renv.lock
+
+# restore from renv.lock file and clean up to reduce image size
+RUN Rscript -e 'renv::restore()' \
+  && rm -rf ~/.cache/R/renv \
+  && rm -rf /tmp/downloaded_packages \
+  && rm -rf /tmp/Rtmp*
+
+# Activate conda environment on bash launch
+RUN echo "conda activate ${ENV_NAME}" >> ~/.bashrc
 
 WORKDIR /home/rstudio
-
