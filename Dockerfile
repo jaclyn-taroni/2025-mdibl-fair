@@ -53,6 +53,7 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
     groff \
     less \
     libisal2 \
+    pipx \
     && apt-get clean
 
 # FastQC
@@ -62,7 +63,8 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
 
 # Python packages
 COPY requirements.txt requirements.txt
-RUN pip install -r requirements.txt
+RUN pipx install cookiecutter
+RUN pipx runpip cookiecutter install -r requirements.txt
 
 # Use renv for R packages
 WORKDIR /usr/local/renv
