@@ -1,6 +1,6 @@
-# FAIR 2024
+# FAIR 2025
 
-These materials are for instruction in MDIBL's 2024 Reproducible and FAIR Bioinformatics Analysis of Omics Data course.
+These materials are for instruction in MDIBL's 2025 Reproducible and FAIR Bioinformatics Analysis of Omics Data course.
 
 They are adapted from [Alex's Lemonade Stand Foundation](https://www.alexslemonade.org/) [Childhood Cancer Data Lab](https://www.ccdatalab.org/) [training materials](https://github.com/AlexsLemonade/training-modules), [Harvard Chan Bioinformatics Core](http://bioinformatics.sph.harvard.edu/) lessons and [Penn GCB 535 materials](https://github.com/greenelab/GCB535).
 (Sources used will be indicated in individual sections of instruction material.)
@@ -9,18 +9,12 @@ They are adapted from [Alex's Lemonade Stand Foundation](https://www.alexslemona
 
 ### Docker
 
-To obtain [the Docker image](https://github.com/jaclyn-taroni/2024-mdibl-fair/pkgs/container/2024-mdibl-fair) for this material, use the following command:
+To obtain [the Docker image](https://github.com/jaclyn-taroni/2025-mdibl-fair/pkgs/container/2025-mdibl-fair) for this material, use the following command:
 
 ```sh
-docker pull ghcr.io/jaclyn-taroni/2024-mdibl-fair:{platform tag}
+docker pull ghcr.io/jaclyn-taroni/2025-mdibl-fair \
+  --platform linux/amd64
 ```
-
-Where the available platform tags are:
-
-- `amd-64`
-- `arm-64`
-
-To distinguish between available architectures.
 
 ### Docker Build with GitHub Actions
 
@@ -33,10 +27,11 @@ You can access the RStudio Server instance using the following command, replacin
 
 ```sh
 docker run \
-  --mount type=bind,target=/home/rstudio/2024-mdibl-fair,source=$PWD \
+  --mount type=bind,target=/home/rstudio/2025-mdibl-fair,source=$PWD \
   -e PASSWORD={PASSWORD} \
   -p 8787:8787 \
-  ghcr.io/jaclyn-taroni/2024-mdibl-fair:{platform tag}
+  ghcr.io/jaclyn-taroni/2025-mdibl-fair:latest \
+  --platform linux/amd64
 ```
 
 You can then navigate to `localhost:8787` in your browser and log in with username `rstudio` and the password you just set via `docker run`.
@@ -79,7 +74,7 @@ install.packages("digest", repos="http://cran.us.r-project.org")
 
 #### Development with `renv`
 
-Develop using the `2024-mdibl-fair.Rproj` Rproject and restore the state of the project from the lockfile with:
+Develop using the `2025-mdibl-fair.Rproj` Rproject and restore the state of the project from the lockfile with:
 
 ```r
 renv::restore()
