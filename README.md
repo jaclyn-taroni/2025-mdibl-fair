@@ -30,8 +30,8 @@ docker run \
   --mount type=bind,target=/home/rstudio/2025-mdibl-fair,source=$PWD \
   -e PASSWORD={PASSWORD} \
   -p 8787:8787 \
-  ghcr.io/jaclyn-taroni/2025-mdibl-fair:latest \
-  --platform linux/amd64
+  --platform linux/amd64 \
+  ghcr.io/jaclyn-taroni/2025-mdibl-fair:latest
 ```
 
 You can then navigate to `localhost:8787` in your browser and log in with username `rstudio` and the password you just set via `docker run`.
