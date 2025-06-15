@@ -63,6 +63,7 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
 
 # Python packages
 COPY requirements.txt requirements.txt
+RUN pipx ensurepath
 RUN pipx install cookiecutter
 RUN pipx runpip cookiecutter install -r requirements.txt
 
