@@ -1,4 +1,4 @@
-name: Build All Docker Platforms
+name: Build Docker on PR and Push to GitHub Container Registry
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -29,13 +29,6 @@ jobs:
     permissions:
       packages: write
       contents: read
-    strategy:
-      fail-fast: false
-      matrix:
-        platform:
-          - amd64
-          - arm64
     uses: ./.github/workflows/build-push-docker.yml
     with:
-      platform: ${{ matrix.platform }}
-      push-ecr: ${{ github.event_name == 'push' || github.event_name == 'workflow_dispatch' }}
+      push-ghcr: ${{ github.event_name == 'push' || github.event_name == 'workflow_dispatch' }}
