@@ -1,6 +1,6 @@
 # tximport
 
-_You can read more about how to use these instructions, including the `<YOUR USER NAME>` notation, in [this section of the fastp and Salmon instructions.](https://github.com/jaclyn-taroni/2024-mdibl-fair/blob/main/instruction-material/bulk-rnaseq/01-fastp-salmon.md#how-to-use-these-directions)_
+_You can read more about how to use these instructions, including the `<YOUR USER NAME>` notation, in [this section of the fastp and Salmon instructions.](https://github.com/jaclyn-taroni/2025-mdibl-fair/blob/main/instruction-material/bulk-rnaseq/01-fastp-salmon.md#how-to-use-these-directions)_
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
@@ -36,7 +36,7 @@ You will be prompted for your password, which you should type in and then hit en
 
 We'll read this data into RStudio at the end of this module so we can inspect it together and prepare for upcoming modules.
 
-_Just in case this doesn't work, there is another copy of this data available for download [here](https://github.com/jaclyn-taroni/2024-mdibl-fair/raw/main/setup/bulk-rnaseq/tximport/goodale_data_tximport.RDS)._
+_Just in case this doesn't work, there is another copy of this data available for download [here](https://github.com/jaclyn-taroni/2025-mdibl-fair/raw/main/setup/bulk-rnaseq/tximport/goodale_data_tximport.RDS)._
 
 
 ## Running tximport
@@ -57,7 +57,7 @@ To do so, use the following command:
 module load R
 ```
 
-To run `tximport`, we need the `quant.sf` files for all the samples in an experiment and a file that maps between Ensembl transcript ids and Ensembl gene ids, which we've prepared ahead of time (see how [here](https://github.com/jaclyn-taroni/2024-mdibl-fair/blob/main/setup/bulk-rnaseq/scripts/prepare-tx2gene.R)) and put on the server.
+To run `tximport`, we need the `quant.sf` files for all the samples in an experiment and a file that maps between Ensembl transcript ids and Ensembl gene ids, which we've prepared ahead of time (see how [here](https://github.com/jaclyn-taroni/2025-mdibl-fair/blob/main/setup/bulk-rnaseq/scripts/prepare-tx2gene.R)) and put on the server.
 
 **First, navigate back to the directory of `/data` that contains your own "personal" RNA-seq sample:**
 
@@ -92,7 +92,7 @@ Rscript /data/scripts/run-tximport.R \
 <details>
 <summary> <b><i>Expand this section for a walk through of what the different sections of the <code>run-tximport.R</code> script are accomplishing</b></i> 🚀 </summary>
 
-Let's walk through what the different sections of the `run-tximport.R` script are accomplishing (you can view this script on GitHub [here](https://github.com/jaclyn-taroni/2024-mdibl-fair/tree/main/instruction-material/bulk-rnaseq/scripts-for-server/run-tximport.R)).
+Let's walk through what the different sections of the `run-tximport.R` script are accomplishing (you can view this script on GitHub [here](https://github.com/jaclyn-taroni/2025-mdibl-fair/tree/main/instruction-material/bulk-rnaseq/scripts-for-server/run-tximport.R)).
 
 ⚠️ _Do not copy and paste this R code into the command line_ ⚠️
 
