@@ -42,7 +42,7 @@ RUN cd fastp-${FASTP_VERSION} && \
     make && make install
 
 # Main image with Biocconductor and other tools
-FROM bioconductor/bioconductor_docker:3.21 AS final
+FROM ghcr.io/bioconductor/bioconductor_docker:RELEASE_3_21 AS final
 
 WORKDIR /rocker-build/
 
