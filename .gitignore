@@ -43,3 +43,6 @@ vignettes/*.pdf
 
 # DS Store files
 .DS_Store
+
+# conda-lock .lock files
+conda-*.lock

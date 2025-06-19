@@ -13,7 +13,8 @@ rule multiqc:
         expand("QC/fastp_reports/{id}_fastp.json", id=file_ids),
         expand("QC/fastqc_reports/{id}_R{n}_combined_fastqc.zip", id=file_ids, n=[1,2]),
         expand("salmon/{id}/aux_info/meta_info.json", id=file_ids),
-        expand("salmon/{id}/libParams/flenDist.txt", id=file_ids)
+        expand("salmon/{id}/libParams/flenDist.txt", id=file_ids),
+        expand("salmon/{id}/lib_format_counts.json", id=file_ids)
     output:
         "QC/multiqc_report.html"
     shell:
