@@ -1,0 +1,25 @@
+.	Basic Statistics	Per Base Sequence Quality	Per Tile Sequence Quality	Per Sequence Quality Scores	Per Base Sequence Content	Per Sequence GC Content	Per Base N Content	Sequence Length Distribution	Sequence Duplication Levels	Overrepresented Sequences	Adapter Content
+13_AGTCAA_L001_R1_combined	1	1	1	1	0.25	1	1	1	0.25	1	1
+13_AGTCAA_L001_R2_combined	1	1	1	1	0.5	1	1	1	0.25	1	1
+17_ATCACG_L002_R1_combined	1	1	1	1	0.25	1	1	1	0.25	1	1
+17_ATCACG_L002_R2_combined	1	1	1	1	0.5	1	1	1	0.5	1	1
+1_ATCACG_L001_R1_combined	1	1	1	1	0.25	1	1	1	0.25	1	1
+1_ATCACG_L001_R2_combined	1	1	1	1	0.5	1	1	1	0.5	1	1
+21_ACAGTG_L002_R1_combined	1	1	1	1	0.25	1	1	1	0.25	1	1
+21_ACAGTG_L002_R2_combined	1	1	1	1	0.5	1	1	1	0.25	1	1
+25_GATCAG_L002_R1_combined	1	1	1	1	0.25	1	1	1	0.25	1	1
+25_GATCAG_L002_R2_combined	1	1	1	1	0.5	1	1	1	0.25	1	1
+29_AGTCAA_L002_R1_combined	1	1	1	1	0.25	1	1	1	0.25	1	1
+29_AGTCAA_L002_R2_combined	1	1	0.5	1	0.5	1	1	1	0.25	1	1
+33_GTCCGC_L002_R1_combined	1	1	1	1	0.25	1	1	1	0.25	1	1
+33_GTCCGC_L002_R2_combined	1	1	0.5	1	0.5	1	1	1	0.5	1	1
+37_CGTACG_L002_R1_combined	1	1	1	1	0.25	1	1	1	0.25	1	1
+37_CGTACG_L002_R2_combined	1	1	0.5	1	0.5	1	1	1	0.25	1	1
+41_GTCCGC_L001_R1_combined	1	1	1	1	0.25	1	1	1	0.25	1	1
+41_GTCCGC_L001_R2_combined	1	1	1	1	0.5	1	1	1	0.25	1	1
+45_CGTACG_L001_R1_combined	1	1	1	1	0.25	1	1	1	0.25	1	1
+45_CGTACG_L001_R2_combined	1	1	1	1	0.5	1	1	1	0.25	1	1
+5_ACAGTG_L001_R1_combined	1	1	1	1	0.25	1	1	1	0.25	1	1
+5_ACAGTG_L001_R2_combined	1	1	1	1	0.5	1	1	1	0.25	1	1
+9_GATCAG_L001_R1_combined	1	1	1	1	0.25	1	1	1	0.25	1	1
+9_GATCAG_L001_R2_combined	1	1	1	1	0.5	1	1	1	0.25	1	1

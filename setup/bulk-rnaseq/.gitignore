@@ -13,3 +13,4 @@ salmon/
 QC/**/*.json
 QC/**/*.zip
 QC/**/*.log
+QC/**/*.parquet
