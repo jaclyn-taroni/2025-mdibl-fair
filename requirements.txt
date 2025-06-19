@@ -1,3 +1,0 @@
-multiqc==1.29
-pulp==3.0.2
-snakemake==9.5.1
