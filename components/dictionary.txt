@@ -9,6 +9,8 @@ bp
 BRCA
 CCDL
 cDNA
+conda
+Conda
 Cresko
 cytometry
 discoverable
