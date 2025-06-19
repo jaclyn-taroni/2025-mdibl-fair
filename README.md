@@ -83,6 +83,41 @@ renv::restore()
 Sometimes all R packages are not captured with `renv::snapshot()` if they are not explicitly loaded in notebooks.
 To ensure a dependency is captured in the lockfile, add `library(<package>)` to `components/dependencies.R`.
 
+### Conda and conda-lock
+
+#### Installation
+
+To install the conda environment for this material with conda-lock, use the following command:
+
+```sh
+conda-lock install --name 2025-mdibl-fair conda-lock.yml
+```
+
+On Apple Silicon, you can use conda directly as follows:
+
+```sh
+conda env create --file environment.yml --name 2025-mdibl-fair
+```
+
+Or to use conda-lock on Apple Silicon, you can use the following commands:
+
+```sh
+conda-lock --file environment.yml --kind explicit
+conda-lock install --no-validate-platform --name 2025-mdibl-fair conda-osx-64.lock
+conda activate 2025-mdibl-fair
+conda config --env --set subdir osx-64
+```
+
+Note: `conda-*.lock` files are ignored in this repository.
+
+#### Activation
+
+To activate the conda environment, use the following command:
+
+```sh
+conda activate 2025-mdibl-fair
+```
+
 ## Pre-commit
 
 Once you've [installed pre-commit using your preferred method](https://pre-commit.com/#install), you can set it up for this repository with the following command:
