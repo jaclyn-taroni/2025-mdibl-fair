@@ -336,6 +336,3 @@ Example output:
 > ```
 
 The final elements in the `txi` list are the `length` matrix, which contains the effective lengths and can be used to generate an offset matrix for downstream gene-level differential expression analyses ([`tximport` vignette](https://bioconductor.org/packages/devel/bioc/vignettes/tximport/inst/doc/tximport.html#Salmon)), and `countsFromAbundance` which stores what  we used for the `countsFromAbundance` argument when we called `tximport()`.
-
-
-**We will use the `txi` data in the edgeR modules downstream, so leave RStudio open with `txi` loaded in!**
