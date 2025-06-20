@@ -97,7 +97,7 @@ Or you can obtain indices for select organisms from refgenie; [here's a full gen
 ## Other courses or resources for continued learning
 
 * [Harvard Chan Bioinformatics Core (HBC). _Introduction to RNA-Seq using high-performance computing_](https://hbctraining.github.io/Intro-to-rnaseq-hpc-salmon-flipped/schedule/links-to-lessons.html)
-* [University of Michigan Bioinformatics Core. _Experimental Design, Library Preparation, and Sequencing._](https://umich-brcf-bioinf.github.io/rnaseq_demystified_workshop/site/Module3a_Design_Prep_Seq)
+* [University of Michigan Bioinformatics Core. _RNA-seq Demystified._](https://umich-brcf-bioinf.github.io/workshop-rnaseq-demystified/main/html/)
 * [StatQuest with Josh Starmer. _High Throughput Sequencing_ YouTube playlist.](https://www.youtube.com/playlist?list=PLblh5JKOoLUJo2Q6xK4tZElbIvAACEykp)
 * [Cresko lab of the University of Oregon. _RNA-seqlopedia._](https://rnaseq.uoregon.edu)
 
