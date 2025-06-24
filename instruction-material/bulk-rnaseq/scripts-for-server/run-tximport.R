@@ -2,18 +2,7 @@
 
 #### Required libraries --------------------------------------------------------
 
-# If the tximport package isn't installed, install it
-if (!("tximport" %in% installed.libraries())) {
-  install.packages("tximport")
-}
-
 library(tximport)
-
-# If the optparse package isn't installed, install it
-if (!("optparse" %in% installed.libraries())) {
-  install.packages("optparse")
-}
-
 library(optparse)
 
 #### Command line options ------------------------------------------------------
@@ -50,12 +39,10 @@ dir.create(opt$output_directory, showWarnings = FALSE, recursive = TRUE)
 txi_file <- file.path(opt$output_directory, opt$output_filename)
 
 # List all quant files that folks processed
-salmon_files <- list.files(
-  path = "/data",
-  pattern = "quant.sf",
-  full.names = TRUE,
-  recursive = TRUE
-)
+salmon_files <- list.files(path = "/data",
+                           pattern = "quant.sf",
+                           full.names = TRUE,
+                           recursive = TRUE)
 
 # Make sure these are files in "personal" data directories
 # Which are in `/data/workshop-*`
@@ -64,7 +51,7 @@ salmon_files <- salmon_files[grep("workshop-*", salmon_files)]
 # The sample identifier *should* always be the directory that contains the
 # quant.sf file
 split_salmon_paths <- strsplit(salmon_files, .Platform$file.sep)
-sample_identifiers <- unlist(lapply(split_salmon_paths, function(x) x[[5]]))
+sample_identifiers <- unlist(lapply(split_salmon_paths, function (x) x[[5]]))
 
 # In case folks have the same starting set of samples, we need to make these IDs
 # unique with `make.names()`.
@@ -74,10 +61,8 @@ sample_identifiers <- unlist(lapply(split_salmon_paths, function(x) x[[5]]))
 names(salmon_files) <- make.names(sample_identifiers, unique = TRUE)
 
 # Transcript to gene mapping (tx2gene) required for tximport step
-tx2gene_file <- file.path(
-  "/data", "index", "Homo_sapiens",
-  "Homo_sapiens_Ensembl_v103_tx2gene.tsv"
-)
+tx2gene_file <- file.path("/data", "index", "Homo_sapiens",
+                          "Homo_sapiens_Ensembl_v103_tx2gene.tsv")
 
 #### tximport ------------------------------------------------------------------
 
@@ -86,11 +71,10 @@ tx2gene_df <- read.table(tx2gene_file, header = TRUE, sep = "\t")
 
 # tximport step
 txi <- tximport(salmon_files,
-  type = "salmon",
-  tx2gene = tx2gene_df,
-  countsFromAbundance = "no",
-  ignoreTxVersion = TRUE
-)
+                type = "salmon",
+                tx2gene = tx2gene_df,
+                countsFromAbundance = "no",
+                ignoreTxVersion = TRUE)
 
 # Save the tximport data as an RDS
 saveRDS(txi, txi_file)
