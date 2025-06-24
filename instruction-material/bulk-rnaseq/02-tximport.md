@@ -50,13 +50,6 @@ For more information about `tximport`, see [this excellent vignette](https://bio
 
 ### Using `run-tximport.R`
 
-First, we need to load the R module.
-To do so, use the following command:
-
-```sh
-module load R
-```
-
 To run `tximport`, we need the `quant.sf` files for all the samples in an experiment and a file that maps between Ensembl transcript ids and Ensembl gene ids, which we've prepared ahead of time (see how [here](https://github.com/jaclyn-taroni/2025-mdibl-fair/blob/main/setup/bulk-rnaseq/scripts/prepare-tx2gene.R)) and put on the server.
 
 **First, navigate back to the directory of `/data` that contains your own "personal" RNA-seq sample:**
