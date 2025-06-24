@@ -56,7 +56,7 @@ Below, we use the notation such as `<YOUR USER NAME>` or `<YOUR SAMPLE>` to indi
 **Make sure to remove the angled brackets `<` and `>` when you replace these with the appropriate text!**
 These characters will cause trouble otherwise.
 
-For example – if my user name on the server was `workshop-00`, I would replace `/data/<YOUR USERNAME>` with `/data/workshop-00`.
+For example, if my user name on the server was `ws00`, I would replace `/data/<YOUR USERNAME>` with `/data/ws00`.
 
 #### Selecting a sample to work with
 
@@ -307,13 +307,13 @@ It will also report a lot of the QC information as a message when it finishes, t
 The last message from `fastp` before it finishes running looks like (don't worry, your time used might be different!):
 
 > ```
-> fastp v0.23.4, time used: 351 seconds
+> fastp v0.23.1, time used: 351 seconds
 > ```
 
-The terminal interface will also look something like the following (where `wrkshp00` and `workshop-00` will be replaced with your user name) to let you know it's ready to accept another command!
+The terminal interface will also look something like the following (where `ws00` and `ws00` will be replaced with your user name) to let you know it's ready to accept another command!
 
 > ```
-> [wrkshp00 workshop-00]$
+> [ws00 ws00]$
 > ```
 
 If you run the following to list the contents of the `trimmed/` directory, you should see two FASTQ files that correspond to R1 and R2:
