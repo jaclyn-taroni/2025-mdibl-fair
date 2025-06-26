@@ -52,10 +52,10 @@ For more information about `tximport`, see [this excellent vignette](https://bio
 
 To run `tximport`, we need the `quant.sf` files for all the samples in an experiment and a file that maps between Ensembl transcript ids and Ensembl gene ids, which we've prepared ahead of time (see how [here](https://github.com/jaclyn-taroni/2025-mdibl-fair/blob/main/setup/bulk-rnaseq/scripts/prepare-tx2gene.R)) and put on the server.
 
-**First, navigate back to the directory of `/data` that contains your own "personal" RNA-seq sample:**
+**First, navigate back to the home directory that contains your own "personal" RNA-seq sample:**
 
 ```sh
-cd /data/<YOUR USER NAME>
+cd ~
 ```
 
 Then to run `tximport`, we'll use a script that's already on the server called `run-tximport.R`.
