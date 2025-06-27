@@ -339,7 +339,7 @@ salmon quant \
   -l A \
   -1 trimmed/<YOUR SAMPLE>_R1_combined.fastq.gz -2 trimmed/<YOUR SAMPLE>_R2_combined.fastq.gz \
   -o salmon/<YOUR SAMPLE> \
-  --threads 4 \
+  --threads 2 \
   --validateMappings \
   --gcBias \
   --seqBias
@@ -564,7 +564,7 @@ salmon quant \
   -l A \
   -1 trimmed/5_ACAGTG_L001_R1_combined.fastq.gz -2 trimmed/5_ACAGTG_L001_R2_combined.fastq.gz \
   -o salmon/5_ACAGTG_L001 \
-  --threads 4 \
+  --threads 2 \
   --validateMappings \
   --gcBias \
   --seqBias
