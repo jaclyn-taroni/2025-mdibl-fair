@@ -1,6 +1,6 @@
 # Setting up a bulk RNA-seq conda environment
 
-We can use conda to install command line tools need for the bulk RNA-seq material on the server.
+We can use conda to install the command line tools and R packages needed for the bulk RNA-seq material on the server.
 
 ### Step 1: Initialize conda
 
@@ -47,16 +47,25 @@ conda config --add channels conda-forge
 conda config --set channel_priority strict
 ```
 
-### Step 5: Install the command line tools
+### Step 5: Install the command line tools and R packages
 
-Now we're ready to Install packages we need to run preprocessing and quantification, which we can do with the following command:
+Now we're ready to Install packages we need to run preprocessing, quantification, and summarization to the gene-level which we can do with the following command:
 
 ```
-conda install salmon=1.10.3 fastp=0.26.0
+conda install salmon=1.10.3 fastp=0.26.0 r-base r-optparse r-biocmanager
 ```
 
 When prompted to proceed with `Proceed ([y]/n)?`, enter `y` to continue with installation.
 
+Then we need to install the R package `tximport` with Bioconductor, which we can do with the following:
+
+```
+Rscript -e "BiocManager::install('tximport')"
+```
+
 ### Step 6: Follow along with the bulk RNA-seq material
 
-Now you have all the tools you need to follow along with the bulk RNA-seq material: [01-fastp-salmon](01-fastp-salmon.md)
+Now you have all the tools you need to follow along with the bulk RNA-seq material: 
+
+- [01-fastp-salmon](01-fastp-salmon.md)
+- [02-tximport](02-tximport.md)
