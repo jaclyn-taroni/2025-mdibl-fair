@@ -63,6 +63,12 @@ Then we need to install the R package `tximport` with Bioconductor, which we can
 Rscript -e "BiocManager::install('tximport')"
 ```
 
+And finally, a few more R packages with the following:
+
+```
+Rscript -e "install.packages(c('readr', 'jsonlite'), repo = 'https://cloud.r-project.org/')"
+```
+
 ### Step 6: Follow along with the bulk RNA-seq material
 
 Now you have all the tools you need to follow along with the bulk RNA-seq material: 
