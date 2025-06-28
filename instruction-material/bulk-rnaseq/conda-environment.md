@@ -52,7 +52,7 @@ conda config --set channel_priority strict
 Now we're ready to Install packages we need to run preprocessing, quantification, and summarization to the gene-level which we can do with the following command:
 
 ```
-conda install salmon=1.10.3 fastp=0.26.0 r-base r-optparse r-biocmanager
+conda install salmon=1.10.3 fastp=0.26.0 r-base r-optparse r-biocmanager r-jsonlite
 ```
 
 When prompted to proceed with `Proceed ([y]/n)?`, enter `y` to continue with installation.
@@ -61,12 +61,6 @@ Then we need to install the R package `tximport` with Bioconductor, which we can
 
 ```
 Rscript -e "BiocManager::install('tximport')"
-```
-
-And finally, a few more R packages with the following:
-
-```
-Rscript -e "install.packages(c('readr', 'jsonlite'), repo = 'https://cloud.r-project.org/')"
 ```
 
 ### Step 6: Follow along with the bulk RNA-seq material
