@@ -557,6 +557,7 @@ They are specific to the example user name and samples.
 
 ```
 cd ~
+conda activate /data/conda/envs/salmon
 mkdir -p raw
 ln -s /data/workshop-00/SalmonData/*.fastq.gz raw
 mkdir -p trimmed
