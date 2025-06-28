@@ -331,7 +331,7 @@ The last message from `fastp` before it finishes running looks like (don't worry
 The terminal interface will also look something like the following (where `ws00` will be replaced with your username) to let you know it's ready to accept another command!
 
 > ```
-> [ws00@ip ~]$
+> (salmon) [ws00@ip ~]$
 > ```
 
 If you run the following to list the contents of the `trimmed/` directory, you should see two FASTQ files that correspond to R1 and R2:
