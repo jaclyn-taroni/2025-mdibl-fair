@@ -177,6 +177,7 @@ salmon_files <- list.files(path = "/data",
 ```
 
 Then, just in case there are any _other_ `quant.sf` files on the server in `/data`, we'll filter to only the relevant files by detecting the pattern `workshop-*` in the file paths (`*` is a wildcard).
+Because of the way the directories are set up this year, this will only find the "cooking show magic" `quant.sf` files in `workshop-00`.
 
 ```r
 

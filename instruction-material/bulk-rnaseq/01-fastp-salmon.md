@@ -124,7 +124,25 @@ First, you'll need to make sure you are in your home directory with `cd`:
 cd ~
 ```
 
-We are going to make a directory called `raw`.
+Then, we need to activate the [Conda](https://en.wikipedia.org/wiki/Conda_%28package_manager%29) environment that contains the necessary tools.
+Conda is a package and environment manager; [Bioconda](https://bioconda.github.io/) is a repository that makes it easy to install many command line tools in bioinformatics.
+
+You can activate the Conda environment with the following command:
+
+```sh
+conda activate /data/conda/envs/salmon
+```
+
+You should see that your prompt has changed:
+
+> ```
+> (salmon) [ws00@ip ~]$
+> ```
+
+This lets us know that the `salmon` Conda environment is active.
+
+Now, we need to create directories to hold the data we will work with.
+First, we will create a directory called `raw`.
 
 We can use a command `mkdir` to do so.
 Because we'll use `-p` in the commands below, which allows us to create parent directories, it will prevent `mkdir` from returning an error if the directory you specify already exists.
